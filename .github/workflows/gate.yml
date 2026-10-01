@@ -16,6 +16,15 @@ jobs:
           git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
           node /tmp/witness/witness.mjs mutate tongue.mjs --timeout 60000 --cap 400 --test node --test tongue.test.mjs | tee verdict.txt
           grep -q '"clean": true' verdict.txt || { echo "::error::mutants survived — the gate is not clean"; exit 1; }
+      - name: the shipped JSON mode — its tests, then every mutant of tongue-pack.mjs must die
+        run: |
+          node --test tongue-pack.test.mjs
+          node /tmp/witness/witness.mjs mutate tongue-pack.mjs --timeout 60000 --cap 400 --test node --test tongue-pack.test.mjs | tee pack.txt
+          grep -q '"clean": true' pack.txt || { echo '::error::mutants survived in tongue-pack.mjs'; exit 1; }
+      - name: the ship seal, and its record re-derived
+        run: |
+          node tools/ship.mjs --check
+          if [ -f data/ship-run.json ]; then node tools/ship.mjs --verify; fi
       - name: the seal is exactly what the committed inputs give
         run: node tools/seal.mjs --check
       - name: every read re-graded, the JSON channel rebuilt, every number re-derived from the record

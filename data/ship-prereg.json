@@ -1,0 +1,126 @@
+{
+ "kind": "konomi-tongue-ship-prereg",
+ "v": 1,
+ "written": "2026-10-01",
+ "approvedBy": "Simon, relayed verbatim: \"ship we will keep improving though 15 is out there we will emerge\"",
+ "statement": "Sealed and pushed before any place is counted. Pack is switched on only where it measures cheaper than today.",
+ "sealed": {
+  "tongue-pack.mjs": "3eb049cf7a0a2c2316ea24811995c46485e5cfbaba5e23959ac313b8f4e64f47",
+  "tools/ship.mjs": "ebdf129492d937892f92208eb90840b3c0e2a3493aa9c45230cf1b0c27fb0954",
+  "vendor/light/templates.cjs": "afa4f0ac4e9e3322ed81d37afa99b0417cfcfb0154d49b134a40b4d0b764c5b3"
+ },
+ "places": [
+  {
+   "id": "queue",
+   "kind": "cockpit tool",
+   "where": "kar-mcp queue (the build queue)",
+   "public": false
+  },
+  {
+   "id": "estate-kar",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"kar\", k 60",
+   "public": false
+  },
+  {
+   "id": "estate-fall",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"fall\", k 60",
+   "public": false
+  },
+  {
+   "id": "estate-organ",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"organ\", k 60",
+   "public": false
+  },
+  {
+   "id": "estate-konomi",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"konomi\", k 60",
+   "public": false
+  },
+  {
+   "id": "journal",
+   "kind": "brain",
+   "where": "~/.si-didy/brain/mind-journal.json",
+   "public": false
+  },
+  {
+   "id": "lessons-ledger",
+   "kind": "ledger",
+   "where": "si-didy-loop local-dna/lessons-ledger.json",
+   "public": false
+  },
+  {
+   "id": "scorecard-receipt",
+   "kind": "receipt",
+   "where": "fallforgemint proof node commit-type/scorecard-receipt.json",
+   "public": false
+  },
+  {
+   "id": "estate-ledger",
+   "kind": "ledger",
+   "where": "fallkard/estate-ledger.json",
+   "public": true
+  },
+  {
+   "id": "herd-ledger",
+   "kind": "ledger",
+   "where": "fallkard/herd-ledger.json",
+   "public": true
+  },
+  {
+   "id": "run-pattern-organs",
+   "kind": "run record",
+   "where": "pattern-organs/data/run.json",
+   "public": true
+  },
+  {
+   "id": "run-kard-evolve",
+   "kind": "run record",
+   "where": "kard-evolve/data/run.json",
+   "public": true
+  },
+  {
+   "id": "run-konomi-tongue",
+   "kind": "run record",
+   "where": "konomi-tongue/data/run.json",
+   "public": true
+  }
+ ],
+ "method": "Claude tokens (claude-sonnet-5-5, the official CLI on Simon's login) of today's text, the minified JSON and the pack (legend included); pack uses the tongue's alphabet (one-token glyphs first), only glyphs absent from the value",
+ "switch": "a cockpit tool returns packs only if its pack is cheaper than today's text on every measured call of that tool; files are reported, and switched only where a model reads them",
+ "templates": "each of LIGHT's templates with every placeholder set to 3: tokens of the resolved program ÷ tokens of the call {\"tool\":\"template\",\"name\",\"params\"}; the legend of names and parameters counted once",
+ "readCheck": "for the queue and one estate search, Claude answers one question with a fixed answer from today's text and from the pack (with the one-line note); graded by exact set match",
+ "rules": [
+  {
+   "id": "pack-lossless",
+   "rule": "every place unpacks to exactly its value"
+  },
+  {
+   "id": "pack-wins-on-records",
+   "rule": "the pack is cheaper than today at every cockpit tool and every run record"
+  },
+  {
+   "id": "claude-reads-packs",
+   "rule": "Claude answers both read-check questions exactly from the pack"
+  },
+  {
+   "id": "templates-some-15x",
+   "rule": "at least one LIGHT template is 15× cheaper to call by name than to send"
+  },
+  {
+   "id": "templates-median-15x",
+   "rule": "the median template is 15× cheaper to call by name"
+  }
+ ],
+ "predictions": {
+  "said": "before any place was counted, by Kar",
+  "pack-lossless": "pass",
+  "pack-wins-on-records": "pass — today's text is pretty-printed with every key repeated; the estate rows and run records repeat their shapes",
+  "claude-reads-packs": "pass — a pack is a header and rows",
+  "templates-some-15x": "pass — translate is 98 lines",
+  "templates-median-15x": "fail — most templates are 5–15 lines; about 4–8×"
+ }
+}
