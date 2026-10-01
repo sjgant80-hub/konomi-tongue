@@ -1,0 +1,398 @@
+[
+ {
+  "split": "held",
+  "file": "kar-mind__codec-run.json",
+  "bytes": 2805,
+  "sha256": "66f95d7fe792a8f9447001df81b84e5b713e1221124734cc6015acb794d93edf",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/codec-run.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__codec-prereg.json",
+  "bytes": 3824,
+  "sha256": "ba12ced48831cca71e28b7f73a2ffbb5f7fea8f8687a35bbb73b19a7fa6d6b0b",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/codec-prereg.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__watch-playbook-v2.json",
+  "bytes": 2193,
+  "sha256": "d48c88659dd915801c76d4a7417bfad0ce2a460ec7bb3e31940037158232fba1",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/watch-playbook-v2.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__watch-run.json",
+  "bytes": 7575,
+  "sha256": "7471299d3e0a5296f6da448c08ab1c00b991adc81ba23b7c7b6e38af7cf35662",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/watch-run.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__watch-playbook-v1.json",
+  "bytes": 2388,
+  "sha256": "3a7b9640b7e85dd8e0c7dbdea8bc593ee3adbf3359d029a6793cf9048ecf3a5e",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/watch-playbook-v1.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__watch-prereg.json",
+  "bytes": 6336,
+  "sha256": "df5733751c61ac74662771d1a88cf48a73ea12a8e6eba6ad0ca8807eaa4873d5",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/watch-prereg.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__brain-fix-run.json",
+  "bytes": 10409,
+  "sha256": "c88ffc6a5c18c89e347aa35647c8c21bc9ef1e912e45d4fdb3bae043612034d6",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/brain-fix-run.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__pattern-run.json",
+  "bytes": 3516,
+  "sha256": "4e76d9fa3fc6b6ce963faa1ab5cb3635471abd3e7080b1fc10d8bae7af373230",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/pattern-run.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__pattern-prereg.json",
+  "bytes": 3959,
+  "sha256": "44c67e9569c93df398269428f8debdf96ac897837a94685e10f24dadea130e64",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/pattern-prereg.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__brain-fix-prereg.json",
+  "bytes": 7787,
+  "sha256": "12f0344bd6632bac3e1a881c45d9adcadfe55254050ba938aea253973a08c4a4",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/brain-fix-prereg.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__brain-run.json",
+  "bytes": 7026,
+  "sha256": "5adde65e2455f95d558119db9e0f469d36ad7ef3c54c217b86fa0e7b1b6f7834",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/brain-run.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kar-mind__brain-prereg.json",
+  "bytes": 4975,
+  "sha256": "78e91c089b820c032dcf06cea6f83fb2bdabedd17529337b29abe85eb4f6af19",
+  "from": {
+   "repo": "kar-mind",
+   "path": "data/brain-prereg.json",
+   "commit": "f00d1ed632022756004514306300d6a5cef4ccdd"
+  }
+ },
+ {
+  "split": "held",
+  "file": "pattern-organs__verdict.json",
+  "bytes": 5901,
+  "sha256": "eba36758f1e1b02bd61a91966442ea51eb36708f8c18595ef214c0de2ccae8d3",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/verdict.json",
+   "commit": "c5ce42c28e5e9ac87e2e59ccc18b511d3b210754"
+  }
+ },
+ {
+  "split": "train",
+  "file": "pattern-organs__run.json",
+  "bytes": 47297,
+  "sha256": "8897957a13720ee724de4490702069096434d2a92ae9010226b09126dd0969f3",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/run.json",
+   "commit": "c5ce42c28e5e9ac87e2e59ccc18b511d3b210754"
+  }
+ },
+ {
+  "split": "train",
+  "file": "pattern-organs__verify.json",
+  "bytes": 54,
+  "sha256": "afdc3381c2e57cb6f441a6accdabc12cbba3f82bc0643371951106d7bcbd2b25",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/verify.json",
+   "commit": "c5ce42c28e5e9ac87e2e59ccc18b511d3b210754"
+  }
+ },
+ {
+  "split": "train",
+  "file": "pattern-organs__prereg.json",
+  "bytes": 8572,
+  "sha256": "45576f2c13bcca5c4718e3c4bd68eb56bf6daddabedbec29f2257cc19438e186",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/prereg.json",
+   "commit": "c5ce42c28e5e9ac87e2e59ccc18b511d3b210754"
+  }
+ },
+ {
+  "split": "held",
+  "file": "kard-evolve__observe-prereg.json",
+  "bytes": 4326,
+  "sha256": "6297f5331478a589ba3f19cb2c85ad4e9147cf15ec2f88ea4cedae9e9112a4c0",
+  "from": {
+   "repo": "kard-evolve",
+   "path": "data/observe-prereg.json",
+   "commit": "3c1986582199ec09dd9c3cbc5a8ca91a19af1d5f"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kard-evolve__run.json",
+  "bytes": 35332,
+  "sha256": "0a3a7b89fca62a54a63e263749a4d7a533d34dd2d66d5df4372fca9cf0b2bcb2",
+  "from": {
+   "repo": "kard-evolve",
+   "path": "data/run.json",
+   "commit": "3c1986582199ec09dd9c3cbc5a8ca91a19af1d5f"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kard-evolve__pilot.json",
+  "bytes": 627,
+  "sha256": "13b46baedd85f4f8aba04b76d0739471f017a1eaf644e28bd5250fd9a6e8a2d1",
+  "from": {
+   "repo": "kard-evolve",
+   "path": "data/pilot.json",
+   "commit": "3c1986582199ec09dd9c3cbc5a8ca91a19af1d5f"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kard-evolve__prereg.json",
+  "bytes": 4844,
+  "sha256": "94730bb81dd50f893a86d990000a0004f144c960a1aa61ce45e298a9213652ff",
+  "from": {
+   "repo": "kard-evolve",
+   "path": "data/prereg.json",
+   "commit": "3c1986582199ec09dd9c3cbc5a8ca91a19af1d5f"
+  }
+ },
+ {
+  "split": "train",
+  "file": "kard-evolve__world.json",
+  "bytes": 24511,
+  "sha256": "9ca5abf224f1769e12450f44d095fb29a14c472dfe94d492abceadc69eb21714",
+  "from": {
+   "repo": "kard-evolve",
+   "path": "data/world.json",
+   "commit": "3c1986582199ec09dd9c3cbc5a8ca91a19af1d5f"
+  }
+ },
+ {
+  "split": "held",
+  "file": "fallkard-forge__uv-run.json",
+  "bytes": 5406,
+  "sha256": "746393a95815ff3f9c5ffbc4d97aafa0d86728c77378d9aca7a2818683d70969",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/uv-run.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallkard-forge__uv-prereg.json",
+  "bytes": 3427,
+  "sha256": "f049f6cb8bb6a826976af7a2ad41fab928cc13ad5560f4c6cb737adf32d8b9e1",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/uv-prereg.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallkard-forge__vision-plumbing.json",
+  "bytes": 1291,
+  "sha256": "fbd158c9c33392dafd97c33d4ae91ac0a6ef0a5f0856462950ef6ca59b92cc52",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/vision-plumbing.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallkard-forge__vision.json",
+  "bytes": 127843,
+  "sha256": "09bd0fa9f00eb93cb7d79e2b73c19f4cb165f14692a098e83ac5a07089198274",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/vision.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallkard-forge__vision-prereg.json",
+  "bytes": 22180,
+  "sha256": "aeefd3c1be3eddea1bb78cd03e875448c1b8265582d4a50712aaf40947102100",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/vision-prereg.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallkard-forge__survive-prereg.json",
+  "bytes": 4268,
+  "sha256": "c230170d21afbcf4a12190c13d85c0e5cff6f4f81603a642a0f3872450545778",
+  "from": {
+   "repo": "fallkard-forge",
+   "path": "data/survive-prereg.json",
+   "commit": "c24f5e4bc2582924266f78c11ab1d3f8b31b8f9e"
+  }
+ },
+ {
+  "split": "held",
+  "file": "fallworld__compliance.decl.json",
+  "bytes": 704,
+  "sha256": "7ce32c18e1dcddf16575e223ef3c57bf86e0c518da338462ed4a4a0bdc43bb21",
+  "from": {
+   "repo": "fallworld",
+   "path": "compliance.decl.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__nft.json",
+  "bytes": 8071,
+  "sha256": "7153c6e624c95569564640a4cb34fd157438d94209b29e562ad0c78b19fabfdd",
+  "from": {
+   "repo": "fallworld",
+   "path": "nft.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__rooms.json",
+  "bytes": 8216,
+  "sha256": "87261c8706318b1a38226196e4c48e5f8526470ea157ae3c6cc62afda4ae1e25",
+  "from": {
+   "repo": "fallworld",
+   "path": "rooms.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__ci-evidence.json",
+  "bytes": 127203,
+  "sha256": "9951997b403ffb74ab09bcf56a0decd9c2d15040a695b60f5825cb7e7e85d9ec",
+  "from": {
+   "repo": "fallworld",
+   "path": "ci-evidence.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__workflow-evidence.json",
+  "bytes": 88932,
+  "sha256": "cc2b33ca20ba80e5a6945ac263a2865987f3a1023d04d5cba72c0a82043c96a6",
+  "from": {
+   "repo": "fallworld",
+   "path": "workflow-evidence.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__tier-evidence.json",
+  "bytes": 19057,
+  "sha256": "ab6bd082a597eb1a68a12f70b5e87e53e55e822c89d0150d2da5bb3fb96acbeb",
+  "from": {
+   "repo": "fallworld",
+   "path": "tier-evidence.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "fallworld__.desc.json",
+  "bytes": 16509,
+  "sha256": "311e9668977b89df883b298261275f3761f3d07d4848c8707186cc76d65d7113",
+  "from": {
+   "repo": "fallworld",
+   "path": ".desc.json",
+   "commit": "6add5f374599b10efcabdc8402015e10283a1fcc"
+  }
+ },
+ {
+  "split": "train",
+  "file": "sessions__feb-oct.json",
+  "bytes": 540506,
+  "sha256": "d511e9f08f0fa0d0d83e62ed4190ccb5ee4c73972d9991ee702182123483050e",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/online_shoppers_intention.csv (UCI, CC BY 4.0)",
+   "rows": "Feb–Oct, first 1500"
+  }
+ },
+ {
+  "split": "held",
+  "file": "sessions__nov-dec.json",
+  "bytes": 110375,
+  "sha256": "396ec6f87b9c9aa4f83f93ece3b025acf5a0088316a7f28f2b817f5ce3a1637c",
+  "from": {
+   "repo": "pattern-organs",
+   "path": "data/online_shoppers_intention.csv (UCI, CC BY 4.0)",
+   "rows": "Nov–Dec, first 300"
+  }
+ }
+]

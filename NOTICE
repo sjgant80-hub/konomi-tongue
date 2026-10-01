@@ -1,0 +1,15 @@
+The Konomi Tongue
+Copyright 2026 sjgant80-hub. The code is MIT-licensed (see LICENSE).
+
+The tongue grows from the seed's memory law (compress, don't delete; compress by prime indices) and from Thomas Frumkin's
+Konomi architecture and his language LIGHT (https://github.com/teslasolar/light; the estate's fork,
+https://github.com/sjgant80-hub/smartstuffidontfullyget, used with permission): LIGHT's prime-indexed opcodes, rings and
+buses are priced in data/prices.json, and its templates (a whole program called by name) are the model for the tongue's
+shared dictionary. Powered by the Konomi architecture, created by Thomas Frumkin.
+
+data/json/ copies JSON data files from the estate's own public repositories (kar-mind, pattern-organs, kard-evolve,
+fallkard-forge, fallworld), each named in data/json/manifest.json with its commit, and records built from the UCI Online
+Shoppers Purchasing Intention Dataset (C. Sakar and Y. Kastro, UCI Machine Learning Repository, 2018, DOI 10.24432/C5F88Q),
+licensed CC BY 4.0 — not covered by the MIT licence.
+
+The agents' messages the dictionary is grown from are private and are not in this repository; only their sha256 and counts.

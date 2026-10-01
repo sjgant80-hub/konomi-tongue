@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Konomi Tongue</title>
+<meta name="description" content="A language the agents grow between themselves, measured in Claude tokens against Simon's 15×: a nested glyph dictionary, a shared JSON schema, and a picture channel read back blind.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 29 16 16 29 3 16z' fill='%23d6a93a'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"The Konomi Tongue","description":"A sealed measurement: a glyph language grown from real agent messages, measured in Claude tokens against a 15× target, with a picture channel read back blind.","url":"https://sjgant80-hub.github.io/konomi-tongue/","codeRepository":"https://github.com/sjgant80-hub/konomi-tongue","license":"https://opensource.org/licenses/MIT","author":{"@type":"Person","name":"Kar"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Konomi Tongue?","acceptedAnswer":{"@type":"Answer","text":"A language the estate's agents grow between themselves: a shared dictionary where the most valuable recurring pieces of what they actually say become glyphs, glyphs can hold glyphs, and JSON records shed their keys into a shared schema — plus a picture channel that draws symbols as images, which are billed by area rather than by token."}},{"@type":"Question","name":"Did it reach 15×?","acceptedAnswer":{"@type":"Answer","text":"Not yet known: it is sealed and being measured."}},{"@type":"Question","name":"Why kanji and not cuneiform?","acceptedAnswer":{"@type":"Answer","text":"Price. Every candidate glyph was counted through the CLI first: in Claude's tokenizer a cuneiform sign costs 4 tokens and most emoji 3–4, while many kanji cost 1 or 2. Cuneiform and emoji can still pay in the picture channel, where a glyph costs area."}},{"@type":"Question","name":"How do I know it was not tuned after the fact?","acceptedAnswer":{"@type":"Answer","text":"The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read (data/prereg.json). CI re-grades every recorded read and rebuilds the JSON channel on every push; this page re-grades the reads in your browser."}},{"@type":"Question","name":"Whose ideas are these?","acceptedAnswer":{"@type":"Answer","text":"The tongue grows from the seed's memory law (compress, don't delete; compress by prime indices) and Thomas Frumkin's Konomi architecture and LIGHT language (36 prime-indexed opcodes; templates — a whole program called by name — are the model for the dictionary). Simon set the 15× target and the picture channel."}}]}</script>
+<style>
+:root{--bg:#0c0b10;--panel:#15131b;--line:#2d2a36;--ink:#ece6d6;--dim:#a39c8c;--faint:#6f6a78;--gold:#d6a93a;--soft:#e9cf7f;--ok:#5fbf8f;--no:#e0616d;
+ --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#fbf8f1;--panel:#fff;--line:#e4dcc9;--ink:#22201c;--dim:#5e564a;--faint:#8b8272;--gold:#8a6a13;--soft:#6d5310}}
+:root[data-theme="light"]{--bg:#fbf8f1;--panel:#fff;--line:#e4dcc9;--ink:#22201c;--dim:#5e564a;--faint:#8b8272;--gold:#8a6a13;--soft:#6d5310}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6}
+.wrap{max-width:56rem;margin:0 auto;padding:0 16px 5rem}
+header{padding:3rem 0 1.2rem}
+.kick{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 .6rem}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,6vw,3rem);margin:0 0 .5rem;color:var(--soft)}
+.lede{font-family:var(--serif);font-style:italic;color:var(--dim);font-size:clamp(1rem,2.4vw,1.2rem);margin:0}
+h2{font-family:var(--serif);font-weight:500;color:var(--gold);font-size:1.3rem;margin:2.3rem 0 .4rem}
+h3{font-size:1rem;margin:1rem 0 .3rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:.8rem 0;overflow-x:auto}
+.verdict{border-color:var(--gold)}
+.big{font-size:1.1rem;margin-top:0}.stat{font-variant-numeric:tabular-nums;font-weight:700;color:var(--soft)}
+.quiet{color:var(--dim);font-size:.92rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{text-align:left;padding:.4rem .45rem;border-top:1px solid var(--line);vertical-align:top}
+th{color:var(--faint);font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;border-top:0}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.best td{color:var(--soft);font-weight:600}
+.pass{color:var(--ok);font-family:var(--mono);font-weight:700}.fail{color:var(--no);font-family:var(--mono);font-weight:700}
+svg{max-width:100%;height:auto;display:block}.ax{font-family:var(--mono);font-size:11px;fill:var(--faint)}
+.axis{stroke:var(--line)}.bar15{stroke:var(--no);stroke-dasharray:4 4}.line{stroke:var(--gold);stroke-width:2}.dot{fill:var(--gold)}
+.thumbs{display:flex;gap:12px;flex-wrap:wrap}.thumbs figure{margin:0;flex:1 1 200px;min-width:0}.thumbs img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff;image-rendering:pixelated}
+figcaption{font-size:.8rem;color:var(--dim)}
+.gl{display:inline-block;font-size:1.3rem;margin:.1rem .25rem}.gl sub{font-size:.6rem;color:var(--faint);font-family:var(--mono)}
+button{font:inherit;background:var(--gold);color:#16130c;border:0;border-radius:8px;padding:.6rem 1.1rem;font-weight:600;cursor:pointer}
+button:hover{background:var(--soft)}button:disabled{opacity:.6;cursor:wait}button:focus-visible{outline:2px solid var(--soft);outline-offset:2px}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.05em .3em;overflow-wrap:anywhere}
+a{color:var(--soft)}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--faint);font-size:.84rem}
+</style></head><body><div class="wrap">
+<header>
+ <p class="kick">Konomi · the tongue the agents grow</p>
+ <h1>The Konomi Tongue</h1>
+ <p class="lede">A language grown from what the estate's agents actually say, measured in Claude tokens against Simon's 15×: a nested glyph dictionary, a shared JSON schema, and a picture channel read back blind.</p>
+</header>
+<h2>The verdict</h2>
+<div class="card verdict"><p class="big">Sealed, being measured.</p><p>Sealed, being measured. The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read; the result lands here whichever way it goes.</p></div>
+
+<h2>The alphabet, priced first</h2>
+<div class="card"><p class="quiet" style="margin-top:0">Every candidate glyph counted in Claude tokens through the CLI before anything else. The text channel writes only one- and two-token kanji and kana; everything dearer only pays in pictures.</p>
+<table><thead><tr><th>source</th><th>priced</th><th>tokens each</th></tr></thead><tbody><tr><td>seed</td><td class="n">163</td><td>65 at 1, 64 at 2, 26 at 3, 6 at 4, 2 at 5</td></tr><tr><td>light</td><td class="n">48</td><td>8 at 2, 38 at 3, 2 at 4</td></tr><tr><td>cuneiform</td><td class="n">922</td><td>922 at 4</td></tr><tr><td>kanji</td><td class="n">1024</td><td>153 at 1, 871 at 2</td></tr><tr><td>kana</td><td class="n">176</td><td>28 at 1, 56 at 2, 42 at 3, 50 at 4</td></tr><tr><td>kanji-wide</td><td class="n">3648</td><td>3648 at 2</td></tr></tbody></table>
+<h3>LIGHT's opcodes, rings and buses <span class="quiet">(Claude tokens each)</span></h3><p><span class="gl" title="U+2600 U+FE0F">☀️<sub>3</sub></span><span class="gl" title="U+2620 U+FE0F">☠️<sub>3</sub></span><span class="gl" title="U+267E U+FE0F">♾️<sub>3</sub></span><span class="gl" title="U+2696 U+FE0F">⚖️<sub>4</sub></span><span class="gl" title="U+2697 U+FE0F">⚗️<sub>4</sub></span><span class="gl" title="U+26A1">⚡<sub>3</sub></span><span class="gl" title="U+26AA">⚪<sub>3</sub></span><span class="gl" title="U+26AB">⚫<sub>3</sub></span><span class="gl" title="U+2728">✨<sub>2</sub></span><span class="gl" title="U+1F300">🌀<sub>3</sub></span><span class="gl" title="U+1F308">🌈<sub>3</sub></span><span class="gl" title="U+1F30A">🌊<sub>3</sub></span><span class="gl" title="U+1F311">🌑<sub>3</sub></span><span class="gl" title="U+1F39B">🎛<sub>3</sub></span><span class="gl" title="U+1F3B5">🎵<sub>3</sub></span><span class="gl" title="U+1F441">👁<sub>2</sub></span><span class="gl" title="U+1F4A0">💠<sub>2</sub></span><span class="gl" title="U+1F4A1">💡<sub>2</sub></span><span class="gl" title="U+1F4A5">💥<sub>2</sub></span><span class="gl" title="U+1F4C8">📈<sub>2</sub></span><span class="gl" title="U+1F4E1">📡<sub>2</sub></span><span class="gl" title="U+1F4F6">📶<sub>2</sub></span><span class="gl" title="U+1F504">🔄<sub>3</sub></span><span class="gl" title="U+1F50B">🔋<sub>3</sub></span><span class="gl" title="U+1F50D">🔍<sub>3</sub></span><span class="gl" title="U+1F526">🔦<sub>3</sub></span><span class="gl" title="U+1F52E">🔮<sub>3</sub></span><span class="gl" title="U+1F531">🔱<sub>3</sub></span><span class="gl" title="U+1F534">🔴<sub>3</sub></span><span class="gl" title="U+1F535">🔵<sub>3</sub></span><span class="gl" title="U+1F53A">🔺<sub>3</sub></span><span class="gl" title="U+1F53B">🔻<sub>3</sub></span><span class="gl" title="U+1F53C">🔼<sub>3</sub></span><span class="gl" title="U+1F53D">🔽<sub>3</sub></span><span class="gl" title="U+1F5F3">🗳<sub>3</sub></span><span class="gl" title="U+1F6A8">🚨<sub>3</sub></span><span class="gl" title="U+1F7E0">🟠<sub>3</sub></span><span class="gl" title="U+1F7E1">🟡<sub>3</sub></span><span class="gl" title="U+1F7E2">🟢<sub>3</sub></span><span class="gl" title="U+1F7E3">🟣<sub>3</sub></span><span class="gl" title="U+1F91D">🤝<sub>3</sub></span><span class="gl" title="U+1F9CA">🧊<sub>3</sub></span><span class="gl" title="U+1F9EF">🧯<sub>3</sub></span><span class="gl" title="U+1F9F5">🧵<sub>3</sub></span><span class="gl" title="U+1FA9E">🪞<sub>3</sub></span><span class="gl" title="U+1FAA2">🪢<sub>3</sub></span><span class="gl" title="U+1FAE7">🫧<sub>3</sub></span><span class="gl" title="U+1FAF1">🫱<sub>3</sub></span></p></div>
+<h2>What was sealed first</h2>
+<div class="card"><p style="margin-top:0">Sealed, committed and pushed before any held-out message is coded or any picture is read. The result is published whichever way it lands; where it falls short of 15×, this says how far it got and what limits it.</p>
+<p><b>Text.</b> units (words with one leading space, digit runs, whitespace runs, single characters) merged pair by pair: each round the 16 most valuable pairs that share no symbol (count × tokens saved, priced) become new glyphs, for 512 rounds or until the alphabet runs out; a glyph may hold glyphs (nesting). The curve is read at 0, 64, 256, 1024, 4096 glyphs and at the full dictionary.</p><p><b>JSON.</b> a recurring ordered key list (schema), key or string value becomes one glyph; records write as S(v1,v2,…); every held-out file must decode to its exact minified JSON</p><p><b>Picture.</b> arm A raw dots (48×48 black/white squares in nested blocks of 3, dot sizes 8/6/4/3/2 px); arm B familiar glyphs (24×16 grid of 256 one-token kanji spread across the priced range, cell sizes 28/20/14/10/8 px, Yu Gothic); arm C the same grid with the alphabet evolved two generations against the model's own training misreads (every misread glyph replaced by a fresh one-token kanji, seeded). 2 held-out images per arm and size, payloads seeded and never seen before the read. Bits per token = payload bits ÷ image tokens (the read's input tokens minus the same prompt without the image), at the smallest size where every held-out image reads back at ≥99%. Nesting depth curve: raw dots at 6 px, depth 1–4 (3^d × 3^d dots).</p><p><b>Both.</b> 6 held-out messages (seeded) coded with the full dictionary and drawn as text at 16/12/9 px; each read back blind; the ratio is their English tokens ÷ the image tokens at each one's smallest size read back at ≥99% (whitespace runs count as one space)</p>
+<p><b>The split.</b> by time: every coordinator↔Kar message before 2026-10-01T12:00:00.000Z and every memory file last written before it trains the dictionary; every message at or after it is held out. The corpus stays on the laptop — only its sha256 and counts are published.</p>
+<p class="quiet">Before the seal: the glyph prices (their own measurement, committed), a plumbing check of the CLI image path on two images of known content (an 8-kanji grid read exactly; an 18-square dot grid misread — raw dots at 6 px with outlines), and the corpus counts. No held-out message was coded and no payload picture was read. The alphabet was decided by price. In Claude’s tokenizer: cuneiform 922 priced: 922 at 4 tokens; LIGHT’s opcodes, rings and buses 48 priced: 8 at 2 tokens, 38 at 3 tokens, 2 at 4 tokens; the seed’s glyphs 163 priced: 65 at 1 token, 64 at 2 tokens, 26 at 3 tokens, 6 at 4 tokens, 2 at 5 tokens; kanji U+4E00–U+51FF 1024 priced: 153 at 1 token, 871 at 2 tokens; kana 176 priced: 28 at 1 token, 56 at 2 tokens, 42 at 3 tokens, 50 at 4 tokens; kanji U+5200–U+61FF (batches only, admitted at ≤2 on average, planned as 2) 3648 priced: 3648 at 2 tokens. So the text channel writes kanji and kana; cuneiform and emoji only ever pay off in the picture channel, where a glyph costs area, not tokens. Pricing was stopped at these ranges for time (one CLI call per glyph is about 2.6 s). LIGHT (Thomas Frumkin, teslasolar/light, used with permission) has 36 opcodes in src/ops.js at the forked commit (its README says 38); its prime mapping is carried in the legend. The tongue's dictionary is modelled on LIGHT's templates (a whole program called by name); LIGHT's runtime itself is not on the measured path. A mock run of the whole pipeline (no paid calls: counts as characters ÷ 4, every reply empty, the 22 held-out messages replaced by the last 22 training messages) checked the plumbing end to end before the seal; it did touch the held-out JSON files, whose character ratio (3.45×, not tokens) was therefore seen. No prediction was changed after it. The 15× is Simon's target, sealed as the bar. Claude tokens are counted for claude-sonnet-5-5; the picture reads use the same model.</p>
+<p class="quiet"><a href="data/prereg.json">the pre-registration</a> · <a href="data/prices.json">the prices</a></p></div>
+<h2>Questions</h2>
+<div class="card"><h3>What is the Konomi Tongue?</h3><p>A language the estate's agents grow between themselves: a shared dictionary where the most valuable recurring pieces of what they actually say become glyphs, glyphs can hold glyphs, and JSON records shed their keys into a shared schema — plus a picture channel that draws symbols as images, which are billed by area rather than by token.</p><h3>Did it reach 15×?</h3><p>Not yet known: it is sealed and being measured.</p><h3>Why kanji and not cuneiform?</h3><p>Price. Every candidate glyph was counted through the CLI first: in Claude's tokenizer a cuneiform sign costs 4 tokens and most emoji 3–4, while many kanji cost 1 or 2. Cuneiform and emoji can still pay in the picture channel, where a glyph costs area.</p><h3>How do I know it was not tuned after the fact?</h3><p>The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read (data/prereg.json). CI re-grades every recorded read and rebuilds the JSON channel on every push; this page re-grades the reads in your browser.</p><h3>Whose ideas are these?</h3><p>The tongue grows from the seed's memory law (compress, don't delete; compress by prime indices) and Thomas Frumkin's Konomi architecture and LIGHT language (36 prime-indexed opcodes; templates — a whole program called by name — are the model for the dictionary). Simon set the 15× target and the picture channel.</p></div>
+<footer>
+ <p>The numbers on this page come from the mutation-gated kernel <code>tongue.mjs</code>, inlined below. · <a href="https://github.com/sjgant80-hub/konomi-tongue">source</a> · MIT for the code.</p>
+ <p>Built on the seed's memory law and on Thomas Frumkin's Konomi architecture and <a href="https://github.com/sjgant80-hub/smartstuffidontfullyget">LIGHT</a> (the estate's fork of teslasolar/light, used with permission). Powered by the Konomi architecture, created by Thomas Frumkin. The shopper sessions in the JSON channel: UCI Online Shoppers Purchasing Intention Dataset, C. Sakar and Y. Kastro (2018), CC BY 4.0.</p>
+</footer>
+</div>
+<script id="kernel" type="text/plain">
+// tongue.mjs — THE KONOMI TONGUE. A language the agents grow between themselves, measured in Claude tokens.
+//
+// Two channels share one alphabet of glyphs priced one by one through the CLI (data/prices.json):
+//   TEXT     a nested dictionary grown by compression: the most valuable adjacent pair of units in what the agents
+//            actually say becomes a new glyph, again and again — a glyph can stand for a phrase made of glyphs (the seed's
+//            "compress, don't delete"; LIGHT's templates, a whole program called by name). JSON mode adds a shared schema:
+//            a record's key list is one glyph, a repeated value is one glyph.
+//   PICTURE  the same symbols drawn as a grid in an image (images are billed by area): payloads, grids and grading.
+//
+// Pure and deterministic: no clock, no randomness except a seeded stream, no I/O. Lossless: every encoding here decodes
+// back to exactly what went in, or it is not used. The checked entry points return {ok:false} on garbage, never throw.
+
+// ── units: the pieces text is cut into before anything is merged ───────────────────────────────────────────────────
+const UNIT = /( ?[A-Za-z]+| ?[0-9]+|\s+|[\s\S])/gu;
+// anything that is not a string reads as nothing (a hostile toString never runs)
+const str = (v) => (typeof v === 'string' ? v : '');
+const units = (text) => str(text).match(UNIT) || [];
+
+// a unit's price in tokens before any glyph replaces it — an estimate that only ranks merges; every reported number
+// is counted by the CLI. Words up to 8 letters ~1 token, digits ~3 per token, a priced glyph its price, else 1.
+function unitCost(u, prices) {
+  const w = /^ ?([A-Za-z]+)$/.exec(u);
+  if (w) return Math.ceil(w[1].length / 8);
+  const d = /^ ?([0-9]+)$/.exec(u);
+  if (d) return Math.ceil(d[1].length / 3);
+  return prices.get(u) || 1;
+}
+
+// ── the seeded stream (mulberry32) ──────────────────────────────────────────────────────────────────────────────────
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const draw = (r, k) => Math.floor(r() * k);
+
+// ── growing the dictionary ──────────────────────────────────────────────────────────────────────────────────────────
+// The alphabet is the single glyphs that cost at most maxCost tokens and never occur in any text the tongue will carry
+// (so a glyph in coded text can only be a glyph), the cheapest first. Merges are found on training text only.
+function alphabetFrom(prices, texts, maxCost = 1) {
+  const used = new Set();
+  for (const t of texts) for (const ch of t) used.add(ch);
+  return prices.filter((p) => p.cost <= maxCost && [...p.g].length === 1 && !used.has(p.g)).sort((a, b) => a.cost - b.cost).map((p) => p.g);
+}
+
+const KEY = 2 ** 22;
+// grow(texts, alphabet, rounds, batch, prices) → merges [{ left, right, glyph, count, saving }] in rank order.
+// Each round counts every adjacent pair, then merges the best `batch` pairs that share no symbol (so the order inside a
+// round cannot matter); saving = count × (cost(left) + cost(right) − cost(next glyph)), ties by first appearance. A pair
+// that saves nothing with the next glyph (a two-token glyph for two one-token units) is passed over.
+function grow(texts, alphabet, rounds, batch, prices) {
+  const vocab = new Map(), text = [], cost = [];
+  const idOf = (u) => { if (!vocab.has(u)) { vocab.set(u, text.length); text.push(u); cost.push(unitCost(u, prices)); } return vocab.get(u); };
+  let seqs = texts.map((t) => units(t).map(idOf));
+  const merges = [];
+  for (let round = 0; round < rounds; round++) {
+    const counts = new Map();
+    for (const s of seqs) s.forEach((x, i) => { if (i) { const k = s[i - 1] * KEY + x; counts.set(k, (counts.get(k) || 0) + 1); } });
+    // ranked by what each pair would save with the glyph that comes next
+    const next = prices.get(alphabet[merges.length]) || 1;
+    const ranked = [...counts].map(([k, n]) => ({ a: Math.floor(k / KEY), b: k % KEY, n, save: n * (cost[Math.floor(k / KEY)] + cost[k % KEY] - next) }))
+      .filter((p) => p.n > 1).sort((x, y) => y.save - x.save);
+    const taken = new Set(), pick = new Map();
+    for (const p of ranked) {
+      if (pick.size === batch || merges.length === alphabet.length) break;
+      if (taken.has(p.a) || taken.has(p.b)) continue;
+      const gc = prices.get(alphabet[merges.length]) || 1, save = p.n * (cost[p.a] + cost[p.b] - gc);
+      if (save <= 0) continue;
+      taken.add(p.a); taken.add(p.b);
+      const id = text.length;
+      text.push(text[p.a] + text[p.b]); cost.push(gc);
+      pick.set(p.a * KEY + p.b, id);
+      merges.push({ left: p.a, right: p.b, id, glyph: alphabet[merges.length], count: p.n, saving: save, cost: gc });
+    }
+    if (!pick.size) break;
+    seqs = seqs.map((s) => joinPairs(s, (a, b) => pick.get(a * KEY + b)));
+  }
+  return { merges, text };
+}
+
+// left to right, each symbol either stays or joins the one before it (if that one is still free) into what join() gives
+function joinPairs(seq, join) {
+  const out = [];
+  let free = false;
+  for (const x of seq) {
+    const m = free ? join(out[out.length - 1], x) : undefined;
+    if (m === undefined) { out.push(x); free = true; }
+    else { out[out.length - 1] = m; free = false; }
+  }
+  return out;
+}
+
+// The dictionary, portable: each entry is a glyph and its expansion one level down (left and right, each a glyph or
+// plain text) — nesting kept, so a coarse read sees the glyph and a fine read unfolds it.
+function dictionary(grown) {
+  const glyphOf = new Map(grown.merges.map((m) => [m.id, m.glyph]));
+  const part = (id) => (glyphOf.has(id) ? glyphOf.get(id) : grown.text[id]);
+  return grown.merges.map((m) => ({ glyph: m.glyph, left: part(m.left), right: part(m.right) }));
+}
+
+// encode(text, dict, n): apply the first n entries in order (each entry merges its left and right wherever they stand
+// next to each other, left to right), then write glyphs for merged pieces and plain text for the rest.
+function encode(text, dict, n = dict.length) {
+  let seq = units(text);
+  for (const e of dict.slice(0, n)) seq = joinPairs(seq, (a, b) => (a === e.left && b === e.right ? e.glyph : undefined));
+  return seq.join('');
+}
+
+// decode(coded, dict): every glyph unfolds all the way down (an entry only ever holds glyphs made before it)
+function unfolded(dict) {
+  const flat = new Map();
+  for (const e of (Array.isArray(dict) ? dict : []).filter(isObj)) flat.set(e.glyph, (flat.get(e.left) ?? e.left) + (flat.get(e.right) ?? e.right));
+  return flat;
+}
+function decode(coded, dict) {
+  const flat = unfolded(dict);
+  return [...str(coded)].map((ch) => flat.get(ch) ?? ch).join('');
+}
+
+// how deep an entry nests: a glyph of plain text is depth 1; a glyph holding a glyph of depth d is depth d + 1
+function depths(dict) {
+  const d = new Map();
+  for (const e of dict) d.set(e.glyph, 1 + Math.max(d.get(e.left) || 0, d.get(e.right) || 0));
+  return dict.map((e) => d.get(e.glyph));
+}
+
+// the dictionary as a reader would hold it: one line per glyph, fully unfolded (flat) or one level down (nested)
+function legendText(dict, flat) {
+  return dict.map((e) => e.glyph + '=' + JSON.stringify(flat ? decode(e.glyph, dict) : e.left + e.right)).join('\n');
+}
+
+// ── JSON mode: a shared schema plus glyph keys and values ───────────────────────────────────────────────────────────
+// A record's ordered key list that recurs becomes one glyph; a key or a string value that recurs becomes one glyph.
+// Written form: S(v1,v2,…) for a record of schema S; {k:v,…} otherwise (k a glyph or a JSON string); string values a
+// glyph or a JSON string; numbers, true, false and null as JSON writes them; arrays [a,b,…].
+const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+function learnJson(values, alphabet, min = 2) {
+  const schemas = new Map(), keys = new Map(), strings = new Map();
+  const bump = (m, k) => m.set(k, (m.get(k) || 0) + 1);
+  const walk = (v) => {
+    if (Array.isArray(v)) v.forEach(walk);
+    else if (isObj(v)) { const ks = Object.keys(v); bump(schemas, JSON.stringify(ks)); ks.forEach((k) => { bump(keys, k); walk(v[k]); }); }
+    else if (typeof v === 'string' && v.length > 2) bump(strings, v);
+  };
+  values.forEach(walk);
+  // most saved first; ties keep the order they were first met in (the walk is deterministic, the sort stable)
+  const top = (m, worth) => [...m].filter(([, n]) => n >= min).map(([k, n]) => [k, n * worth(k)]).sort((a, b) => b[1] - a[1]).map(([k]) => k);
+  const order = [
+    ...top(schemas, (k) => k.length).map((k) => ['schema', k]),
+    ...top(keys, (k) => k.length).map((k) => ['key', k]),
+    ...top(strings, (k) => k.length).map((k) => ['string', k]),
+  ].slice(0, alphabet.length);
+  return order.map(([kind, value], i) => ({ kind, value, glyph: alphabet[i] }));
+}
+
+function encodeJson(v, dict) {
+  const schema = new Map(), key = new Map(), str = new Map();
+  for (const e of dict) (e.kind === 'schema' ? schema : e.kind === 'key' ? key : str).set(e.value, e.glyph);
+  const go = (x) => {
+    if (Array.isArray(x)) return '[' + x.map(go).join(',') + ']';
+    if (isObj(x)) {
+      const ks = Object.keys(x), s = schema.get(JSON.stringify(ks));
+      if (s) return s + '(' + ks.map((k) => go(x[k])).join(',') + ')';
+      return '{' + ks.map((k) => (key.get(k) || JSON.stringify(k)) + ':' + go(x[k])).join(',') + '}';
+    }
+    if (typeof x === 'string') return str.get(x) || JSON.stringify(x);
+    return JSON.stringify(x);
+  };
+  return go(v);
+}
+
+// decodeJson(text, dict) → { ok, value } — a small recursive reader of the written form
+function decodeJson(text, dict) {
+  const by = new Map((Array.isArray(dict) ? dict : []).filter(isObj).map((e) => [e.glyph, e]));
+  // read as UTF-16 positions: every glyph is one BMP character; literals are matched in place by sticky patterns
+  const s = str(text), STR = /"(?:[^"\\]|\\.)*"/y, BARE = /[^,)\]}:]*/y;
+  let i = 0;
+  const fail = (why) => { throw new Error(why + ' at ' + i); };
+  const literal = () => {
+    // a JSON string (escapes and all), or everything up to the next delimiter
+    const re = s[i] === '"' ? STR : BARE;
+    re.lastIndex = i;
+    const raw = (re.exec(s) || [''])[0];
+    i += raw.length;
+    try { return JSON.parse(raw); } catch { return fail('bad literal'); }
+  };
+  const list = (close, item) => {
+    const out = [];
+    if (s[i] === close) { i += 1; return out; }
+    for (;;) {
+      out.push(item());
+      if (s[i] === ',') i += 1;
+      else if (s[i] === close) { i += 1; return out; }
+      else fail('expected , or ' + close);
+    }
+  };
+  const value = () => {
+    const c = s[i], e = by.get(c);
+    if (e && e.kind === 'schema') {
+      i += 1;
+      if (s[i] !== '(') fail('expected (');
+      i += 1;
+      const ks = JSON.parse(e.value), vs = list(')', value);
+      if (vs.length !== ks.length) fail('record length');
+      return Object.fromEntries(ks.map((k, n) => [k, vs[n]]));
+    }
+    if (e && e.kind === 'string') { i += 1; return e.value; }
+    if (c === '[') { i += 1; return list(']', value); }
+    if (c === '{') {
+      i += 1;
+      const pairs = list('}', () => {
+        const ke = by.get(s[i]);
+        const k = ke && ke.kind === 'key' ? (i += 1, ke.value) : literal();
+        if (s[i] !== ':') fail('expected :');
+        i += 1;
+        return [k, value()];
+      });
+      return Object.fromEntries(pairs);
+    }
+    return literal();
+  };
+  try {
+    const v = value();
+    if (i !== s.length) fail('trailing');
+    return { ok: true, value: v };
+  } catch (err) { return { ok: false, error: String(err.message) }; }
+}
+
+// ── the picture channel: payloads, grids and grading ────────────────────────────────────────────────────────────────
+// A payload is `cells` symbols, each drawn uniformly from an alphabet of `size` (seeded); a dot payload has size 2.
+function payload(cells, size, seed) {
+  const r = rng(seed);
+  return Array.from({ length: cells }, () => draw(r, size));
+}
+const bitsOf = (cells, size) => cells * Math.log2(size);
+
+// the grid the model must write back: rows of `cols` symbols, as glyphs (or 0/1 for dots)
+function gridText(symbols, cols, glyphs) {
+  const rows = [];
+  for (let k = 0; k < symbols.length; k += cols) rows.push(symbols.slice(k, k + cols).map((x) => glyphs[x]).join(''));
+  return rows.join('\n');
+}
+
+// grade a read-back against the truth, row by row and position by position: a missing or extra symbol is wrong
+function gradeGrid(truth, reply) {
+  const want = str(truth).split('\n'), got = str(reply).trim().split('\n').map((l) => l.replace(/\s+/g, ''));
+  let right = 0, n = 0;
+  want.forEach((row, k) => {
+    const a = [...row], b = [...(got[k] || '')];
+    n += Math.max(a.length, b.length);
+    a.forEach((ch, j) => { if (b[j] === ch) right += 1; });
+  });
+  return { right, n, rate: n ? right / n : 0, exact: right === n && got.length === want.length };
+}
+
+// bits a token carries: bits read back right, per token billed — counted only where the read clears the bar
+const bitsPerToken = (bits, tokens) => (tokens > 0 ? bits / tokens : 0);
+
+// ── ratios ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+const ratio = (plain, coded) => (coded > 0 ? Math.round((plain / coded) * 100) / 100 : 0);
+
+// the truth glyphs read wrong, position by position (what the next generation's alphabet steers away from)
+function misreads(truth, reply) {
+  const want = str(truth).split('\n'), got = str(reply).trim().split('\n').map((l) => [...l.replace(/\s+/g, '')]);
+  const out = [];
+  want.forEach((row, k) => [...row].forEach((ch, j) => { if ((got[k] || [])[j] !== ch) out.push(ch); }));
+  return out;
+}
+// one generation: every glyph that was misread is replaced by a fresh one drawn (seeded) from the pool — the way the
+// creatures of kard-evolve found U→V, selection by the model's own misreads
+function evolveAlphabet(alphabet, bad, pool, seed) {
+  const r = rng(seed), avoid = new Set(bad), fresh = pool.filter((g) => !alphabet.includes(g));
+  return alphabet.map((g) => (avoid.has(g) && fresh.length ? fresh.splice(draw(r, fresh.length), 1)[0] : g));
+}
+
+// ── reading text back: whitespace runs count as one space; the rest is compared character by character ───────────
+const squash = (s) => str(s).replace(/\s+/g, ' ').trim();
+function editRate(truth, reply) {
+  const a = [...squash(truth)], b = [...squash(reply)];
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  a.forEach((ca, i) => {
+    const row = [i + 1];
+    b.forEach((cb, j) => row.push(Math.min(prev[j + 1] + 1, row[j] + 1, prev[j] + (ca === cb ? 0 : 1))));
+    prev = row;
+  });
+  const n = Math.max(a.length, b.length);
+  return { exact: prev[b.length] === 0, distance: prev[b.length], rate: n ? 1 - prev[b.length] / n : 1 };
+}
+
+</script>
+<script>
+const DATA = null;
+const SEED = function seedOf(key) {
+  let h = 0x811c9dc5;
+  for (const ch of key) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h;
+};
+const btn = document.getElementById('regrade');
+if (btn && DATA) btn.addEventListener('click', () => {
+  const T = new Function(document.getElementById('kernel').textContent + '\nreturn { payload, gridText, gradeGrid };')();
+  let same = 0;
+  for (const r of DATA.reads) {
+    const seed = SEED([r.arm, r.size, r.split, r.k, r.gen || 0].join('|'));
+    let truth;
+    if (r.kind === 'dots') { const side = Math.sqrt(r.cells); truth = T.gridText(T.payload(r.cells, 2, seed), side, ['0', '1']); }
+    else { const a = r.arm === 'B' ? DATA.B : r.gen === 1 ? DATA.C1 : DATA.C2; truth = T.gridText(T.payload(r.cells, a.length, seed), DATA.cols, a); }
+    if (JSON.stringify(T.gradeGrid(truth, r.reply)) === JSON.stringify(r.grade)) same += 1;
+  }
+  document.getElementById('out').textContent = same === DATA.reads.length ? 'IDENTICAL: all ' + same + ' reads re-graded to the recorded grade.' : 'DIFFERS: ' + (DATA.reads.length - same) + ' of ' + DATA.reads.length + ' reads re-grade differently.';
+});
+</script>
+</body></html>

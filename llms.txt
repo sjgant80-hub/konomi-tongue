@@ -1,0 +1,15 @@
+# The Konomi Tongue
+
+> A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.
+
+Sealed, being measured. The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read; the result lands here whichever way it goes.
+
+## Key pages
+
+- [Live page](https://sjgant80-hub.github.io/konomi-tongue/)
+- [Repository](https://github.com/sjgant80-hub/konomi-tongue)
+- [Pre-registration](https://sjgant80-hub.github.io/konomi-tongue/data/prereg.json)
+
+## Credits
+
+- Powered by the Konomi architecture, created by Thomas Frumkin. LIGHT is Thomas Frumkin's (used with permission).

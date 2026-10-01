@@ -1,0 +1,31 @@
+name: proof-of-play
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: the tongue kernel's tests (made-up text only)
+        run: node --test tongue.test.mjs
+      # Pinned. An unpinned gate is a gate somebody else can change.
+      - name: witness — every mutant of the tongue kernel must die
+        run: |
+          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+          node /tmp/witness/witness.mjs mutate tongue.mjs --timeout 60000 --cap 400 --test node --test tongue.test.mjs | tee verdict.txt
+          grep -q '"clean": true' verdict.txt || { echo "::error::mutants survived — the gate is not clean"; exit 1; }
+      - name: the seal is exactly what the committed inputs give
+        run: node tools/seal.mjs --check
+      - name: every read re-graded, the JSON channel rebuilt, every number re-derived from the record
+        run: if [ -f data/run.json ]; then node tools/run.mjs --verify; else echo "sealed, not yet run"; fi
+      - name: page fixpoint — the live page IS the gated kernel and the real record
+        run: |
+          node tools/make-page.mjs
+          git diff --exit-code index.html README.md llms.txt
+          if [ -f data/run.json ]; then git diff --exit-code data/verdict.json; fi
+      - name: no untraced price anywhere
+        run: |
+          git clone --quiet https://github.com/sjgant80-hub/fallstack /tmp/fallstack && git -C /tmp/fallstack checkout --quiet 4eeb828
+          node /tmp/fallstack/tools/price-check.mjs .
