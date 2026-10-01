@@ -1,0 +1,975 @@
+{
+ "kind": "konomi-tongue-legend",
+ "v": 1,
+ "source": {
+  "light": {
+   "repo": "sjgant80-hub/smartstuffidontfullyget (fork of teslasolar/light, Thomas Frumkin, used with permission)",
+   "file": "src/ops.js",
+   "sha256": "7b67476b21b963e2b553280daba94886141b065c03f9ef3ae513f7405434d42a"
+  }
+ },
+ "light": {
+  "opcodes": [
+   {
+    "glyph": "⚫",
+    "mnemonic": "NOP",
+    "prime": 2,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔻",
+    "mnemonic": "LD",
+    "prime": 3,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔺",
+    "mnemonic": "ST",
+    "prime": 5,
+    "tokens": 3
+   },
+   {
+    "glyph": "🌊",
+    "mnemonic": "ADD",
+    "prime": 7,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔍",
+    "mnemonic": "MUL",
+    "prime": 11,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔮",
+    "mnemonic": "ATT",
+    "prime": 13,
+    "tokens": 3
+   },
+   {
+    "glyph": "🌈",
+    "mnemonic": "VAL",
+    "prime": 17,
+    "tokens": 3
+   },
+   {
+    "glyph": "💠",
+    "mnemonic": "PLN",
+    "prime": 19,
+    "tokens": 2
+   },
+   {
+    "glyph": "🪢",
+    "mnemonic": "MDL",
+    "prime": 23,
+    "tokens": 3
+   },
+   {
+    "glyph": "👁",
+    "mnemonic": "OBS",
+    "prime": 29,
+    "tokens": 2
+   },
+   {
+    "glyph": "⚡",
+    "mnemonic": "JMP",
+    "prime": 31,
+    "tokens": 3
+   },
+   {
+    "glyph": "⚖️",
+    "mnemonic": "CMP",
+    "prime": 37,
+    "tokens": 4
+   },
+   {
+    "glyph": "🎵",
+    "mnemonic": "JEQ",
+    "prime": 41,
+    "tokens": 3
+   },
+   {
+    "glyph": "💥",
+    "mnemonic": "JNE",
+    "prime": 43,
+    "tokens": 2
+   },
+   {
+    "glyph": "📈",
+    "mnemonic": "JGT",
+    "prime": 47,
+    "tokens": 2
+   },
+   {
+    "glyph": "🚨",
+    "mnemonic": "INT",
+    "prime": 53,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔽",
+    "mnemonic": "REC",
+    "prime": 59,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔼",
+    "mnemonic": "UNR",
+    "prime": 61,
+    "tokens": 3
+   },
+   {
+    "glyph": "💡",
+    "mnemonic": "EMT",
+    "prime": 67,
+    "tokens": 2
+   },
+   {
+    "glyph": "🎛",
+    "mnemonic": "RSN",
+    "prime": 71,
+    "tokens": 3
+   },
+   {
+    "glyph": "🌑",
+    "mnemonic": "SLP",
+    "prime": 73,
+    "tokens": 3
+   },
+   {
+    "glyph": "✨",
+    "mnemonic": "DRM",
+    "prime": 79,
+    "tokens": 2
+   },
+   {
+    "glyph": "☀️",
+    "mnemonic": "WAK",
+    "prime": 83,
+    "tokens": 3
+   },
+   {
+    "glyph": "🧯",
+    "mnemonic": "ABT",
+    "prime": 89,
+    "tokens": 3
+   },
+   {
+    "glyph": "🧊",
+    "mnemonic": "FRZ",
+    "prime": 97,
+    "tokens": 3
+   },
+   {
+    "glyph": "🫧",
+    "mnemonic": "CLR",
+    "prime": 101,
+    "tokens": 3
+   },
+   {
+    "glyph": "☠️",
+    "mnemonic": "DIE",
+    "prime": 103,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔱",
+    "mnemonic": "GEO",
+    "prime": 107,
+    "tokens": 3
+   },
+   {
+    "glyph": "🌀",
+    "mnemonic": "PHI",
+    "prime": 109,
+    "tokens": 3
+   },
+   {
+    "glyph": "♾️",
+    "mnemonic": "PSI",
+    "prime": 113,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔄",
+    "mnemonic": "TRT",
+    "prime": 127,
+    "tokens": 3
+   },
+   {
+    "glyph": "🪞",
+    "mnemonic": "TNE",
+    "prime": 131,
+    "tokens": 3
+   },
+   {
+    "glyph": "🤝",
+    "mnemonic": "TAN",
+    "prime": 137,
+    "tokens": 3
+   },
+   {
+    "glyph": "🫱",
+    "mnemonic": "TOR",
+    "prime": 139,
+    "tokens": 3
+   },
+   {
+    "glyph": "🗳",
+    "mnemonic": "TCN",
+    "prime": 149,
+    "tokens": 3
+   },
+   {
+    "glyph": "📡",
+    "mnemonic": "TPV",
+    "prime": 151,
+    "tokens": 2
+   }
+  ],
+  "rings": [
+   {
+    "glyph": "🔴",
+    "ring": 0,
+    "name": "MATERIAL",
+    "nm": 700,
+    "tokens": 3
+   },
+   {
+    "glyph": "🟠",
+    "ring": 1,
+    "name": "WEAVE",
+    "nm": 630,
+    "tokens": 3
+   },
+   {
+    "glyph": "🟡",
+    "ring": 2,
+    "name": "NODE",
+    "nm": 590,
+    "tokens": 3
+   },
+   {
+    "glyph": "🟢",
+    "ring": 3,
+    "name": "ZONE",
+    "nm": 520,
+    "tokens": 3
+   },
+   {
+    "glyph": "🔵",
+    "ring": 4,
+    "name": "PROTOCOL",
+    "nm": 470,
+    "tokens": 3
+   },
+   {
+    "glyph": "🟣",
+    "ring": 5,
+    "name": "PRODUCT",
+    "nm": 405,
+    "tokens": 3
+   },
+   {
+    "glyph": "⚪",
+    "ring": 6,
+    "name": "FACTORY",
+    "nm": 350,
+    "tokens": 3
+   }
+  ],
+  "buses": [
+   {
+    "glyph": "🧵",
+    "bus": "A",
+    "tokens": 3
+   },
+   {
+    "glyph": "⚗️",
+    "bus": "B",
+    "tokens": 4
+   },
+   {
+    "glyph": "🔦",
+    "bus": "C",
+    "tokens": 3
+   },
+   {
+    "glyph": "📶",
+    "bus": "D",
+    "tokens": 2
+   },
+   {
+    "glyph": "🔋",
+    "bus": "E",
+    "tokens": 3
+   }
+  ],
+  "registers": {
+   "perRing": [
+    2,
+    3,
+    5,
+    11,
+    31,
+    127,
+    709
+   ],
+   "total": 888
+  }
+ },
+ "seed": [
+  {
+   "glyph": "£",
+   "tokens": 1
+  },
+  {
+   "glyph": "§",
+   "tokens": 1
+  },
+  {
+   "glyph": "¬",
+   "tokens": 2
+  },
+  {
+   "glyph": "°",
+   "tokens": 1
+  },
+  {
+   "glyph": "±",
+   "tokens": 1
+  },
+  {
+   "glyph": "²",
+   "tokens": 1
+  },
+  {
+   "glyph": "³",
+   "tokens": 1
+  },
+  {
+   "glyph": "·",
+   "tokens": 1
+  },
+  {
+   "glyph": "¹",
+   "tokens": 2
+  },
+  {
+   "glyph": "¼",
+   "tokens": 2
+  },
+  {
+   "glyph": "½",
+   "tokens": 1
+  },
+  {
+   "glyph": "×",
+   "tokens": 1
+  },
+  {
+   "glyph": "é",
+   "tokens": 1
+  },
+  {
+   "glyph": "ö",
+   "tokens": 2
+  },
+  {
+   "glyph": "Ā",
+   "tokens": 3
+  },
+  {
+   "glyph": "ā",
+   "tokens": 2
+  },
+  {
+   "glyph": "ƒ",
+   "tokens": 4
+  },
+  {
+   "glyph": "Β",
+   "tokens": 2
+  },
+  {
+   "glyph": "Δ",
+   "tokens": 3
+  },
+  {
+   "glyph": "Σ",
+   "tokens": 3
+  },
+  {
+   "glyph": "Ψ",
+   "tokens": 4
+  },
+  {
+   "glyph": "Ω",
+   "tokens": 3
+  },
+  {
+   "glyph": "β",
+   "tokens": 1
+  },
+  {
+   "glyph": "δ",
+   "tokens": 2
+  },
+  {
+   "glyph": "θ",
+   "tokens": 2
+  },
+  {
+   "glyph": "κ",
+   "tokens": 2
+  },
+  {
+   "glyph": "λ",
+   "tokens": 2
+  },
+  {
+   "glyph": "π",
+   "tokens": 1
+  },
+  {
+   "glyph": "ρ",
+   "tokens": 3
+  },
+  {
+   "glyph": "σ",
+   "tokens": 2
+  },
+  {
+   "glyph": "τ",
+   "tokens": 2
+  },
+  {
+   "glyph": "φ",
+   "tokens": 2
+  },
+  {
+   "glyph": "ψ",
+   "tokens": 3
+  },
+  {
+   "glyph": "ṣ",
+   "tokens": 4
+  },
+  {
+   "glyph": "Ṭ",
+   "tokens": 5
+  },
+  {
+   "glyph": "ṭ",
+   "tokens": 4
+  },
+  {
+   "glyph": "–",
+   "tokens": 1
+  },
+  {
+   "glyph": "—",
+   "tokens": 1
+  },
+  {
+   "glyph": "…",
+   "tokens": 1
+  },
+  {
+   "glyph": "⁴",
+   "tokens": 3
+  },
+  {
+   "glyph": "⁵",
+   "tokens": 3
+  },
+  {
+   "glyph": "⁶",
+   "tokens": 3
+  },
+  {
+   "glyph": "⁷",
+   "tokens": 3
+  },
+  {
+   "glyph": "ⁿ",
+   "tokens": 5
+  },
+  {
+   "glyph": "₀",
+   "tokens": 2
+  },
+  {
+   "glyph": "₁",
+   "tokens": 2
+  },
+  {
+   "glyph": "₂",
+   "tokens": 2
+  },
+  {
+   "glyph": "₃",
+   "tokens": 2
+  },
+  {
+   "glyph": "₄",
+   "tokens": 2
+  },
+  {
+   "glyph": "₅",
+   "tokens": 2
+  },
+  {
+   "glyph": "₆",
+   "tokens": 2
+  },
+  {
+   "glyph": "₇",
+   "tokens": 2
+  },
+  {
+   "glyph": "₹",
+   "tokens": 2
+  },
+  {
+   "glyph": "№",
+   "tokens": 1
+  },
+  {
+   "glyph": "ℙ",
+   "tokens": 4
+  },
+  {
+   "glyph": "↑",
+   "tokens": 2
+  },
+  {
+   "glyph": "→",
+   "tokens": 1
+  },
+  {
+   "glyph": "↓",
+   "tokens": 2
+  },
+  {
+   "glyph": "↔",
+   "tokens": 2
+  },
+  {
+   "glyph": "↳",
+   "tokens": 2
+  },
+  {
+   "glyph": "↺",
+   "tokens": 2
+  },
+  {
+   "glyph": "⇄",
+   "tokens": 3
+  },
+  {
+   "glyph": "⇒",
+   "tokens": 3
+  },
+  {
+   "glyph": "∀",
+   "tokens": 2
+  },
+  {
+   "glyph": "∅",
+   "tokens": 2
+  },
+  {
+   "glyph": "∇",
+   "tokens": 2
+  },
+  {
+   "glyph": "∈",
+   "tokens": 2
+  },
+  {
+   "glyph": "∉",
+   "tokens": 2
+  },
+  {
+   "glyph": "∎",
+   "tokens": 2
+  },
+  {
+   "glyph": "−",
+   "tokens": 1
+  },
+  {
+   "glyph": "√",
+   "tokens": 1
+  },
+  {
+   "glyph": "∝",
+   "tokens": 2
+  },
+  {
+   "glyph": "∞",
+   "tokens": 2
+  },
+  {
+   "glyph": "≈",
+   "tokens": 2
+  },
+  {
+   "glyph": "≠",
+   "tokens": 2
+  },
+  {
+   "glyph": "≤",
+   "tokens": 2
+  },
+  {
+   "glyph": "≥",
+   "tokens": 2
+  },
+  {
+   "glyph": "⊇",
+   "tokens": 3
+  },
+  {
+   "glyph": "⊕",
+   "tokens": 3
+  },
+  {
+   "glyph": "⊸",
+   "tokens": 3
+  },
+  {
+   "glyph": "⋈",
+   "tokens": 3
+  },
+  {
+   "glyph": "─",
+   "tokens": 1
+  },
+  {
+   "glyph": "┃",
+   "tokens": 2
+  },
+  {
+   "glyph": "═",
+   "tokens": 1
+  },
+  {
+   "glyph": "□",
+   "tokens": 1
+  },
+  {
+   "glyph": "△",
+   "tokens": 1
+  },
+  {
+   "glyph": "◆",
+   "tokens": 2
+  },
+  {
+   "glyph": "◇",
+   "tokens": 2
+  },
+  {
+   "glyph": "◊",
+   "tokens": 2
+  },
+  {
+   "glyph": "●",
+   "tokens": 1
+  },
+  {
+   "glyph": "◐",
+   "tokens": 2
+  },
+  {
+   "glyph": "◯",
+   "tokens": 2
+  },
+  {
+   "glyph": "★",
+   "tokens": 1
+  },
+  {
+   "glyph": "♡",
+   "tokens": 2
+  },
+  {
+   "glyph": "♭",
+   "tokens": 2
+  },
+  {
+   "glyph": "⚑",
+   "tokens": 3
+  },
+  {
+   "glyph": "✓",
+   "tokens": 2
+  },
+  {
+   "glyph": "⟡",
+   "tokens": 3
+  },
+  {
+   "glyph": "⟹",
+   "tokens": 3
+  },
+  {
+   "glyph": "⟺",
+   "tokens": 3
+  },
+  {
+   "glyph": "⨯",
+   "tokens": 3
+  },
+  {
+   "glyph": "⬛",
+   "tokens": 3
+  },
+  {
+   "glyph": "⬠",
+   "tokens": 3
+  },
+  {
+   "glyph": "⬡",
+   "tokens": 3
+  },
+  {
+   "glyph": "【",
+   "tokens": 1
+  },
+  {
+   "glyph": "】",
+   "tokens": 1
+  },
+  {
+   "glyph": "〜",
+   "tokens": 2
+  },
+  {
+   "glyph": "七",
+   "tokens": 1
+  },
+  {
+   "glyph": "三",
+   "tokens": 1
+  },
+  {
+   "glyph": "主",
+   "tokens": 1
+  },
+  {
+   "glyph": "二",
+   "tokens": 1
+  },
+  {
+   "glyph": "体",
+   "tokens": 1
+  },
+  {
+   "glyph": "円",
+   "tokens": 1
+  },
+  {
+   "glyph": "冊",
+   "tokens": 2
+  },
+  {
+   "glyph": "制",
+   "tokens": 1
+  },
+  {
+   "glyph": "十",
+   "tokens": 1
+  },
+  {
+   "glyph": "卜",
+   "tokens": 2
+  },
+  {
+   "glyph": "印",
+   "tokens": 1
+  },
+  {
+   "glyph": "喉",
+   "tokens": 2
+  },
+  {
+   "glyph": "回",
+   "tokens": 1
+  },
+  {
+   "glyph": "土",
+   "tokens": 1
+  },
+  {
+   "glyph": "地",
+   "tokens": 1
+  },
+  {
+   "glyph": "型",
+   "tokens": 1
+  },
+  {
+   "glyph": "城",
+   "tokens": 1
+  },
+  {
+   "glyph": "実",
+   "tokens": 1
+  },
+  {
+   "glyph": "対",
+   "tokens": 1
+  },
+  {
+   "glyph": "市",
+   "tokens": 1
+  },
+  {
+   "glyph": "憶",
+   "tokens": 2
+  },
+  {
+   "glyph": "数",
+   "tokens": 1
+  },
+  {
+   "glyph": "枝",
+   "tokens": 2
+  },
+  {
+   "glyph": "樹",
+   "tokens": 2
+  },
+  {
+   "glyph": "橋",
+   "tokens": 2
+  },
+  {
+   "glyph": "水",
+   "tokens": 1
+  },
+  {
+   "glyph": "波",
+   "tokens": 1
+  },
+  {
+   "glyph": "滝",
+   "tokens": 2
+  },
+  {
+   "glyph": "火",
+   "tokens": 1
+  },
+  {
+   "glyph": "牌",
+   "tokens": 2
+  },
+  {
+   "glyph": "環",
+   "tokens": 1
+  },
+  {
+   "glyph": "生",
+   "tokens": 1
+  },
+  {
+   "glyph": "盾",
+   "tokens": 2
+  },
+  {
+   "glyph": "空",
+   "tokens": 1
+  },
+  {
+   "glyph": "立",
+   "tokens": 1
+  },
+  {
+   "glyph": "素",
+   "tokens": 1
+  },
+  {
+   "glyph": "統",
+   "tokens": 1
+  },
+  {
+   "glyph": "継",
+   "tokens": 1
+  },
+  {
+   "glyph": "網",
+   "tokens": 1
+  },
+  {
+   "glyph": "縁",
+   "tokens": 2
+  },
+  {
+   "glyph": "縫",
+   "tokens": 2
+  },
+  {
+   "glyph": "舟",
+   "tokens": 2
+  },
+  {
+   "glyph": "華",
+   "tokens": 1
+  },
+  {
+   "glyph": "要",
+   "tokens": 1
+  },
+  {
+   "glyph": "還",
+   "tokens": 1
+  },
+  {
+   "glyph": "鉱",
+   "tokens": 3
+  },
+  {
+   "glyph": "門",
+   "tokens": 1
+  },
+  {
+   "glyph": "限",
+   "tokens": 1
+  },
+  {
+   "glyph": "雷",
+   "tokens": 2
+  },
+  {
+   "glyph": "面",
+   "tokens": 1
+  },
+  {
+   "glyph": "音",
+   "tokens": 1
+  },
+  {
+   "glyph": "響",
+   "tokens": 1
+  },
+  {
+   "glyph": "験",
+   "tokens": 1
+  },
+  {
+   "glyph": "📄",
+   "tokens": 2
+  },
+  {
+   "glyph": "🛡",
+   "tokens": 3
+  },
+  {
+   "glyph": "🛡️",
+   "tokens": 4
+  }
+ ]
+}

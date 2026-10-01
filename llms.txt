@@ -2,13 +2,14 @@
 
 > A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.
 
-Sealed, being measured. The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read; the result lands here whichever way it goes.
+3 of 11 sealed rules held. Grown to 4723 glyphs, the tongue carried the held-out agent messages in 1.05× fewer Claude tokens and the held-out JSON in 2.72×, against Simon's 15×. Drawn as a picture, the best arm carried 0 bits per token read back at ≥99%, against 6.98 for the best text; the coded messages drawn as pictures came to 2.07× of their English tokens.
 
 ## Key pages
 
 - [Live page](https://sjgant80-hub.github.io/konomi-tongue/)
 - [Repository](https://github.com/sjgant80-hub/konomi-tongue)
 - [Pre-registration](https://sjgant80-hub.github.io/konomi-tongue/data/prereg.json)
+- [The record](https://sjgant80-hub.github.io/konomi-tongue/data/run.json)
 
 ## Credits
 

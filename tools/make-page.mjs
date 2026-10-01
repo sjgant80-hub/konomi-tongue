@@ -59,12 +59,23 @@ if (run) {
     + '<p class="quiet">Nesting (raw dots in blocks of 3, blocks of blocks …, ' + pre.config.picture.depth.dot + ' px dots): ' + P.depthCurve.map((d) => 'depth ' + d.depth + ' (' + d.dots + ' dots) ' + Math.round(d.rate * 1000) / 10 + '%').join(' · ') + '.</p>'
     + '<div class="thumbs">' + ['A', 'B', 'C'].map((a) => { const r = P.reads.find((x) => x.arm === a && x.split === 'held' && x.k === 0 && P.arms[a].best && x.size === P.arms[a].best.size) || P.reads.find((x) => x.arm === a && x.split === 'held'); return '<figure><img src="' + r.image + '" alt="' + armName[a] + ' payload at ' + r.size + ' px" loading="lazy"><figcaption>' + armName[a] + ', ' + r.size + ' px</figcaption></figure>'; }).join('') + '</div>'
     + '<p><button id="regrade" type="button">Re-grade every read in your browser</button> <span id="out" class="quiet" role="status" aria-live="polite"></span></p></div>';
-  const c = run.combined;
+  const c = run.combined, tc = last(run.text.curve);
+  // priced as the run planned them (the last price listed for a glyph wins, as in the run)
+  const planned = new Map(prices.glyphs.map((p) => [p.g, p.cost]));
+  const ones = run.picture.alphabet.filter((g) => planned.get(g) === 1).length;
+  const why = 'The held-out messages cost ' + tc.plainTokens + ' Claude tokens plain; the grown dictionary saved ' + (tc.plainTokens - tc.codedTokens) + ' of them ('
+    + (Math.round(((tc.plainTokens - tc.codedTokens) / tc.plainTokens) * 1000) / 10) + '%). Four things hold it back. New information: most of what an agent says has not been said before, and a dictionary only saves what recurs. Cheap glyphs are scarce: of the ' + run.picture.alphabet.length
+    + ' glyphs the tongue could write, only ' + ones + ' were planned at one token, so a two-token glyph pays only for a phrase of three tokens or more — and Claude\'s tokenizer already spends about one token on a common English word. Holding the dictionary costs ' + run.text.legendTokens.nested + ' tokens, ' + (run.text.legendTokens.nested > tc.plainTokens ? 'more' : 'less') + ' than the held-out messages themselves. And Claude decoded ' + run.text.readback.filter((r) => r.exact).length + ' of ' + run.text.readback.length
+    + ' coded messages exactly. In pictures, dense grids of random symbols — raw dots or kanji — never read back at 99% at any size tried; plain text drawn at 12 px did, and that is where the picture gain comes from.';
+  body += '<h2>What limits it</h2><div class="card"><p style="margin-top:0">' + esc(why) + '</p></div>';
   body += '<h2>Both at once</h2><div class="card"><p style="margin-top:0">' + c.of + ' held-out messages, coded with the full dictionary and drawn as text: ' + c.passing + ' read back at ≥' + pre.config.picture.bar * 100 + '%. ' + (c.ratio ? 'Plain English tokens ÷ image tokens: <b>' + x2(c.ratio) + '</b>.' : 'Not every message read back at the bar, so the rule has no ratio; over the ' + c.passing + ' that did: ' + x2(c.partialRatio) + '.') + '</p></div>';
 }
 
 const tally = prices ? Object.entries(prices.tally).map(([s, t]) => '<tr><td>' + esc(s) + '</td><td class="n">' + t.n + '</td><td>' + Object.entries(t.byCost).map(([c2, n]) => n + ' at ' + c2).join(', ') + '</td></tr>').join('') : '';
-const lightRows = prices ? prices.glyphs.filter((g) => g.source === 'light').map((g) => '<span class="gl" title="' + esc(g.cp) + '">' + esc(g.g) + '<sub>' + g.cost + '</sub></span>').join('') : '';
+const legend = json('data/legend.json');
+const lightRows = legend ? '<table><thead><tr><th>glyph</th><th>LIGHT opcode</th><th>prime</th><th>Claude tokens</th></tr></thead><tbody>'
+  + legend.light.opcodes.map((o) => '<tr><td class="gl">' + esc(o.glyph) + '</td><td>' + esc(o.mnemonic) + '</td><td class="n">' + o.prime + '</td><td class="n">' + o.tokens + '</td></tr>').join('')
+  + '</tbody></table><p class="quiet">Rings: ' + legend.light.rings.map((r) => esc(r.glyph) + ' ' + esc(r.name) + ' ' + r.nm + ' nm (' + r.tokens + ')').join(' · ') + '. Buses: ' + legend.light.buses.map((b) => esc(b.glyph) + ' ' + esc(b.bus) + ' (' + b.tokens + ')').join(' · ') + '. Registers ' + legend.light.registers.perRing.join(' + ') + ' = ' + legend.light.registers.total + '. The whole legend: <a href="data/legend.json">data/legend.json</a>.</p>' : '';
 const kernelSrc = read('tongue.mjs').replace(/^export (function|const) /gm, '$1 ');
 const regradeData = run ? { reads: run.picture.reads.map((r) => ({ arm: r.arm, kind: r.kind, size: r.size, split: r.split, k: r.k, gen: r.gen, cells: r.cells, reply: r.reply, grade: r.grade })), B: run.picture.B, C1: run.picture.C1, C2: run.picture.C2, cols: CONFIG.picture.cols, dotCols: CONFIG.picture.dots.cols } : null;
 const faq = [
@@ -133,7 +144,7 @@ ${body}
 <h2>The alphabet, priced first</h2>
 <div class="card"><p class="quiet" style="margin-top:0">Every candidate glyph counted in Claude tokens through the CLI before anything else. The text channel writes only one- and two-token kanji and kana; everything dearer only pays in pictures.</p>
 <table><thead><tr><th>source</th><th>priced</th><th>tokens each</th></tr></thead><tbody>${tally}</tbody></table>
-<h3>LIGHT's opcodes, rings and buses <span class="quiet">(Claude tokens each)</span></h3><p>${lightRows}</p></div>
+<h3>The legend: LIGHT's prime-indexed opcodes, priced</h3>${lightRows}</div>
 <h2>What was sealed first</h2>
 <div class="card"><p style="margin-top:0">${esc(pre.statement)}</p>
 <p><b>Text.</b> ${esc(pre.channels.text)}</p><p><b>JSON.</b> ${esc(pre.channels.json)}</p><p><b>Picture.</b> ${esc(pre.channels.picture)}</p><p><b>Both.</b> ${esc(pre.channels.combined)}</p>
