@@ -1,0 +1,12 @@
+{
+  "name": "konomi-tongue",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "tongue.mjs",
+  "description": "The Konomi Tongue: a glyph language grown from what the estate's agents actually say, measured in Claude tokens against Simon's 15x - a nested dictionary, a shared JSON schema, and a picture channel read back blind. Sealed first.",
+  "author": "sjgant80-hub <sjgant80@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  }
+}
