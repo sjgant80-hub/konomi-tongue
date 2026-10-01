@@ -23,6 +23,8 @@ const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '
 const sha = (s) => createHash('sha256').update(s).digest('hex');
 const stable = (o) => JSON.stringify(o, null, 1) + '\n';
 const has = (f) => process.argv.includes(f);
+// a file's text with Windows line endings folded, so the seal reads the same on every machine
+const lf = (f) => readFileSync(f, 'utf8').split('\r\n').join('\n');
 const HOME = 'C:/Users/sjgan';
 // LIGHT's templates, vendored from the estate's fork (Thomas Frumkin's, used with permission) so CI can read them too
 export const LIGHT = ROOT + '/vendor/light';
@@ -70,7 +72,8 @@ export function prereg() {
     kind: 'konomi-tongue-ship-prereg', v: 1, written: '2026-10-01',
     approvedBy: 'Simon, relayed verbatim: "ship we will keep improving though 15 is out there we will emerge"',
     statement: 'Sealed and pushed before any place is counted. Pack is switched on only where it measures cheaper than today.',
-    sealed: { 'tongue-pack.mjs': sha(readFileSync(join(ROOT, 'tongue-pack.mjs'), 'utf8')), 'tools/ship.mjs': sha(readFileSync(join(ROOT, 'tools/ship.mjs'), 'utf8')), 'vendor/light/templates.cjs': sha(readFileSync(LIGHT + '/templates.cjs', 'utf8')) },
+    sealed: { 'tongue-pack.mjs': sha(lf(join(ROOT, 'tongue-pack.mjs'))), 'tools/ship.mjs': sha(lf(join(ROOT, 'tools/ship.mjs'))), 'vendor/light/templates.cjs': sha(lf(LIGHT + '/templates.cjs')) },
+    disclosures: ['Sealed twice: the first seal (2008b70) hashed files with their Windows line endings, so CI (which checks out LF) could not match it; the hashes are now taken over LF text. Nothing had been counted.'],
     places: PLACES.map(([id, kind, where, pub]) => ({ id, kind, where, public: pub })),
     method: 'Claude tokens (claude-sonnet-5-5, the official CLI on Simon\'s login) of today\'s text, the minified JSON and the pack (legend included); pack uses the tongue\'s alphabet (one-token glyphs first), only glyphs absent from the value',
     switch: 'a cockpit tool returns packs only if its pack is cheaper than today\'s text on every measured call of that tool; files are reported, and switched only where a model reads them',

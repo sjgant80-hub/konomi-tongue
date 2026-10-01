@@ -6,9 +6,12 @@
  "statement": "Sealed and pushed before any place is counted. Pack is switched on only where it measures cheaper than today.",
  "sealed": {
   "tongue-pack.mjs": "3eb049cf7a0a2c2316ea24811995c46485e5cfbaba5e23959ac313b8f4e64f47",
-  "tools/ship.mjs": "ebdf129492d937892f92208eb90840b3c0e2a3493aa9c45230cf1b0c27fb0954",
-  "vendor/light/templates.cjs": "afa4f0ac4e9e3322ed81d37afa99b0417cfcfb0154d49b134a40b4d0b764c5b3"
+  "tools/ship.mjs": "5fd3f2f421a6aa72e6d7c6c77c5f099f641f86ac72fb1d8a1b46e890a7790e57",
+  "vendor/light/templates.cjs": "112b8b087ee18a5dfab7e079e589cda2a4aa7a8fa71faa8949f7e0184dd3e40b"
  },
+ "disclosures": [
+  "Sealed twice: the first seal (2008b70) hashed files with their Windows line endings, so CI (which checks out LF) could not match it; the hashes are now taken over LF text. Nothing had been counted."
+ ],
  "places": [
   {
    "id": "queue",

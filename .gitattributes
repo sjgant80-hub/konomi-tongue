@@ -6,3 +6,4 @@ data/img/*.png binary
 *.txt text eol=lf
 *.yml text eol=lf
 *.ps1 text eol=lf
+*.cjs text eol=lf
