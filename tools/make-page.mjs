@@ -20,6 +20,9 @@ if (!pre) { console.error('not sealed — run tools/seal.mjs first'); process.ex
 const j = run && grade(pre, { ...run, verified: !!(ver && ver.verified) });
 const last = (xs) => xs[xs.length - 1];
 const x2 = (v) => (Math.round(v * 100) / 100) + '×';
+// SHIPPED (2026-10-05): the JSON mode and LIGHT's templates, measured where they land
+const shipPre = json('data/ship-prereg.json'), shipRun = json('data/ship-run.json');
+const shipJ = shipPre && shipRun && (await import('./ship.mjs')).grade(shipPre, shipRun);
 
 const headline = !run
   ? 'Sealed, being measured. The prices, the corpus split, the channels, the rules and a prediction were committed before any held-out message was coded or any picture read; the result lands here whichever way it goes.'
@@ -69,6 +72,16 @@ if (run) {
     + ' coded messages exactly. In pictures, dense grids of random symbols — raw dots or kanji — never read back at 99% at any size tried; plain text drawn at 12 px did, and that is where the picture gain comes from.';
   body += '<h2>What limits it</h2><div class="card"><p style="margin-top:0">' + esc(why) + '</p></div>';
   body += '<h2>Both at once</h2><div class="card"><p style="margin-top:0">' + c.of + ' held-out messages, coded with the full dictionary and drawn as text: ' + c.passing + ' read back at ≥' + pre.config.picture.bar * 100 + '%. ' + (c.ratio ? 'Plain English tokens ÷ image tokens: <b>' + x2(c.ratio) + '</b>.' : 'Not every message read back at the bar, so the rule has no ratio; over the ' + c.passing + ' that did: ' + x2(c.partialRatio) + '.') + '</p></div>';
+}
+
+if (shipRun) {
+  const recs = shipRun.places.filter((p) => p.kind === 'cockpit tool' || p.kind === 'run record');
+  const tmpl = [...shipRun.templates].sort((a, b) => b.ratio - a.ratio);
+  body += '<h2>Shipped, where it wins</h2><div class="card"><p style="margin-top:0">The parts that paid go into the estate. The JSON mode (a record\'s shape, keys and strings become glyphs, the legend travelling with it) is switched on only where it measured cheaper than today\'s pretty-printed JSON — <b>' + esc(shipRun.switchedOn.join(' and ')) + '</b> in the cockpit, and the run records. Every place decodes back exactly (' + shipJ.rules.find((r) => r.id === 'pack-lossless').value + '); Claude read the packed form as well as the plain (' + shipJ.rules.find((r) => r.id === 'claude-reads-packs').value + ').</p>'
+    + '<div class="scroll"><table><thead><tr><th>record</th><th>as sent today</th><th>packed</th><th></th></tr></thead><tbody>'
+    + recs.map((p) => '<tr' + (p.wins ? ' class="best"' : '') + '><td>' + esc(p.where) + '</td><td class="n">' + p.todayTokens + '</td><td class="n">' + p.packedTokens + '</td><td class="n">' + p.ratio + '×</td></tr>').join('')
+    + '</tbody></table></div>'
+    + '<p class="quiet" style="margin-top:.8rem">LIGHT\'s templates (Thomas Frumkin\'s language) called by name — the program never travels, so the call costs a fraction: best <b>' + x2(tmpl[0].ratio) + '</b> (' + esc(tmpl[0].name) + '), median ' + x2(shipJ.median) + ' over ' + tmpl.length + '. The 15× route is repeated work; new talk is not. The chase stays a standing, measured line.</p></div>';
 }
 
 const tally = prices ? Object.entries(prices.tally).map(([s, t]) => '<tr><td>' + esc(s) + '</td><td class="n">' + t.n + '</td><td>' + Object.entries(t.byCost).map(([c2, n]) => n + ' at ' + c2).join(', ') + '</td></tr>').join('') : '';

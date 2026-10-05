@@ -1,0 +1,310 @@
+{
+ "kind": "konomi-tongue-ship-run",
+ "v": 1,
+ "sealedIn": "27487b089e979641ab03ff944e7d9b1a677087de",
+ "model": "claude-sonnet-5-5",
+ "places": [
+  {
+   "id": "queue",
+   "kind": "cockpit tool",
+   "where": "kar-mcp queue (the build queue)",
+   "public": false,
+   "todayTokens": 1238,
+   "minifiedTokens": 1039,
+   "packedTokens": 985,
+   "entries": 8,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.26
+  },
+  {
+   "id": "estate-kar",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"kar\", k 60",
+   "public": false,
+   "todayTokens": 5039,
+   "minifiedTokens": 4057,
+   "packedTokens": 2772,
+   "entries": 11,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.82
+  },
+  {
+   "id": "estate-fall",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"fall\", k 60",
+   "public": false,
+   "todayTokens": 7065,
+   "minifiedTokens": 6031,
+   "packedTokens": 4739,
+   "entries": 11,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.49
+  },
+  {
+   "id": "estate-organ",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"organ\", k 60",
+   "public": false,
+   "todayTokens": 1648,
+   "minifiedTokens": 1417,
+   "packedTokens": 1259,
+   "entries": 10,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.31
+  },
+  {
+   "id": "estate-konomi",
+   "kind": "cockpit tool",
+   "where": "kar-mcp estate, \"konomi\", k 60",
+   "public": false,
+   "todayTokens": 6644,
+   "minifiedTokens": 5635,
+   "packedTokens": 4442,
+   "entries": 16,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.5
+  },
+  {
+   "id": "journal",
+   "kind": "brain",
+   "where": "~/.si-didy/brain/mind-journal.json",
+   "public": false,
+   "todayTokens": 60635,
+   "minifiedTokens": 60635,
+   "packedTokens": 60635,
+   "entries": 0,
+   "lossless": true,
+   "wins": false,
+   "ratio": 1
+  },
+  {
+   "id": "lessons-ledger",
+   "kind": "ledger",
+   "where": "si-didy-loop local-dna/lessons-ledger.json",
+   "public": false,
+   "todayTokens": 1695,
+   "minifiedTokens": 1479,
+   "packedTokens": 1316,
+   "entries": 6,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.29
+  },
+  {
+   "id": "scorecard-receipt",
+   "kind": "receipt",
+   "where": "fallforgemint proof node commit-type/scorecard-receipt.json",
+   "public": false,
+   "todayTokens": 593,
+   "minifiedTokens": 536,
+   "packedTokens": 536,
+   "entries": 0,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.11
+  },
+  {
+   "id": "estate-ledger",
+   "kind": "ledger",
+   "where": "fallkard/estate-ledger.json",
+   "public": true,
+   "todayTokens": 1830,
+   "minifiedTokens": 1273,
+   "packedTokens": 1024,
+   "entries": 22,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.79,
+   "packedSha256": "f3688ed53b1246768d1bf4efbc1b143d9677c3a944f13646b9e703d436fa0318"
+  },
+  {
+   "id": "herd-ledger",
+   "kind": "ledger",
+   "where": "fallkard/herd-ledger.json",
+   "public": true,
+   "todayTokens": 1778,
+   "minifiedTokens": 1318,
+   "packedTokens": 1068,
+   "entries": 18,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.66,
+   "packedSha256": "0253d156bc23f3d3d727f48aa0c2fad37a75104cf0aab6049348284b1680fe58"
+  },
+  {
+   "id": "run-pattern-organs",
+   "kind": "run record",
+   "where": "pattern-organs/data/run.json",
+   "public": true,
+   "todayTokens": 35307,
+   "minifiedTokens": 25852,
+   "packedTokens": 17031,
+   "entries": 132,
+   "lossless": true,
+   "wins": true,
+   "ratio": 2.07,
+   "packedSha256": "029591c9fa79c0fea521b21fe33ab88acdc9a3b9289da7e8200917dde7d8e77e"
+  },
+  {
+   "id": "run-kard-evolve",
+   "kind": "run record",
+   "where": "kard-evolve/data/run.json",
+   "public": true,
+   "todayTokens": 33306,
+   "minifiedTokens": 19445,
+   "packedTokens": 9898,
+   "entries": 32,
+   "lossless": true,
+   "wins": true,
+   "ratio": 3.36,
+   "packedSha256": "a904c3c5fcfe30a7a03c33c98f819b257635d96dbce51c642559db75b4d2204b"
+  },
+  {
+   "id": "run-konomi-tongue",
+   "kind": "run record",
+   "where": "konomi-tongue/data/run.json",
+   "public": true,
+   "todayTokens": 77466,
+   "minifiedTokens": 56000,
+   "packedTokens": 56000,
+   "entries": 0,
+   "lossless": true,
+   "wins": true,
+   "ratio": 1.38,
+   "packedSha256": "f36072ec39d463457e25df25158fcc7602a18ba0aa6c1b40d7956f85927c9781"
+  }
+ ],
+ "templates": [
+  {
+   "name": "hello",
+   "programTokens": 36,
+   "callTokens": 19,
+   "ratio": 1.89,
+   "lines": 5
+  },
+  {
+   "name": "add",
+   "programTokens": 82,
+   "callTokens": 27,
+   "ratio": 3.04,
+   "lines": 7
+  },
+  {
+   "name": "branch",
+   "programTokens": 107,
+   "callTokens": 30,
+   "ratio": 3.57,
+   "lines": 9
+  },
+  {
+   "name": "loop",
+   "programTokens": 106,
+   "callTokens": 23,
+   "ratio": 4.61,
+   "lines": 11
+  },
+  {
+   "name": "phi",
+   "programTokens": 39,
+   "callTokens": 19,
+   "ratio": 2.05,
+   "lines": 5
+  },
+  {
+   "name": "binding",
+   "programTokens": 103,
+   "callTokens": 37,
+   "ratio": 2.78,
+   "lines": 8
+  },
+  {
+   "name": "invoice",
+   "programTokens": 149,
+   "callTokens": 40,
+   "ratio": 3.73,
+   "lines": 10
+  },
+  {
+   "name": "gate",
+   "programTokens": 111,
+   "callTokens": 30,
+   "ratio": 3.7,
+   "lines": 8
+  },
+  {
+   "name": "pipe",
+   "programTokens": 90,
+   "callTokens": 24,
+   "ratio": 3.75,
+   "lines": 9
+  },
+  {
+   "name": "spectrum",
+   "programTokens": 507,
+   "callTokens": 39,
+   "ratio": 13,
+   "lines": 36
+  },
+  {
+   "name": "hsv_risk",
+   "programTokens": 309,
+   "callTokens": 41,
+   "ratio": 7.54,
+   "lines": 25
+  },
+  {
+   "name": "thyroid",
+   "programTokens": 175,
+   "callTokens": 32,
+   "ratio": 5.47,
+   "lines": 14
+  },
+  {
+   "name": "translate",
+   "programTokens": 1954,
+   "callTokens": 39,
+   "ratio": 50.1,
+   "lines": 98
+  },
+  {
+   "name": "fibonacci",
+   "programTokens": 164,
+   "callTokens": 26,
+   "ratio": 6.31,
+   "lines": 15
+  },
+  {
+   "name": "factorial",
+   "programTokens": 127,
+   "callTokens": 24,
+   "ratio": 5.29,
+   "lines": 12
+  }
+ ],
+ "templateLegendTokens": 156,
+ "readCheck": [
+  {
+   "place": "queue",
+   "todayExact": true,
+   "packedExact": true,
+   "todayInput": 1717,
+   "packedInput": 1544
+  },
+  {
+   "place": "estate-kar",
+   "todayExact": true,
+   "packedExact": true,
+   "todayInput": 5520,
+   "packedInput": 3333
+  }
+ ],
+ "switchedOn": [
+  "queue",
+  "estate"
+ ]
+}

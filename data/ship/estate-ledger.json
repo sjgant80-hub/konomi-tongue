@@ -1,0 +1,218 @@
+{
+  "generated": "2026-07-12",
+  "config": {
+    "epochs": 6
+  },
+  "generational": {
+    "tiers": [
+      {
+        "gen": 0,
+        "organisms": 18,
+        "tier": "Gen-1 founders"
+      },
+      {
+        "gen": 1,
+        "organisms": 11,
+        "tier": "Gen-2"
+      },
+      {
+        "gen": 2,
+        "organisms": 11,
+        "tier": "Gen-3"
+      },
+      {
+        "gen": 3,
+        "organisms": 11,
+        "tier": "Gen-4"
+      },
+      {
+        "gen": 4,
+        "organisms": 11,
+        "tier": "Gen-5"
+      },
+      {
+        "gen": 5,
+        "organisms": 11,
+        "tier": "Gen-6"
+      },
+      {
+        "gen": 6,
+        "organisms": 11,
+        "tier": "Gen-7"
+      },
+      {
+        "gen": 7,
+        "organisms": 11,
+        "tier": "Gen-8"
+      },
+      {
+        "gen": 8,
+        "organisms": 11,
+        "tier": "Gen-9"
+      },
+      {
+        "gen": 9,
+        "organisms": 11,
+        "tier": "Gen-10"
+      }
+    ],
+    "houseCount": 31
+  },
+  "houses": [
+    {
+      "house": "Fen-a",
+      "gen": 0,
+      "members": 42,
+      "bloodlinePrice": 6.222,
+      "income": 468.18,
+      "worth": 474.4
+    },
+    {
+      "house": "Loom-3",
+      "gen": 0,
+      "members": 35,
+      "bloodlinePrice": 6.965,
+      "income": 0,
+      "worth": 6.96
+    },
+    {
+      "house": "Rook-7",
+      "gen": 0,
+      "members": 7,
+      "bloodlinePrice": 3,
+      "income": 0,
+      "worth": 3
+    },
+    {
+      "house": "Vell-5",
+      "gen": 0,
+      "members": 3,
+      "bloodlinePrice": 1.236,
+      "income": 0,
+      "worth": 1.24
+    },
+    {
+      "house": "Mire-d",
+      "gen": 0,
+      "members": 3,
+      "bloodlinePrice": 1.236,
+      "income": 0,
+      "worth": 1.24
+    },
+    {
+      "house": "Loom-8",
+      "gen": 0,
+      "members": 2,
+      "bloodlinePrice": 0.618,
+      "income": 0,
+      "worth": 0.62
+    },
+    {
+      "house": "Rook-0",
+      "gen": 0,
+      "members": 1,
+      "bloodlinePrice": 0,
+      "income": 0,
+      "worth": 0
+    },
+    {
+      "house": "Mire-1",
+      "gen": 0,
+      "members": 1,
+      "bloodlinePrice": 0,
+      "income": 0,
+      "worth": 0
+    }
+  ],
+  "substrate": {
+    "basePool": 1212,
+    "mintedNow": 2,
+    "projection": [
+      {
+        "epoch": 0,
+        "pool": 1212,
+        "mintedThisEpoch": 2,
+        "matureFraction": 0.944
+      },
+      {
+        "epoch": 1,
+        "pool": 1214,
+        "mintedThisEpoch": 3,
+        "matureFraction": 0.9
+      },
+      {
+        "epoch": 2,
+        "pool": 1217,
+        "mintedThisEpoch": 5,
+        "matureFraction": 0.9
+      },
+      {
+        "epoch": 3,
+        "pool": 1222,
+        "mintedThisEpoch": 7,
+        "matureFraction": 0.9
+      },
+      {
+        "epoch": 4,
+        "pool": 1229,
+        "mintedThisEpoch": 11,
+        "matureFraction": 0.9
+      },
+      {
+        "epoch": 5,
+        "pool": 1240,
+        "mintedThisEpoch": 17,
+        "matureFraction": 0.9
+      }
+    ],
+    "growthPct": 3.71
+  },
+  "scales": [
+    {
+      "scale": "card",
+      "unit": "a tool, playable",
+      "count": 1212,
+      "measured": true
+    },
+    {
+      "scale": "organism",
+      "unit": "soma ⋈ brain, a bred Seal",
+      "count": 117,
+      "measured": true
+    },
+    {
+      "scale": "house",
+      "unit": "a founding line / guild",
+      "count": 31,
+      "measured": true
+    },
+    {
+      "scale": "generation",
+      "unit": "a tier of the bloodline",
+      "count": 10,
+      "measured": true
+    },
+    {
+      "scale": "estate",
+      "unit": "the top organism — a Seal of Seals",
+      "count": 1,
+      "measured": true
+    },
+    {
+      "scale": "stewards",
+      "unit": "the carbon line — Gen-1 → the passengers (real, not simulated)",
+      "count": null,
+      "measured": false
+    }
+  ],
+  "verdict": {
+    "selfSimilar": true,
+    "organisms": 117,
+    "houses": 31,
+    "generations": 10,
+    "topHouse": "Fen-a",
+    "topHouseWorth": 474.4,
+    "substrateSelfExtends": true,
+    "estateIsOneOrganism": true
+  }
+}

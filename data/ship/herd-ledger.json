@@ -1,0 +1,175 @@
+{
+  "generated": "2026-07-12",
+  "config": {
+    "jobs": 120,
+    "rounds": 6,
+    "royalty": 0.5,
+    "capacity": 3
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "settled": 119,
+      "workersActive": 8
+    },
+    {
+      "round": 1,
+      "settled": 123,
+      "workersActive": 7
+    },
+    {
+      "round": 2,
+      "settled": 120,
+      "workersActive": 7
+    },
+    {
+      "round": 3,
+      "settled": 102,
+      "workersActive": 7
+    },
+    {
+      "round": 4,
+      "settled": 112,
+      "workersActive": 8
+    },
+    {
+      "round": 5,
+      "settled": 130,
+      "workersActive": 7
+    }
+  ],
+  "topEarners": [
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Loo-2n",
+      "gen": 8,
+      "earned": 116,
+      "royalties": 105.68,
+      "total": 221.68,
+      "won": 18,
+      "successRate": 0.944,
+      "matured": true
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Loo-2n×Fen-34",
+      "gen": 9,
+      "earned": 124,
+      "royalties": 0,
+      "total": 124,
+      "won": 18,
+      "successRate": 0.889,
+      "matured": true
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Loo-2n~2y",
+      "gen": 9,
+      "earned": 110,
+      "royalties": 0,
+      "total": 110,
+      "won": 18,
+      "successRate": 0.778,
+      "matured": true
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Loo-2n~33",
+      "gen": 9,
+      "earned": 108,
+      "royalties": 0,
+      "total": 108,
+      "won": 18,
+      "successRate": 0.889,
+      "matured": true
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~2x",
+      "gen": 8,
+      "earned": 103,
+      "royalties": 0,
+      "total": 103,
+      "won": 18,
+      "successRate": 1,
+      "matured": true
+    },
+    {
+      "handle": "Thane-32",
+      "gen": 9,
+      "earned": 74,
+      "royalties": 0,
+      "total": 74,
+      "won": 15,
+      "successRate": 0.533,
+      "matured": false
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Fen-31",
+      "gen": 9,
+      "earned": 68,
+      "royalties": 0,
+      "total": 68,
+      "won": 12,
+      "successRate": 0.833,
+      "matured": true
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~2t",
+      "gen": 8,
+      "earned": 0,
+      "royalties": 21.01,
+      "total": 21.01,
+      "won": 0,
+      "successRate": 0,
+      "matured": true
+    }
+  ],
+  "topRoyalty": [
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g×Loo-2n",
+      "gen": 8,
+      "royaltyIncome": 105.68
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~2m",
+      "gen": 7,
+      "royaltyIncome": 101.15
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~23",
+      "gen": 6,
+      "royaltyIncome": 75.5
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g",
+      "gen": 4,
+      "royaltyIncome": 66.33
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13~1e",
+      "gen": 3,
+      "royaltyIncome": 40.99
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~21",
+      "gen": 6,
+      "royaltyIncome": 31.83
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13",
+      "gen": 2,
+      "royaltyIncome": 25.69
+    },
+    {
+      "handle": "Fen-a×Fen-r×Roo-13×Fen-1g~2t",
+      "gen": 8,
+      "royaltyIncome": 21.01
+    }
+  ],
+  "verdict": {
+    "konoSettled": 706,
+    "jobsFilled": 100,
+    "royaltiesRouted": 495.36,
+    "royaltyShareOfSettlement": 0.702,
+    "earningsFlowUp": true,
+    "founderWalletsPaid": 12,
+    "workersEmployed": 9,
+    "herdSize": 18
+  }
+}
