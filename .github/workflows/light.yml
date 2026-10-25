@@ -19,20 +19,22 @@ jobs:
       # pinned — an unpinned gate is a gate somebody else can change
       - name: get the witness gate
         run: git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+      # The per-mutant test is wrapped in the OS `timeout`, so a mutant that makes a loop hang is killed cleanly by the
+      # OS (counted as killed) and witness never has to run its own process-group kill, which on a Linux runner takes
+      # the whole gate down with it. witness's own --timeout is the higher fallback.
       - name: witness — sha256 kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 30000 --cap 500 --test node --test light/sha256.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/sha256.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in sha256"; exit 1; }
       - name: witness — vault kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 30000 --cap 500 --test node --test light/vault.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/vault.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in vault"; exit 1; }
       - name: witness — packet kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 30000 --cap 500 --test node --test light/packet.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/packet.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in packet"; exit 1; }
       - name: witness — codec kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 30000 --cap 500 --test node --test light/codec.test.mjs > /tmp/w.txt 2>&1; code=$?
-          tail -c 4000 /tmp/w.txt
-          test $code -eq 0 && grep -q '"clean": true' /tmp/w.txt || { echo "::error::codec witness exit $code"; exit 1; }
+          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/codec.test.mjs | tee /tmp/w.txt
+          grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in codec"; exit 1; }
