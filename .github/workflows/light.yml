@@ -24,17 +24,17 @@ jobs:
       # the whole gate down with it. witness's own --timeout is the higher fallback.
       - name: witness — sha256 kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/sha256.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/sha256.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in sha256"; exit 1; }
       - name: witness — vault kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/vault.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/vault.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in vault"; exit 1; }
       - name: witness — packet kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/packet.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/packet.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in packet"; exit 1; }
       - name: witness — codec kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test timeout 40 node --test light/codec.test.mjs | tee /tmp/w.txt
+          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/codec.test.mjs | tee /tmp/w.txt
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in codec"; exit 1; }
