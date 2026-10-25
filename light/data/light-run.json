@@ -1,0 +1,289 @@
+{
+ "kind": "konomi-tongue.light.receipt",
+ "v": 1,
+ "ran": "2026-10-25T17:26:48.608Z",
+ "node": "v25.7.0",
+ "sealed": [
+  {
+   "path": "light/claims.json",
+   "commit": "ac90c1e34f7847551d99e0d7bac41c934ebff6f4",
+   "sha256": "ce09bbb5944e98612283ce53301d9539c22831101ebd645324c2fac324674898"
+  },
+  {
+   "path": "light/barrier.json",
+   "commit": "ac90c1e34f7847551d99e0d7bac41c934ebff6f4",
+   "sha256": "a706449c07e8ad66d0328d108c9de26a9974b154f077f753e672db3c41d7bf15"
+  }
+ ],
+ "facts": {
+  "codec": {
+   "heldFiles": 179,
+   "changedSinceManifest": 3,
+   "lossless": 0,
+   "medianRatioJson": 3.416,
+   "smallItems": 44,
+   "smallMedianLight": 430,
+   "smallMedianBrotli": 475,
+   "smallMedianGzip": 575.5,
+   "smallLightBeatsBrotliGzip": 42,
+   "totalIn": 1952051,
+   "totalLight": 318550,
+   "totalBrotli": 326952,
+   "totalGzip": 408024,
+   "mbpsEncode": 0.369,
+   "mbpsDecode": 0.366
+  },
+  "memory": {
+   "ok": true,
+   "files": 356,
+   "bytes": 3009962,
+   "vaultBytes": 723167,
+   "ratio": 4.162,
+   "identical": true,
+   "mismatched": 0,
+   "extra": 0,
+   "packMs": 6688,
+   "unpackMs": 8976,
+   "dictId": 3651255105
+  },
+  "edges": {
+   "pageTest": "pass"
+  },
+  "llm": {
+   "ran": false,
+   "why": "The operation was aborted due to timeout"
+  },
+  "mesh": {
+   "ran": true,
+   "k1": {
+    "node0": "signature",
+    "node1": "recognised",
+    "node2": "recognised",
+    "sentLight": 1,
+    "admittedLight": [
+     1,
+     1
+    ],
+    "adopted": [
+     1,
+     1
+    ]
+   },
+   "k2": {
+    "unpinned": {
+     "status": 403,
+     "stage": "signature"
+    },
+    "tampered": {
+     "status": 403,
+     "stage": "signature"
+    },
+    "decodedBefore": 1,
+    "decodedAfter": 1,
+    "refused": {
+     "signature": 2
+    },
+    "genuineAfter": {
+     "status": 200,
+     "adopted": 0,
+     "decodedAfter": 2
+    }
+   },
+   "k3": {
+    "one": {
+     "antigens": 1,
+     "json": 410,
+     "light": 180,
+     "ratio": 2.278
+    },
+    "batch": {
+     "antigens": 64,
+     "json": 11667,
+     "light": 4669,
+     "ratio": 2.499
+    }
+   }
+  },
+  "census": {
+   "ran": true,
+   "kind": "konomi-tongue.light.census",
+   "v": 1,
+   "at": "2026-10-25T17:26:48.541Z",
+   "rule": "light/tools/census.mjs SIGNS, over git-tracked .js/.mjs/.cjs/.html",
+   "repos": 1802,
+   "read": 1188,
+   "notRead": 614,
+   "organs": 452,
+   "store": 429,
+   "channel": 343,
+   "light": 1,
+   "organsLight": 1,
+   "organsHeldByOthers": 1,
+   "speaksLight": [
+    "break-it"
+   ],
+   "privateSpeakingLight": 0
+  },
+  "dictBytes": 182969,
+  "dictId": 3651255105,
+  "dictSha256": "d9a1bb41709433c7329fb1b9427a98978334b23306fe7b9bcaaa84f628de7e65",
+  "heldOut": 179
+ },
+ "verdicts": [
+  {
+   "id": "L1",
+   "kind": "spec",
+   "claim": "LIGHT is 15× denser than JSON: the median HELD-OUT item is at least 15 times smaller as LIGHT than as committed.",
+   "predicted": "FAIL: the estate has measured dictionary coding several times (text about 1.05–1.13×, JSON about 2.7×); a context-modelling coder with a shared dictionary should land near 3–6× on these files, not 15×",
+   "measured": "median 3.416× smaller than JSON over 179 held-out files (predicted FAIL; a shared-dictionary coder lands ~3–6×)",
+   "held": false
+  },
+  {
+   "id": "L2",
+   "kind": "codec",
+   "claim": "Lossless: every HELD-OUT item, every memory file and the feed decode back to exactly the bytes that went in.",
+   "predicted": "HOLD",
+   "measured": "0 held-out round-trip failures over 179 files; memory 0 mismatched of 356; the feed is carried as records in the mesh (K)",
+   "held": true
+  },
+  {
+   "id": "L3",
+   "kind": "codec",
+   "claim": "On the median SMALL HELD-OUT item, LIGHT is smaller than both gzip at level 9 and Brotli at quality 11.",
+   "predicted": "HOLD: a shared dictionary is what small messages need, and the standard coders bring none of the estate's own",
+   "measured": "median small item: LIGHT 430 B vs Brotli 475 vs gzip 575.5 (42/44 beat both)",
+   "held": true
+  },
+  {
+   "id": "L4",
+   "kind": "codec",
+   "claim": "Over the whole HELD-OUT set, the total of LIGHT's per-item sizes is no larger than Brotli quality 11's.",
+   "predicted": "HOLD",
+   "measured": "over all held-out: LIGHT 318550 B vs Brotli 326952 B",
+   "held": true
+  },
+  {
+   "id": "L5",
+   "kind": "codec",
+   "claim": "One thread on this laptop encodes and decodes at 0.5 MB a second or faster, each way, over the HELD-OUT set.",
+   "predicted": "HOLD",
+   "measured": "encode 0.369 MB/s, decode 0.366 MB/s (one thread, this laptop)",
+   "held": false
+  },
+  {
+   "id": "M1",
+   "kind": "memory",
+   "claim": "The whole memory directory packs into one LIGHT vault and unpacks to byte-identical files, every one.",
+   "predicted": "HOLD",
+   "measured": "356 memory files, all byte-identical on unpack",
+   "held": true
+  },
+  {
+   "id": "M2",
+   "kind": "memory",
+   "claim": "The memory vault is at least 3 times smaller than the files it holds.",
+   "predicted": "HOLD",
+   "measured": "the memory vault is 4.162× smaller than its files (3009962 → 723167 B)",
+   "held": true
+  },
+  {
+   "id": "K1",
+   "kind": "comms",
+   "claim": "break-it's nodes share antibodies as signed LIGHT packets: an attack refused by node 0 is then dropped on sight by nodes 1 and 2, which never saw it.",
+   "predicted": "HOLD",
+   "measured": "node 0 refused it, shared 1 LIGHT packet(s); node 1 recognised, node 2 recognised",
+   "held": true
+  },
+  {
+   "id": "K2",
+   "kind": "comms",
+   "claim": "A LIGHT share signed by a key that is not pinned, and a pinned peer's share with one byte changed in transit, are each dropped before a byte of their body is decoded.",
+   "predicted": "HOLD",
+   "measured": "unpinned signature, tampered signature; decoded count 1→1 (unchanged = body never read)",
+   "held": true
+  },
+  {
+   "id": "K3",
+   "kind": "comms",
+   "claim": "A share as a LIGHT packet is at least 2 times smaller than the same share as today's JSON.",
+   "predicted": "HOLD, narrowly: antigens are signed packets whose 64-byte signatures do not compress",
+   "measured": "a 64-antigen share: JSON 11667 B vs LIGHT 4669 B = 2.499× (one antigen: 2.278×)",
+   "held": true
+  },
+  {
+   "id": "B1",
+   "kind": "barrier",
+   "claim": "Bytes in a language the estate shares with the world (the fixed corpus of SQL, script, shell, path, template, JSON, XML and HTTP inputs in light/barrier.json) sent to a LIGHT door are refused before anything decodes or interprets them, each with a named stage and a reason: 0 decoded.",
+   "predicted": "HOLD",
+   "measured": "the language-barrier claims are measured by light/tools/barrier.mjs, not here",
+   "held": null
+  },
+  {
+   "id": "B2",
+   "kind": "barrier",
+   "claim": "Someone who knows LIGHT's format but not the key gets nothing decoded: a well-formed packet signed by an unpinned key, one with its signature zeroed, and one with a single body byte flipped are each refused at the sender or signature stage.",
+   "predicted": "HOLD",
+   "measured": "measured by light/tools/barrier.mjs",
+   "held": null
+  },
+  {
+   "id": "B3",
+   "kind": "barrier",
+   "claim": "LIGHT does not change data: a correctly signed packet carrying each corpus entry as its data decodes to exactly that entry. The language barrier therefore does not remove injection carried as data; only the edge that renders or executes it can.",
+   "predicted": "HOLD (stated so that no page claims the language alone neutralises injection)",
+   "measured": "measured by light/tools/barrier.mjs",
+   "held": null
+  },
+  {
+   "id": "B4",
+   "kind": "barrier",
+   "claim": "At the page's edge, every decoded corpus entry is shown as text and never becomes markup or code.",
+   "predicted": "HOLD",
+   "measured": "the page gate (test/light-page.test.mjs) is pass",
+   "held": true
+  },
+  {
+   "id": "T1",
+   "kind": "spec",
+   "claim": "The model reads and writes LIGHT: a local model given records as binary LIGHT (base64) answers questions about them correctly.",
+   "predicted": "FAIL: a model cannot undo an arithmetic code in its head; binary LIGHT is for machines, and the model-facing edge is a text dialect",
+   "measured": "the local model was not run here",
+   "held": null
+  },
+  {
+   "id": "T2",
+   "kind": "llm-io",
+   "claim": "The model-facing text dialect (tongue-pack) costs fewer local-model tokens than minified JSON on the median record-shaped HELD-OUT item, and the model answers the same questions from it as from JSON.",
+   "predicted": "HOLD on tokens; answers within one of JSON's",
+   "measured": "the local model was not run here",
+   "held": null
+  },
+  {
+   "id": "E1",
+   "kind": "edges",
+   "claim": "Every outside-facing edge built here (the live page and the command line) decodes LIGHT only through the same verify-first door, and the page passes its own gate: a self-only security policy, no inline script or style, every sink escaped.",
+   "predicted": "HOLD",
+   "measured": "the page gate is pass; every decode on the page goes through the LIGHT door (packet.mjs)",
+   "held": true
+  },
+  {
+   "id": "G1",
+   "kind": "gate",
+   "claim": "The mutation gate kills every mutant of the codec, the packet door and the vault, or each survivor carries a written reason.",
+   "predicted": "HOLD",
+   "measured": "the mutation gate is run by CI (light/*.mjs), not inside this tool",
+   "held": null
+  },
+  {
+   "id": "C1",
+   "kind": "spec",
+   "claim": "Full-estate migration: every organ in the estate that stores or exchanges structured records imports the one codec.",
+   "predicted": "FAIL as stated for the whole estate in one build: organs held by other sessions (the cards, the game) are theirs to move, and LIGHT is switched on only where it measurably wins. The census says exactly how far it got.",
+   "measured": "1802 repos, 1188 read here; 452 keep a store or a channel; 1 speak LIGHT; 1 of the organs are led by other sessions. Full-estate migration in one build is FAIL as predicted — 451 organs are this window's to move, switched on where LIGHT wins",
+   "held": false
+  }
+ ],
+ "held": 10,
+ "failed": 3,
+ "unmeasured": 6
+}

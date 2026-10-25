@@ -3,3 +3,6 @@ konomi-out/
 *.witnessbak
 _point.out
 _point.log
+light/data/corpus.local.json
+light/data/census.local.json
+light/data/corpus.json

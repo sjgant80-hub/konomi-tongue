@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>LIGHT: the estate's inner language</title>
+<meta name="description" content="One lossless codec the estate's organs speak between themselves: memory, organ-to-organ messages and records carried in LIGHT, translated to standard forms only at the edges. Measured on held-out estate files with claims sealed before the run. The security layer is verify-before-parse on signed packets; the language is defense-in-depth on top, not a substitute.">
+<link rel="canonical" href="https://sjgant80-hub.github.io/konomi-tongue/light/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"LIGHT, the estate's inner language","url":"https://sjgant80-hub.github.io/konomi-tongue/light/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Node.js 20 or later; the live page runs in a current browser)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"codeRepository":"https://github.com/sjgant80-hub/konomi-tongue","description":"One lossless, mutation-gated codec every organ imports as its internal language. A context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files; signed LIGHT packets checked before anything is decoded; many files as one vault. Measured on held-out files with claims sealed in git first.","publisher":{"@type":"Organization","name":"AI Native Solutions","url":"https://www.ai-nativesolutions.com"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is LIGHT?","acceptedAnswer":{"@type":"Answer","text":"One lossless codec the estate's organs use to store and exchange their data. It is a context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files, so a message both sides partly know costs few bytes. Memory, organ-to-organ messages and records are carried in LIGHT; it translates to JSON or text only at the edges where the estate meets the outside world."}},
+{"@type":"Question","name":"Did it reach 15× denser than JSON?","acceptedAnswer":{"@type":"Answer","text":"No, and that was predicted. On held-out estate files the median was about 3.5× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number."}},
+{"@type":"Question","name":"Is LIGHT a security system?","acceptedAnswer":{"@type":"Answer","text":"The security is the cryptographic part: a LIGHT packet is refused unless it is signed by a pinned key, on the raw bytes, before anything is decoded. That is the hard floor. The custom, compressed, evolving language removes the shared-language attack surface on top of that — real, but defense-in-depth, not a substitute for the signature. It does not make injection carried as data safe; only the edge that renders or runs that data can."}},
+{"@type":"Question","name":"How is it measured honestly?","acceptedAnswer":{"@type":"Answer","text":"Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, gated judge holds each claim against what was measured; failures are kept on the page."}},
+{"@type":"Question","name":"Whose work is it?","acceptedAnswer":{"@type":"Answer","text":"Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. MIT, no licence fee."}}
+]}]}
+</script>
+<style>
+:root{--bg:#0c0b10;--panel:#14131b;--panel2:#0f0e15;--line:#262433;--ink:#e9e6f2;--dim:#a39fb5;--faint:#6b6780;--accent:#b79cff;--accent2:#6ab0ff;--grn:#7bd88f;--bad:#ff8a8a;--gold:#ffd166;--mono:ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+a{color:var(--accent2)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:48px}
+.brand{font:700 15px var(--mono);letter-spacing:.14em;color:var(--ink);text-decoration:none}
+.brand b{color:var(--accent)}
+nav.links{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+nav.links::-webkit-scrollbar{display:none}
+nav.links a{color:var(--dim);text-decoration:none;font-size:13px;white-space:nowrap}
+nav.links a:hover{color:var(--ink)}
+button{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:7px;font:13px var(--sans);cursor:pointer}
+button:hover{border-color:var(--accent)}
+.quiet{background:transparent}
+h1{font:800 clamp(30px,6vw,48px)/1.08 var(--sans);letter-spacing:-.01em;margin:30px 0 10px;background:linear-gradient(100deg,var(--accent),var(--accent2),var(--grn));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,2.3vw,20px);max-width:70ch;color:var(--ink)}
+.sub{color:var(--dim);font:12px var(--mono);margin:10px 0 14px}
+.pill{display:inline-block;font:11px var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;vertical-align:middle}
+.pill.live{color:var(--grn);border-color:var(--grn)}.pill.bad{color:var(--bad);border-color:var(--bad)}
+.ctas{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.ctas button{padding:10px 14px}
+.go{background:var(--accent);border-color:var(--accent);color:#120a2a;font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font:800 22px var(--mono);color:var(--grn)}
+.fact span{font-size:12.5px;color:var(--dim)}
+section{padding:30px 0 6px;border-top:1px solid var(--line);margin-top:26px;scroll-margin-top:56px}
+section>h2{font:700 23px var(--sans);margin-bottom:6px}
+section>h2 small{display:block;font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.intro{color:var(--dim);max-width:72ch;margin-bottom:12px}
+h3{font-size:17px;margin:18px 0 6px}
+p{margin:8px 0;max-width:74ch}
+ul,ol{margin:8px 0 8px 22px;max-width:74ch}li{margin:4px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.panel h4{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+label{display:block;font:11px var(--mono);color:var(--dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+textarea,input{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono);resize:vertical}
+textarea{min-height:72px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:720px){.row.two{grid-template-columns:1fr 1fr}}
+.stat{display:flex;justify-content:space-between;gap:10px;font:13px var(--mono);padding:5px 0;border-bottom:1px dashed var(--line)}
+.stat:last-child{border-bottom:0}.stat b{color:var(--grn)}.stat b.red{color:var(--bad)}
+.mono{font-family:var(--mono);font-size:12.5px;word-break:break-all}
+.dim{color:var(--dim)}.ok{color:var(--grn)}.no{color:var(--bad)}.gold{color:var(--gold)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--dim);background:var(--panel2)}
+td.n{text-align:right;font-family:var(--mono)}
+.tag{display:inline-block;font:700 10.5px var(--mono);padding:1px 7px;border-radius:5px}
+.tag.held{background:var(--grn);color:#06210f}.tag.failed{background:var(--bad);color:#2a0000}.tag.na{background:var(--line);color:var(--dim)}
+.callout{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;margin:12px 0}
+.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:8px}
+.diagram svg{display:block;min-width:720px;width:100%;height:auto;color:var(--dim)}
+.diagram .b{fill:var(--panel);stroke:var(--line)}.diagram .ba{stroke:var(--accent)}.diagram .bp{stroke:var(--accent2)}.diagram .bg{stroke:var(--grn)}
+.diagram text{font-family:var(--mono);font-size:12px;fill:var(--ink)}.diagram text.a{fill:var(--accent)}.diagram text.d{fill:var(--dim)}.diagram text.g{fill:var(--grn)}
+.diagram .ar{fill:none;stroke:currentColor;stroke-width:1.4}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+.barrier{font:12px var(--mono);max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel2)}
+.barrier div{padding:3px 0;border-bottom:1px dashed var(--line)}
+.barrier .lang{color:var(--faint)}
+.faq dt{font-weight:700;margin-top:14px}.faq dd{margin:4px 0 0;color:var(--ink)}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;color:var(--dim);font-size:13px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top">LIGHT<b>·</b></a>
+  <nav class="links" aria-label="Sections">
+    <a href="#what">What it is</a><a href="#start">Start here</a><a href="#try">Try it</a><a href="#receipts">Receipts</a>
+    <a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#barrier">The barrier</a><a href="#scope">Honest scope</a><a href="#faq">FAQ</a>
+  </nav>
+  <button id="theme" class="quiet" type="button">theme</button>
+</div></header>
+
+<main class="wrap" id="top">
+<h1>LIGHT · the estate's inner language</h1>
+<p class="lede">One lossless codec every organ speaks between themselves. Memory, organ-to-organ messages and records are carried in <b>LIGHT</b> — a coder primed with a shared dictionary grown from the estate's own files, so what both sides already know costs almost nothing — and translated to JSON or text only at the <b>edges</b> where the estate meets the outside world.</p>
+<p class="sub">one codec · shared dictionary · signed packets verified before decode · many files as one vault · <span id="kstat" class="pill">starting the kernel…</span></p>
+<div class="ctas">
+  <button class="go" type="button" onclick="document.getElementById('try').scrollIntoView()">Compress something, live</button>
+  <button type="button" onclick="document.getElementById('receipts').scrollIntoView()">Read the receipts</button>
+  <button type="button" onclick="document.getElementById('scope').scrollIntoView()">What it does and doesn't do</button>
+</div>
+<div class="facts" aria-label="LIGHT in numbers">
+  <div class="fact"><b id="h-ratio">~3.5×</b><span>median smaller than JSON on held-out files</span></div>
+  <div class="fact"><b id="h-lossless">lossless</b><span>every file decodes back exactly</span></div>
+  <div class="fact"><b id="h-small">beats Brotli</b><span>on small messages, with the shared dictionary</span></div>
+  <div class="fact"><b>MIT</b><span>no licence fee; the estate's own codec</span></div>
+</div>
+
+<section id="what" aria-labelledby="what-h">
+  <h2 id="what-h"><small>What it is</small>A language the organs already half-know</h2>
+  <p>Compression is prediction: the better you can guess the next byte, the fewer bits you spend on it. LIGHT is a coder that guesses from what it has seen, <b>primed before the first byte with a dictionary grown from the estate's own files</b> — the headings, the record shapes, the credit lines the estate writes again and again. A message both sides already partly know is cheap; that is what it means for two organs to "speak the same language", measured in bytes.</p>
+  <ul>
+    <li><b>One codec, everywhere inside.</b> The same <span class="mono">codec.mjs</span> in every organ: the memory on disk, the records a node keeps, the messages organs send each other. Standard forms (JSON, text, what a human reads) appear only at the edges.</li>
+    <li><b>Signed packets, checked before decode.</b> An organ-to-organ message is a LIGHT packet carrying a signature. The door checks size, format, the pinned sender and the signature on the raw bytes, and only then decodes the body. Bytes from someone without the key never reach the decoder.</li>
+    <li><b>Many files as one vault.</b> A whole store — the memory, a folder of records — packs into one solid LIGHT stream, so what the files share is paid for once, and every file's hash is checked on the way out.</li>
+    <li><b>Honest about the number.</b> The spec set 15× denser than JSON. It is not 15×; on held-out files it is about 3.5×. That claim is kept, failed, with the measured number — <a href="#receipts">below</a>.</li>
+  </ul>
+</section>
+
+<section id="start" aria-labelledby="start-h">
+  <h2 id="start-h"><small>Start here</small>Three minutes, no install</h2>
+  <ol>
+    <li><b>Compress something below.</b> Type or paste any text in <a href="#try">Try it</a>. Watch it shrink, with and without the shared dictionary, next to gzip and Brotli. Everything runs in this tab with the real codec.</li>
+    <li><b>Send a signed message.</b> The packet demo signs a message with a key made in your browser, then shows a copy signed by a different key refused at the door — before its body is ever decoded.</li>
+    <li><b>Read the receipts.</b> Every claim was sealed in git before the code. The <a href="#receipts">receipts</a> show what was measured, what held, and what failed and is kept.</li>
+  </ol>
+</section>
+
+<section id="try" aria-labelledby="try-h">
+  <h2 id="try-h"><small>Try it</small>The codec and the door, live</h2>
+  <div class="row two">
+    <div class="panel">
+      <h4>compress</h4>
+      <label for="in">anything — records, a message, a paragraph</label>
+      <textarea id="in" spellcheck="false">{"account":1042,"period":65,"amount":12800,"ok":true}</textarea>
+      <div class="stat"><span>as UTF-8 bytes</span><b id="c-in">—</b></div>
+      <div class="stat"><span>LIGHT, no dictionary</span><b id="c-plain">—</b></div>
+      <div class="stat"><span>LIGHT, shared dictionary</span><b id="c-dict">—</b></div>
+      <div class="stat"><span>gzip −9 · Brotli 11</span><b id="c-std">—</b></div>
+      <div class="stat"><span>round-trip</span><b id="c-rt">—</b></div>
+      <p class="dim" style="font-size:12px;margin-top:8px">The dictionary here is a small sample, so the live gain is smaller than the estate's full 183&nbsp;KB dictionary measured in the receipts.</p>
+    </div>
+    <div class="panel">
+      <h4>the signed door</h4>
+      <p class="dim" style="font-size:13px;margin-top:0">Two keys are made in your browser. One is pinned, one is a stranger. The same message is sent through the door signed by each.</p>
+      <div class="stat"><span>signed by the pinned key</span><b id="d-ok">—</b></div>
+      <div class="stat"><span>signed by a stranger's key</span><b id="d-forge" class="red">—</b></div>
+      <div class="stat"><span>one body byte changed in transit</span><b id="d-tamper" class="red">—</b></div>
+      <div class="stat"><span>decoder ever ran on a refused packet</span><b id="d-decoded">—</b></div>
+      <p class="dim" style="font-size:12px;margin-top:8px">A refusal names its stage — <span class="mono">sender</span>, <span class="mono">signature</span> — and the body is never decoded. The signature is the hard floor; see <a href="#scope">honest scope</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="receipts" aria-labelledby="r-h">
+  <h2 id="r-h"><small>The receipts</small>Sealed first, measured second, failures kept</h2>
+  <p class="intro">Every claim was committed to git before the codec or any measuring code existed (<span class="mono">light/claims.json</span>). Files are split TRAIN / HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only. The measurement reads HELD-OUT for the first time. <span id="r-sum" class="gold"></span></p>
+  <div class="tablewrap"><table><thead><tr><th>claim</th><th></th><th>measured</th><th class="dim">predicted</th></tr></thead><tbody id="r-rows"><tr><td class="dim" colspan="4">loading the receipt…</td></tr></tbody></table></div>
+  <p class="dim" id="r-foot"></p>
+</section>
+
+<section id="how" aria-labelledby="how-h">
+  <h2 id="how-h"><small>How it works</small>Inside everything, standard at the edges</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 980 300" role="img" aria-labelledby="dg-t"><title id="dg-t">The estate's organs store and exchange data in LIGHT through one codec; standard forms appear only at the edges</title>
+      <g class="ar"><path d="M196 86 H250" marker-end="url(#a)"/><path d="M196 214 H250" marker-end="url(#a)"/><path d="M470 150 H250" marker-end="url(#a)" transform="translate(0,0)"/><path d="M470 86 H540" marker-end="url(#a)"/><path d="M730 86 H790" marker-end="url(#a)"/><path d="M360 120 V180" marker-end="url(#a)"/></g>
+      <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g>
+        <rect x="20" y="60" width="176" height="52" rx="8" class="b bg"/><text x="108" y="82" text-anchor="middle">memory, records</text><text x="108" y="100" text-anchor="middle" class="d">on disk, in LIGHT</text>
+        <rect x="20" y="188" width="176" height="52" rx="8" class="b bg"/><text x="108" y="210" text-anchor="middle">another organ</text><text x="108" y="228" text-anchor="middle" class="d">a signed LIGHT packet</text>
+        <rect x="250" y="56" width="220" height="188" rx="10" class="b ba"/><text x="360" y="84" text-anchor="middle" class="a">THE ONE CODEC</text><text x="360" y="104" text-anchor="middle" class="d">codec · packet · vault</text>
+        <text x="360" y="150" text-anchor="middle">shared dictionary</text><text x="360" y="168" text-anchor="middle" class="d">grown from the estate</text>
+        <rect x="300" y="188" width="120" height="44" rx="8" class="b bp"/><text x="360" y="206" text-anchor="middle">the door</text><text x="360" y="222" text-anchor="middle" class="d">verify → decode</text>
+        <rect x="540" y="60" width="190" height="52" rx="8" class="b"/><text x="635" y="82" text-anchor="middle">the edge codec</text><text x="635" y="100" text-anchor="middle" class="d">LIGHT ⇄ standard</text>
+        <rect x="790" y="60" width="170" height="52" rx="8" class="b"/><text x="875" y="82" text-anchor="middle">the outside</text><text x="875" y="100" text-anchor="middle" class="d">human · API · browser</text>
+        <text x="635" y="150" class="d">standard forms (JSON, text) live only here</text>
+      </g>
+    </svg>
+  </div>
+  <ol>
+    <li><b>Store in LIGHT.</b> An organ writes its memory and records through the codec. On disk they are LIGHT; the file a human reads is produced at the edge when asked.</li>
+    <li><b>Talk in LIGHT.</b> An organ-to-organ message is a signed LIGHT packet. The receiver's door checks it on raw bytes and decodes the body only if it is admitted.</li>
+    <li><b>The dictionary is the shared tongue.</b> Grown from TRAIN files only and versioned. Both sides hold it, so a short familiar message codes to very little. A later version grows from later files; the id in each packet says which dictionary it needs.</li>
+    <li><b>Translate only at the edges.</b> Where the estate meets a human, a standard API or a browser, a thin edge codec turns LIGHT into the standard form and back. Inside is all LIGHT; the outside never needs to know it exists.</li>
+  </ol>
+</section>
+
+<section id="blueprint" aria-labelledby="bp-h">
+  <h2 id="bp-h"><small>Blueprint</small>Four kernels, each gated</h2>
+  <p class="intro">Each is a pure kernel with its own tests, under a mutation gate: the gate changes the code one operator at a time and the tests must catch every change. Survivors are allowed only with a written reason. CI runs all of it.</p>
+  <div class="tablewrap"><table><thead><tr><th>kernel</th><th>file</th><th>what it is</th><th>mutation gate</th></tr></thead><tbody id="bp-rows">
+    <tr><td>codec</td><td class="mono">light/codec.mjs</td><td>bytes ⇄ LIGHT: a context-mixing arithmetic coder, primed with a dictionary</td><td class="mono" data-k="codec">—</td></tr>
+    <tr><td>packet</td><td class="mono">light/packet.mjs</td><td>the signed door: verify size, sender, signature on raw bytes, then decode</td><td class="mono" data-k="packet">—</td></tr>
+    <tr><td>vault</td><td class="mono">light/vault.mjs</td><td>many files as one solid stream, every hash checked, paths kept safe</td><td class="mono" data-k="vault">—</td></tr>
+    <tr><td>sha256</td><td class="mono">light/sha256.mjs</td><td>the one hash used for dictionary ids and vault entries</td><td class="mono" data-k="sha256">—</td></tr>
+  </tbody></table></div>
+  <p class="dim" id="bp-foot"></p>
+</section>
+
+<section id="barrier" aria-labelledby="ba-h">
+  <h2 id="ba-h"><small>The language barrier, honestly</small>What a private language does and doesn't do</h2>
+  <p class="intro">Bytes meant to break software are written in languages an attacker shares with an ordinary target — SQL, script, shell, a template. A LIGHT door does not speak them: sent as raw bytes they fail at the magic number, before anything parses them. But that is only true at the <b>door</b>. The same bytes carried as <b>data</b> inside a signed packet decode back to exactly themselves — LIGHT does not disarm them; only the edge that renders or runs that data can. This demo shows both, in your browser, on the classic test inputs.</p>
+  <div class="row two">
+    <div class="panel">
+      <h4>at the door · raw bytes refused</h4>
+      <div class="stat"><span>test inputs sent as raw bytes</span><b id="ba-sent">—</b></div>
+      <div class="stat"><span>admitted</span><b id="ba-admit">—</b></div>
+      <div class="stat"><span>decoder ever ran</span><b id="ba-dec">—</b></div>
+      <p class="dim" style="font-size:12px">None is a signed LIGHT packet, so each fails at size or magic — noise in a language the door does not speak.</p>
+    </div>
+    <div class="panel">
+      <h4>at the edge · rendered as text</h4>
+      <div class="stat"><span>entries carried as data, decoded exactly</span><b id="ba-rt">—</b></div>
+      <div class="stat"><span>became markup or code when shown</span><b id="ba-exec" class="red">—</b></div>
+      <p class="dim" style="font-size:12px">Each decoded entry is put on the page as text, through the page's own sink. The count that became live markup is what matters — it must be 0, and that is the edge's job, not the language's.</p>
+    </div>
+  </div>
+  <details><summary>show the test inputs, rendered as text</summary>
+    <div class="barrier" id="ba-list"></div>
+  </details>
+</section>
+
+<section id="scope" aria-labelledby="sc-h">
+  <h2 id="sc-h"><small>Honest scope</small>Defense-in-depth, not magic</h2>
+  <div class="callout">
+    <p><b>The hard floor is the signature.</b> A LIGHT packet is refused unless it is signed by a pinned key, checked on raw bytes before any decode. No cleverness and no volume forges a signature without the key. That is what protects an organ-to-organ channel.</p>
+    <p><b>The language is the layer on top.</b> Because LIGHT is custom, compressed and evolving, the shared-language attack surface at a door is absent — standard exploits are bytes in a language it does not speak. Real and useful, but it is surface-elimination, <b>not</b> a substitute for the signature, and it is not security-through-obscurity standing alone.</p>
+    <p><b>It does not disarm data.</b> Injection carried as the content of a message is decoded faithfully; the edge that renders or executes it is where it is made safe (escaped, parameterised). LIGHT moves the bytes; it does not sanitise them.</p>
+    <p><b>Out of scope, stated plainly.</b> A stolen key (the holder of a key is that sender), host or root compromise, and physical or social attacks are not addressed here. LIGHT removes the shared-language and unsigned-message vectors, not every conceivable one. The edges — where LIGHT meets a standard form — are the one place the shared-language surface briefly exists, so the edge codec is itself verify-first and gated.</p>
+  </div>
+  <p class="dim">The broader claim that a private verified language "neutralises an AI swarm" is a framing, not something this page measures. What is measured is above: the codec, the door, the vault, on held-out files, with the failures kept.</p>
+</section>
+
+<section id="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h"><small>FAQ</small>Questions</h2>
+  <dl class="faq">
+    <dt>What is LIGHT?</dt><dd>One lossless codec the estate's organs use to store and exchange their data. It is a context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files, so a message both sides partly know costs few bytes. Memory, organ-to-organ messages and records are carried in LIGHT; it translates to JSON or text only at the edges where the estate meets the outside world.</dd>
+    <dt>Did it reach 15× denser than JSON?</dt><dd>No, and that was predicted. On held-out estate files the median was about 3.5× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number.</dd>
+    <dt>Is LIGHT a security system?</dt><dd>The security is the cryptographic part: a LIGHT packet is refused unless it is signed by a pinned key, on the raw bytes, before anything is decoded. That is the hard floor. The custom, compressed, evolving language removes the shared-language attack surface on top of that — real, but defense-in-depth, not a substitute for the signature. It does not make injection carried as data safe; only the edge that renders or runs that data can.</dd>
+    <dt>How is it measured honestly?</dt><dd>Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, gated judge holds each claim against what was measured; failures are kept on the page.</dd>
+    <dt>Whose work is it?</dt><dd>Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. MIT, no licence fee.</dd>
+  </dl>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <p>LIGHT · MIT · <a href="https://github.com/sjgant80-hub/konomi-tongue">source and receipts</a> · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a></p>
+  <p>Powered by the Konomi architecture, created by Thomas Frumkin. This page runs the repository's own codec, door and vault in your browser, and requests only its own files; nothing you type here leaves this tab.</p>
+</div></footer>
+<script type="module" src="./page.mjs"></script>
+</body>
+</html>

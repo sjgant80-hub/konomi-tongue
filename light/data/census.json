@@ -1,0 +1,19 @@
+{
+ "kind": "konomi-tongue.light.census",
+ "v": 1,
+ "at": "2026-10-25T17:26:48.541Z",
+ "rule": "light/tools/census.mjs SIGNS, over git-tracked .js/.mjs/.cjs/.html",
+ "repos": 1802,
+ "read": 1188,
+ "notRead": 614,
+ "organs": 452,
+ "store": 429,
+ "channel": 343,
+ "light": 1,
+ "organsLight": 1,
+ "organsHeldByOthers": 1,
+ "speaksLight": [
+  "break-it"
+ ],
+ "privateSpeakingLight": 0
+}

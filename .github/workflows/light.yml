@@ -1,0 +1,25 @@
+name: light
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  light:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+
+      - name: the LIGHT kernels' tests, and the page's own gate
+        run: node --test light/codec.test.mjs light/packet.test.mjs light/vault.test.mjs light/sha256.test.mjs light/judge.test.mjs test/light-page.test.mjs
+
+      - name: the sealed receipt re-checked (seals intact, the judge re-run on its own facts, the codec round-trips)
+        run: node light/tools/check.mjs
+
+      # pinned — an unpinned gate is a gate somebody else can change
+      - name: witness — every mutant of each LIGHT kernel must die, or carry a written reason
+        run: |
+          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+          for k in codec packet vault sha256; do
+            node /tmp/witness/witness.mjs mutate light/$k.mjs --timeout 60000 --cap 600 --test node --test light/$k.test.mjs | tee /tmp/w-$k.txt
+            grep -q '"clean": true' /tmp/w-$k.txt || { echo "::error::mutants survived in light/$k.mjs"; exit 1; }
+          done

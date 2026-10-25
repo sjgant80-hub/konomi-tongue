@@ -1,0 +1,62 @@
+[
+  {
+    "mutation": "<= → <",
+    "snippet": "for (let x = -2047; x <= 2047; x++) { const v = squash(x); for (let j = at; j <= v; j++) S",
+    "reason": "building the stretch table: squash(2046) and squash(2047) both equal 4094, so the one index the loop fills differently is never read by any reachable probability in a way that changes a mixed prediction — byte-identical output on text, records, noise and a heavy-match input, a true equivalent mutant"
+  },
+  {
+    "mutation": "!== → ===",
+    "snippet": "ws = (c0 + (s6 !== -1 ? 256 : 0)) * INPUTS;",
+    "reason": "the two weight-set bases (0 and 256) are interchangeable placeholders, both initialised to W_INIT and trained consistently by the encoder and the decoder, so swapping which base each match/no-match case indexes relabels them and changes no output byte — equivalent"
+  },
+  {
+    "mutation": "<= → <",
+    "snippet": "const bound = (v, d) => (Number.isSafeInteger(v) && v > 0 && v <= d ? v : d);",
+    "reason": "the clamp bound(v,d): at v===d it returns v, which equals the default d, so dropping the equal case returns the same number — equivalent"
+  },
+  {
+    "mutation": "&& → ||",
+    "snippet": "const c = ctx && typeof ctx === 'object' ? ctx : {}, max = bound(c.maxPacket, MAX_PACKET);",
+    "reason": "a type guard: for any object ctx both forms select ctx, and for any non-object ctx both fall back to a value (either {} or the non-object) on which every field the door reads is undefined, so the door reaches the same verdict — equivalent"
+  },
+  {
+    "mutation": "&& → ||",
+    "snippet": "const c = ctx && typeof ctx === 'object' ? ctx : {};",
+    "reason": "the same type guard in open(): object ctx is selected either way, non-object ctx yields a value with none of the accessed fields either way, so the body decode path is unchanged — equivalent"
+  },
+  {
+    "mutation": ">= → >",
+    "snippet": "const dictId = Number.isInteger(o.dictId) && o.dictId >= 0 && o.dictId <= 0xffffffff ? o.d",
+    "reason": "the lower bound on dictId: 0 means 'no dictionary', so whether the guard admits 0 and uses it, or rejects it and falls back to 0, the id is 0 either way — equivalent"
+  },
+  {
+    "mutation": ">= → >",
+    "snippet": "for (let k = 0; k < 6; k++) { if (at >= b.length) return -1; const x = b[at++]; n += (x & ",
+    "reason": "the EOF guard in the varint reader: on a truncated number both forms return -1 (the mutant reads one phantom zero byte, which is not a terminator, then hits the byte-count limit and returns -1) — equivalent"
+  },
+  {
+    "mutation": "> → >=",
+    "snippet": "if (head.length + size > MAX_BYTES) return { ok: false, why: 'more than ' + MAX_BYTES + ' ",
+    "reason": "the 64 MB ceiling on a packed vault; not reachable in a unit test without allocating 64 MB, and the codec enforces the same MAX_BYTES on the encoded stream downstream (exercised in codec.test) — reviewed, redundant, impractical to drive here"
+  },
+  {
+    "mutation": "< → <=",
+    "snippet": "for (let k = 0; k < 6; k++) { if (at >= b.length) return -1; const x = b[at++]; n += (x & ",
+    "reason": "the varint byte-count limit: a 6-byte varint already exceeds every size this reads and returns -1, so a 7th byte is never consumed on any valid stream — equivalent"
+  },
+  {
+    "mutation": "< → <=",
+    "snippet": "for (let k = 0; k < 32; k++) if (got[k] !== h.sha[k]) return { ok: false, why: h.path + ':",
+    "reason": "comparing two 32-byte hashes: a 33rd iteration reads index 32 of each (undefined), and undefined !== undefined is false, so no extra mismatch is ever raised and the verdict is unchanged — equivalent"
+  },
+  {
+    "mutation": "&& → ||",
+    "snippet": "const o = opts && typeof opts === 'object' ? opts : {};",
+    "reason": "a type guard on opts: both forms yield {} for a non-object and opts for an object, and the only fields read are numeric bounds that are undefined on a non-object either way — equivalent"
+  },
+  {
+    "mutation": "< → <=",
+    "snippet": "for (let i = 16; i < 64; i++) {",
+    "reason": "the SHA-256 message schedule: w is a Uint32Array(64), so a 65th iteration writes w[64] (silently dropped) and the compression round reads only w[0..63] — the extra value is never read, equivalent, confirmed against node:crypto on every length"
+  }
+]
