@@ -33,5 +33,6 @@ jobs:
           grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in packet"; exit 1; }
       - name: witness — codec kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 30000 --cap 500 --test node --test light/codec.test.mjs | tee /tmp/w.txt
-          grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in codec"; exit 1; }
+          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 30000 --cap 500 --test node --test light/codec.test.mjs > /tmp/w.txt 2>&1; code=$?
+          tail -c 4000 /tmp/w.txt
+          test $code -eq 0 && grep -q '"clean": true' /tmp/w.txt || { echo "::error::codec witness exit $code"; exit 1; }
