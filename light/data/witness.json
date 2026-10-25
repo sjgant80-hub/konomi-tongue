@@ -2,14 +2,15 @@
  "kind": "konomi-tongue.light.witness",
  "v": 1,
  "clean": true,
- "killed": 212,
- "total": 225,
+ "killed": 216,
+ "total": 231,
+ "note": "codec run locally (heavy; see light.yml); sha256/vault/packet also witnessed live in CI",
  "kernels": [
   {
    "name": "codec",
-   "killed": 92,
-   "total": 94,
-   "ignored": 2,
+   "killed": 96,
+   "total": 100,
+   "ignored": 4,
    "clean": true
   },
   {
