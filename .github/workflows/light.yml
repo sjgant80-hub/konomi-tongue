@@ -6,6 +6,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }     # full history, so the receipt's seal-at-commit check can reach the sealing commit
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
 
