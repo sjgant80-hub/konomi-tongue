@@ -84,7 +84,7 @@ async function doorDemo() {
 // ── the barrier demo (B1/B4) ──────────────────────────────────────────────────────────────────────────────────
 async function barrier() {
   let corpus;
-  try { corpus = await (await fetch('../barrier.json')).json(); } catch { $('ba-list').textContent = 'the test corpus did not load'; return; }
+  try { corpus = await (await fetch('./barrier.json')).json(); } catch { $('ba-list').textContent = 'the test corpus did not load'; return; }
   const entries = corpus.entries || [];
   // at the door: each entry's raw bytes sent to open() — none is a signed LIGHT packet, so each is refused
   let admitted = 0, decoded = 0;
