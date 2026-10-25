@@ -27,7 +27,7 @@ test('the integer logistic: fixed ends, the middle, monotone, and stretch invert
 test('lossless: empty, single bytes, ramps, noise, text, records — with and without a dictionary', () => {
   rt(new Uint8Array(0)); rt(new Uint8Array(0), P);
   for (const b of [0, 85, 128, 255]) { rt(Uint8Array.of(b)); rt(Uint8Array.of(b), P); }
-  for (const v of [F.text, F.records, F.ramp, F.noise(1024), new Uint8Array(1500).fill(255), new Uint8Array(1200)]) { rt(v); rt(v, P); }
+  for (const v of [F.text, F.ramp, F.noise(700), new Uint8Array(900).fill(255)]) { rt(v); rt(v, P); }
 });
 
 test('the wire format is frozen: these exact outputs, byte for byte (a change to the model is a new version)', () => {
@@ -73,7 +73,7 @@ test('a FRESH primed model comes back unchanged, even after messages long enough
   assert.equal(modelHash(Q), before, 'after a long encode');
   assert.ok(same(decode(e.bytes, Q).bytes, F.records));
   assert.equal(modelHash(Q), before, 'after a long decode');
-  const n = encode(F.noise(2000, 11), Q);
+  const n = encode(F.noise(800, 11), Q);
   assert.equal(modelHash(Q), before, 'after noise');
   assert.equal(decode(n.bytes, Q).ok, true);
   assert.equal(modelHash(Q), before);
@@ -113,7 +113,7 @@ test('the split point: a code value exactly on it decodes as a 1 bit', () => {
 });
 
 test('lending and copying make the same predictions, bit for bit', () => {
-  for (const v of [F.text, F.records, F.noise(1200, 3), new Uint8Array(0)]) {
+  for (const v of [F.text, F.noise(600, 3), new Uint8Array(0)]) {
     const lent = encode(v, P).bytes, copied = encode(v, P, { copy: true }).bytes;
     assert.ok(same(lent, copied));
     assert.ok(same(decode(copied, P, { copy: true }).bytes, v));

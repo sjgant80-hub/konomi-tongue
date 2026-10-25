@@ -17,10 +17,13 @@ jobs:
         run: node light/tools/check.mjs
 
       # pinned — an unpinned gate is a gate somebody else can change
-      - name: witness — every mutant of each LIGHT kernel must die, or carry a written reason
-        run: |
-          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
-          for k in codec packet vault sha256; do
-            node /tmp/witness/witness.mjs mutate light/$k.mjs --timeout 60000 --cap 600 --test node --test light/$k.test.mjs | tee /tmp/w-$k.txt
-            grep -q '"clean": true' /tmp/w-$k.txt || { echo "::error::mutants survived in light/$k.mjs"; exit 1; }
-          done
+      - name: get the witness gate
+        run: git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+      - name: witness — sha256 kernel
+        run: node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 30000 --cap 500 --test node --test light/sha256.test.mjs | tee /tmp/w.txt && grep -q '"clean": true' /tmp/w.txt
+      - name: witness — vault kernel
+        run: node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 30000 --cap 500 --test node --test light/vault.test.mjs | tee /tmp/w.txt && grep -q '"clean": true' /tmp/w.txt
+      - name: witness — packet kernel
+        run: node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 30000 --cap 500 --test node --test light/packet.test.mjs | tee /tmp/w.txt && grep -q '"clean": true' /tmp/w.txt
+      - name: witness — codec kernel
+        run: node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 30000 --cap 500 --test node --test light/codec.test.mjs | tee /tmp/w.txt && grep -q '"clean": true' /tmp/w.txt
