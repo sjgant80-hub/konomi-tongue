@@ -58,5 +58,15 @@
     "mutation": "< → <=",
     "snippet": "for (let i = 16; i < 64; i++) {",
     "reason": "the SHA-256 message schedule: w is a Uint32Array(64), so a 65th iteration writes w[64] (silently dropped) and the compression round reads only w[0..63] — the extra value is never read, equivalent, confirmed against node:crypto on every length"
+  },
+  {
+    "mutation": "< → <=",
+    "snippet": "for (let g = 0; g < 32 && ((x1 ^ x2) & 0xff000000) === 0; g++) { out.push(x2 >>> 24); x1 =",
+    "reason": "the renorm safety cap in encode: the maximum renorm iterations on any valid input is 2 (measured), so the bound 32 is never reached and 32 vs 33 decides nothing — it exists only to stop a mutated loop from hanging; equivalent"
+  },
+  {
+    "mutation": "< → <=",
+    "snippet": "for (let g = 0; g < 32 && ((x1 ^ x2) & 0xff000000) === 0; g++) { x1 = (x1 << 8) >>> 0; x2 ",
+    "reason": "the matching renorm safety cap in decode, kept in step with encode: the bound 32 is never reached on valid input (max renorm is 2), so 32 vs 33 changes nothing; equivalent"
   }
 ]
