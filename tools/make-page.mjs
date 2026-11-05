@@ -167,6 +167,7 @@ ${body}
 <h2>Questions</h2>
 <div class="card">${faq.map(([q, a]) => '<h3>' + esc(q) + '</h3><p>' + esc(a) + '</p>').join('')}</div>
 <footer>
+ <p>Next door: <a href="light/">LIGHT, the estate's inner codec</a> — one lossless, signed, mutation-gated codec the estate's organs speak between themselves, with its own sealed claims, receipts, business case and white paper.</p>
  <p>The numbers on this page come from the mutation-gated kernel <code>tongue.mjs</code>, inlined below. · <a href="${REPO}">source</a> · MIT for the code.</p>
  <p>Built on the seed's memory law and on Thomas Frumkin's Konomi architecture and <a href="${LIGHT}">LIGHT</a> (the estate's fork of teslasolar/light, used with permission). ${CREDIT}. The shopper sessions in the JSON channel: UCI Online Shoppers Purchasing Intention Dataset, C. Sakar and Y. Kastro (2018), CC BY 4.0.</p>
 </footer>
@@ -194,15 +195,16 @@ if (btn && DATA) btn.addEventListener('click', () => {
 </body></html>
 `;
 
-const md = ['# The Konomi Tongue', '', '**Live: ' + URL_LIVE + '**', '', 'A language the estate\'s agents grow between themselves, measured in Claude tokens against Simon\'s 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.', '', '## The result', '', headline, ''];
+const md = ['# The Konomi Tongue', '', '**Live: ' + URL_LIVE + '**', '', '**LIGHT, the estate\'s inner codec (in `light/`): ' + URL_LIVE + 'light/**', '', 'A language the estate\'s agents grow between themselves, measured in Claude tokens against Simon\'s 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.', '', '## The result', '', headline, ''];
 if (run) {
   md.push('| Sealed rule | Result | | Predicted |', '|---|---|---|---|');
   for (const r of j.rules) md.push('| ' + pre.rules.find((x) => x.id === r.id).rule + ' | ' + r.value + ' | ' + (r.pass ? 'PASS' : 'FAIL') + ' | ' + pre.predictions[r.id] + ' |');
   md.push('');
 }
 md.push('## What it is', '', '- `tongue.mjs` — the kernel: units, the growing nested dictionary (encode/decode, lossless), JSON mode (shared schema, glyph keys and values), the picture channel\'s payloads and grading, misread-driven alphabet evolution. Pure; witness-gated.', '- `tools/price.mjs` — every candidate glyph priced in Claude tokens (data/prices.json).', '- `tools/corpus.mjs`, `tools/json-corpus.mjs` — the agents\' messages (private, pinned by sha256) and the estate\'s JSON (data/json/), split before measuring.', '- `tools/seal.mjs`, `tools/run.mjs`, `tools/make-page.mjs` — the seal, the run and its CI verification, and this README and the page.', '');
+md.push('## LIGHT', '', 'The repository also holds LIGHT (`light/`): one lossless, integer-only, context-mixing codec primed with a shared dictionary, a signed packet door that verifies sender, signature and counter on the raw bytes before anything is decoded, and a vault that packs many files into one hash-checked stream. Its claims were sealed in `light/claims.json` before any code; its receipts are `light/data/light-run.json`, `light/data/barrier-run.json` and `light/data/witness.json`; every kernel is mutation-gated on GitHub\'s runner on every push (`.github/workflows/light.yml`). The live page explains it, with the receipts, a business case, adoption steps and a white paper: ' + URL_LIVE + 'light/', '');
 md.push('## Credits', '', '- The seed\'s memory law (compress, don\'t delete; compress by prime indices).', '- Thomas Frumkin\'s Konomi architecture and LIGHT ([the estate\'s fork](' + LIGHT + ') of teslasolar/light, used with permission). ' + CREDIT + '.', '- Shopper sessions: UCI Online Shoppers Purchasing Intention Dataset, C. Sakar and Y. Kastro (2018), DOI 10.24432/C5F88Q, CC BY 4.0.', '- Code: MIT.', '');
-const llms = ['# The Konomi Tongue', '', '> A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.', '', headline, '', '## Key pages', '', '- [Live page](' + URL_LIVE + ')', '- [Repository](' + REPO + ')', '- [Pre-registration](' + URL_LIVE + 'data/prereg.json)', ...(run ? ['- [The record](' + URL_LIVE + 'data/run.json)'] : []), '', '## Credits', '', '- ' + CREDIT + '. LIGHT is Thomas Frumkin\'s (used with permission).', ''].join('\n');
+const llms = ['# The Konomi Tongue', '', '> A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.', '', headline, '', '## Key pages', '', '- [Live page](' + URL_LIVE + ')', '- [Repository](' + REPO + ')', '- [LIGHT, the inner codec](' + URL_LIVE + 'light/)', '- [Pre-registration](' + URL_LIVE + 'data/prereg.json)', ...(run ? ['- [The record](' + URL_LIVE + 'data/run.json)'] : []), '', '## Credits', '', '- ' + CREDIT + '. LIGHT is Thomas Frumkin\'s (used with permission).', ''].join('\n');
 
 writeFileSync(at('index.html'), page);
 writeFileSync(at('README.md'), md.join('\n'));

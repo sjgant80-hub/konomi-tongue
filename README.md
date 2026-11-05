@@ -2,6 +2,8 @@
 
 **Live: https://sjgant80-hub.github.io/konomi-tongue/**
 
+**LIGHT, the estate's inner codec (in `light/`): https://sjgant80-hub.github.io/konomi-tongue/light/**
+
 A language the estate's agents grow between themselves, measured in Claude tokens against Simon's 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.
 
 ## The result
@@ -28,6 +30,10 @@ A language the estate's agents grow between themselves, measured in Claude token
 - `tools/price.mjs` — every candidate glyph priced in Claude tokens (data/prices.json).
 - `tools/corpus.mjs`, `tools/json-corpus.mjs` — the agents' messages (private, pinned by sha256) and the estate's JSON (data/json/), split before measuring.
 - `tools/seal.mjs`, `tools/run.mjs`, `tools/make-page.mjs` — the seal, the run and its CI verification, and this README and the page.
+
+## LIGHT
+
+The repository also holds LIGHT (`light/`): one lossless, integer-only, context-mixing codec primed with a shared dictionary, a signed packet door that verifies sender, signature and counter on the raw bytes before anything is decoded, and a vault that packs many files into one hash-checked stream. Its claims were sealed in `light/claims.json` before any code; its receipts are `light/data/light-run.json`, `light/data/barrier-run.json` and `light/data/witness.json`; every kernel is mutation-gated on GitHub's runner on every push (`.github/workflows/light.yml`). The live page explains it, with the receipts, a business case, adoption steps and a white paper: https://sjgant80-hub.github.io/konomi-tongue/light/
 
 ## Credits
 

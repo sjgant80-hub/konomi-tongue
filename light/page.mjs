@@ -1,9 +1,10 @@
-// light/page.mjs — the live page's engine. Every byte here runs the repository's own kernels: codec.mjs, packet.mjs,
-// vault.mjs, sha256.mjs — the same files CI gates. The browser adds only Ed25519 (WebCrypto, keys made in this tab).
+// light/page.mjs — the live page's engine. Every byte here runs the repository's own kernels: codec.mjs, packet.mjs and
+// cost.mjs — the same files CI gates. The browser adds only Ed25519 (WebCrypto, keys made in this tab).
 // Nothing leaves the tab: the only fetches are for this site's own files, and the page's policy allows no other.
 import { encode, decode, prime } from './codec.mjs';
 import { open, prepare, finish, KINDS } from './packet.mjs';
 import { dictIdOf } from './packet.mjs';
+import { lightCase, measuredOf, sourcesOf } from './cost.mjs';
 
 const $ = (id) => document.getElementById(id);
 const te = new TextEncoder();
@@ -113,30 +114,87 @@ async function barrier() {
   $('ba-exec').innerHTML = exec === 0 ? '<span class="ok">0 ✓</span>' : '<span class="no">' + exec + '</span>';
 }
 
-// ── the receipts, from the committed run ──────────────────────────────────────────────────────────────────────
+// ── the receipts, from the committed runs ─────────────────────────────────────────────────────────────────────
+const getJson = async (u) => { try { const r = await fetch(u); return r.ok ? await r.json() : null; } catch { return null; } };
+const tag = (held) => (held === true ? '<span class="tag held">HELD</span>' : held === false ? '<span class="tag failed">FAILED</span>' : '<span class="tag na">n/a</span>');
 async function receipts() {
-  let r;
-  try { r = await (await fetch('./data/light-run.json')).json(); } catch { r = null; }
-  if (!r || !Array.isArray(r.verdicts)) { $('r-rows').innerHTML = '<tr><td class="dim" colspan="4">the receipt (light/data/light-run.json) has not been written yet — run the measurement.</td></tr>'; return; }
-  const held = r.verdicts.filter((v) => v.held === true).length, failed = r.verdicts.filter((v) => v.held === false).length, na = r.verdicts.filter((v) => v.held === null).length;
-  $('r-sum').textContent = held + ' of ' + r.verdicts.length + ' claims held, ' + failed + ' failed (kept below), ' + na + ' measured elsewhere.';
-  $('r-rows').innerHTML = r.verdicts.map((v) => '<tr><td>' + esc(v.claim || v.id) + '</td><td>' + (v.held === true ? '<span class="tag held">HELD</span>' : v.held === false ? '<span class="tag failed">FAILED</span>' : '<span class="tag na">n/a</span>') + '</td><td class="mono">' + esc(v.measured) + '</td><td class="dim">' + esc(v.predicted || '') + '</td></tr>').join('');
+  const [r, b, w] = await Promise.all([getJson('./data/light-run.json'), getJson('./data/barrier-run.json'), getJson('./data/witness.json')]);
+  if (!r || !Array.isArray(r.verdicts)) { $('r-rows').innerHTML = '<tr><td class="dim" colspan="4">the receipt (light/data/light-run.json) did not load.</td></tr>'; return { run: null }; }
+  // the barrier claims come from their own receipt; G1 (the mutation gate) from the CI-checked witness receipt
+  const fromBarrier = new Map((b && Array.isArray(b.verdicts) ? b.verdicts : []).map((v) => [v.id, v]));
+  const rows = r.verdicts.map((v) => (fromBarrier.has(v.id) ? { ...fromBarrier.get(v.id), src: 'barrier-run.json' } : { ...v, src: 'light-run.json' }));
+  const gate = w && Array.isArray(w.kernels) ? w : null;
+  const held = rows.filter((v) => v.held === true).length, failed = rows.filter((v) => v.held === false).length, na = rows.filter((v) => v.held === null);
+  $('r-sum').textContent = held + ' of ' + rows.length + ' claims held, ' + failed + ' failed (kept below), ' + na.length + ' not measured in a receipt (' + na.map((v) => v.id).join(', ') + ')'
+    + (gate && na.some((v) => v.id === 'G1') ? ' — G1 is the mutation gate itself, which CI runs on every push: ' + n0(gate.killed) + ' of ' + n0(gate.total) + ' mutants killed, the rest reviewed.' : '.');
+  $('r-rows').innerHTML = rows.map((v) => '<tr><td><span class="mono">' + esc(v.id) + '</span> ' + esc(v.claim || '') + '</td><td>' + tag(v.held) + '</td><td class="mono">' + esc(v.measured)
+    + (v.id === 'G1' && gate ? ' · on GitHub’s runner: ' + esc(gate.killed + '/' + gate.total + (gate.clean ? ', clean' : ', NOT clean')) : '') + ' <span class="dim">(' + esc(v.src) + ')</span></td><td class="dim">' + esc(v.predicted || '') + '</td></tr>').join('');
   const c = r.facts && r.facts.codec;
-  if (c) { $('h-ratio').textContent = c.medianRatioJson + '×'; $('h-lossless').textContent = c.lossless === 0 ? 'lossless' : c.lossless + ' failed'; }
-  $('r-foot').textContent = 'Run ' + (r.ran || '').replace('T', ' ').slice(0, 16) + ' UTC · Node ' + r.node + ' · dictionary ' + n0((r.facts && r.facts.dictBytes) || 0) + ' B · ' + ((r.facts && r.facts.heldOut) || 0) + ' held-out files. Re-run: node light/tools/measure.mjs';
-  // the blueprint's witness scores, if the witness receipt is present
-  try {
-    const w = await (await fetch('./data/witness.json')).json();
-    for (const k of w.kernels || []) { const td = document.querySelector('[data-k="' + k.name + '"]'); if (td) td.textContent = k.killed + ' / ' + k.total + (k.ignored ? ' · ' + k.ignored + ' reviewed' : ''); }
-    $('bp-foot').textContent = (w.clean ? 'CLEAN: ' : 'NOT CLEAN: ') + n0(w.killed) + ' of ' + n0(w.total) + ' mutants killed; the rest reviewed-equivalent with a written reason. CI re-runs it on every push.';
-  } catch { /* no witness receipt yet */ }
+  if (c) {
+    $('h-ratio').textContent = (Math.round(c.medianRatioJson * 10) / 10) + '×';
+    $('h-lossless').textContent = c.lossless === 0 ? 'lossless' : c.lossless + ' failed';
+    $('h-small').textContent = c.smallLightBeatsBrotliGzip + ' of ' + c.smallItems;
+  }
+  $('r-foot').textContent = 'Main receipt run ' + (r.ran || '').replace('T', ' ').slice(0, 16) + ' UTC · Node ' + r.node + ' · dictionary ' + n0((r.facts && r.facts.dictBytes) || 0) + ' B · ' + ((r.facts && r.facts.heldOut) || 0) + ' held-out files. Re-run: node light/tools/measure.mjs (needs the estate clones) · node light/tools/check.mjs (anywhere).'
+    + (b ? ' Barrier receipt run ' + (b.ran || '').replace('T', ' ').slice(0, 16) + ' UTC · re-run: node light/tools/barrier.mjs --check.' : '');
+  if (gate) {
+    for (const k of gate.kernels) { const td = document.querySelector('[data-k="' + k.name + '"]'); if (td) td.textContent = k.killed + ' / ' + k.total + (k.ignored ? ' · ' + k.ignored + ' reviewed' : ''); }
+    $('bp-foot').textContent = (gate.clean ? 'CLEAN: ' : 'NOT CLEAN: ') + n0(gate.killed) + ' of ' + n0(gate.total) + ' mutants killed; the other ' + n0(gate.total - gate.killed) + ' reviewed-equivalent, each with a written reason. GitHub’s runner re-derives these counts on every push.';
+  }
+  return { run: r };
+}
+
+// ── the cost case: the gated kernel, the sourced basis, the receipt, the reader's own numbers ────────────────────
+const gbp = (x) => '£' + Number(x).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const gb = (x) => Number(x).toLocaleString('en-GB', { maximumFractionDigits: 2 }) + ' GB';
+async function costCase(run) {
+  const basis = await getJson('./vendor/sovereign-enterprise/data/basis.json');
+  const m = measuredOf(run);
+  if (!basis || !m) { $('cc-verdict').textContent = 'The sourced basis or the receipt did not load, so nothing is computed (and nothing is guessed).'; $('cc-rows').innerHTML = ''; return; }
+  const src = $('cc-sources'); src.textContent = '';
+  for (const s of sourcesOf(basis)) {
+    const li = document.createElement('li'), a = document.createElement('a');
+    li.textContent = s.key + ' = ' + s.value + ' — ' + (s.what || '') + ' — ';
+    a.textContent = 'source'; if (/^https:\/\//.test(String(s.source))) a.href = s.source; a.rel = 'noreferrer';
+    li.appendChild(a); src.appendChild(li);
+  }
+  const li = document.createElement('li');
+  li.textContent = 'LIGHT, from light/data/light-run.json: median ratio ' + m.ratio + '× over ' + m.heldFiles + ' held-out files; LIGHT ÷ Brotli 11 on their totals ' + m.lightVsBrotli.toFixed(4) + '; raw ÷ Brotli ' + m.rawVsBrotli.toFixed(3) + '; one-thread speed ' + m.mbpsEncode + ' MB/s encode, ' + m.mbpsDecode + ' MB/s decode.';
+  src.appendChild(li);
+  const li2 = document.createElement('li'); li2.textContent = 'Everything else in the calculator is yours: what you keep, what you send, what you pay.'; src.appendChild(li2);
+  const num = (id) => { const v = $(id).value.trim(); return v === '' ? NaN : Number(v); };
+  const run1 = () => {
+    const input = { storedGb: num('cc-stored'), movedGbPerMonth: num('cc-moved'), pricePerGbMonth: num('cc-pstore'), pricePerGbMoved: num('cc-pmove'), years: num('cc-years'), compressedToday: $('cc-comp').value === 'yes' };
+    const r = lightCase(basis, m, input);
+    if (!r.ok) { $('cc-verdict').textContent = 'Check the inputs: ' + r.why + '.'; $('cc-rows').innerHTML = ''; return; }
+    const priced = input.pricePerGbMonth > 0 || input.pricePerGbMoved > 0;
+    const yrs = r.inputs.years + ' year' + (r.inputs.years === 1 ? '' : 's');
+    $('cc-verdict').textContent = !priced
+      ? 'With no prices typed, only the bytes and the CPU change: ' + gb(r.gb.storedSaved) + ' less to keep, ' + gb(r.gb.movedSavedPerMonth) + ' a month less to send, for ' + n0(r.cpu.coreHoursPerYear) + ' core-hours a year of coding. Type what you pay per GB to see money.'
+      : r.savingPerYear > 0 ? 'On your figures LIGHT saves ' + gbp(r.savingPerYear) + ' a year, ' + gbp(r.savingOver) + ' over ' + yrs + ', after the electricity it uses.'
+        : 'On your figures LIGHT costs ' + gbp(-r.savingPerYear) + ' a year more than it saves — adopt it for the signed door and the checked stores, not the bill.';
+    const row = (k, a, b2) => '<tr><td>' + esc(k) + '</td><td class="n">' + esc(a) + '</td><td class="n">' + esc(b2) + '</td></tr>';
+    $('cc-rows').innerHTML = [
+      row('data kept', gb(r.inputs.storedGb), gb(r.gb.storedLight)),
+      row('data sent a month', gb(r.inputs.movedGbPerMonth), gb(r.gb.movedLightPerMonth)),
+      row('keeping it, a year', gbp(r.lines.storage.today), gbp(r.lines.storage.light)),
+      row('sending it, a year', gbp(r.lines.transfer.today), gbp(r.lines.transfer.light)),
+      row('CPU to code what is sent, a year', '—', n0(r.cpu.coreHoursPerYear) + ' core-hours · ' + gbp(r.lines.powerPerYear)),
+      row('CPU to convert the store, once', '—', n0(r.cpu.coreHoursOnce) + ' core-hours · ' + gbp(r.lines.powerOnce)),
+      row('a year, all in', gbp(r.perYear.today), gbp(r.perYear.light)),
+      row('over ' + yrs + ' (CPI each later year)', gbp(r.over.today), gbp(r.over.light)),
+    ].join('');
+  };
+  for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-years']) $(id).addEventListener('input', run1);
+  $('cc-comp').addEventListener('change', run1);
+  run1();
 }
 
 (async function boot() {
   try { encode(te.encode('x')); $('kstat').textContent = 'kernel live in this tab'; $('kstat').className = 'pill live'; }
   catch { $('kstat').textContent = 'the kernel failed to load'; $('kstat').className = 'pill bad'; }
   await compress();
-  receipts();
+  receipts().then(({ run }) => costCase(run));
   barrier();
   if (crypto && crypto.subtle) doorDemo(); else for (const id of ['d-ok', 'd-forge', 'd-tamper', 'd-decoded']) $(id).textContent = 'needs WebCrypto';
 })();

@@ -6,23 +6,24 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>LIGHT: the estate's inner language</title>
-<meta name="description" content="One lossless codec the estate's organs speak between themselves: memory, organ-to-organ messages and records carried in LIGHT, translated to standard forms only at the edges. Measured on held-out estate files with claims sealed before the run. The security layer is verify-before-parse on signed packets; the language is defense-in-depth on top, not a substitute.">
+<meta name="description" content="One lossless codec the estate's organs speak between themselves: memory, organ-to-organ messages and records carried in LIGHT, translated to standard forms only at the edges. Measured on held-out estate files with claims sealed before the run, every kernel mutation-gated on every push. With the business case, the adoption steps and a white paper.">
 <link rel="canonical" href="https://sjgant80-hub.github.io/konomi-tongue/light/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"SoftwareApplication","name":"LIGHT, the estate's inner language","url":"https://sjgant80-hub.github.io/konomi-tongue/light/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Node.js 20 or later; the live page runs in a current browser)","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"codeRepository":"https://github.com/sjgant80-hub/konomi-tongue","description":"One lossless, mutation-gated codec every organ imports as its internal language. A context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files; signed LIGHT packets checked before anything is decoded; many files as one vault. Measured on held-out files with claims sealed in git first.","publisher":{"@type":"Organization","name":"AI Native Solutions","url":"https://www.ai-nativesolutions.com"}},
 {"@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"What is LIGHT?","acceptedAnswer":{"@type":"Answer","text":"One lossless codec the estate's organs use to store and exchange their data. It is a context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files, so a message both sides partly know costs few bytes. Memory, organ-to-organ messages and records are carried in LIGHT; it translates to JSON or text only at the edges where the estate meets the outside world."}},
-{"@type":"Question","name":"Did it reach 15× denser than JSON?","acceptedAnswer":{"@type":"Answer","text":"No, and that was predicted. On held-out estate files the median was about 3.5× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number."}},
+{"@type":"Question","name":"Did it reach 15× denser than JSON?","acceptedAnswer":{"@type":"Answer","text":"No, and that was predicted. On 179 held-out estate files the median was 3.4× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number."}},
 {"@type":"Question","name":"Is LIGHT a security system?","acceptedAnswer":{"@type":"Answer","text":"The security is the cryptographic part: a LIGHT packet is refused unless it is signed by a pinned key, on the raw bytes, before anything is decoded. That is the hard floor. The custom, compressed, evolving language removes the shared-language attack surface on top of that — real, but defense-in-depth, not a substitute for the signature. It does not make injection carried as data safe; only the edge that renders or runs that data can."}},
-{"@type":"Question","name":"How is it measured honestly?","acceptedAnswer":{"@type":"Answer","text":"Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, gated judge holds each claim against what was measured; failures are kept on the page."}},
-{"@type":"Question","name":"Whose work is it?","acceptedAnswer":{"@type":"Answer","text":"Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. MIT, no licence fee."}}
+{"@type":"Question","name":"Is LIGHT encryption?","acceptedAnswer":{"@type":"Answer","text":"No. LIGHT makes data smaller and proves who sent it; it does not hide it. Anyone holding the dictionary can decode a body. Use encryption in transit and at rest for confidentiality; LIGHT's signature gives authenticity and integrity, not secrecy."}},
+{"@type":"Question","name":"How is it measured honestly?","acceptedAnswer":{"@type":"Answer","text":"Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, mutation-gated judge holds each claim against what was measured; failures are kept on the page, and CI re-checks the receipts on every push."}},
+{"@type":"Question","name":"Whose work is it?","acceptedAnswer":{"@type":"Answer","text":"Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. Supplied by AI Native Solutions. MIT, no licence fee."}}
 ]}]}
 </script>
 <style>
-:root{--bg:#0c0b10;--panel:#14131b;--panel2:#0f0e15;--line:#262433;--ink:#e9e6f2;--dim:#a39fb5;--faint:#6b6780;--accent:#b79cff;--accent2:#6ab0ff;--grn:#7bd88f;--bad:#ff8a8a;--gold:#ffd166;--mono:ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color-scheme:dark}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;color-scheme:light}}
-:root[data-theme="light"]{--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;color-scheme:light}
+:root{--bg:#0c0b10;--panel:#14131b;--panel2:#0f0e15;--line:#262433;--ink:#e9e6f2;--dim:#a39fb5;--faint:#6b6780;--accent:#b79cff;--accent2:#6ab0ff;--grn:#7bd88f;--bad:#ff8a8a;--gold:#ffd166;--onaccent:#120a2a;--mono:ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
@@ -47,7 +48,7 @@ h1{font:800 clamp(30px,6vw,48px)/1.08 var(--sans);letter-spacing:-.01em;margin:3
 .pill.live{color:var(--grn);border-color:var(--grn)}.pill.bad{color:var(--bad);border-color:var(--bad)}
 .ctas{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
 .ctas button{padding:10px 14px}
-.go{background:var(--accent);border-color:var(--accent);color:#120a2a;font-weight:700}
+.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
 .fact{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .fact b{display:block;font:800 22px var(--mono);color:var(--grn)}
@@ -91,6 +92,16 @@ summary{cursor:pointer;font-weight:600}
 .barrier .lang{color:var(--faint)}
 .faq dt{font-weight:700;margin-top:14px}.faq dd{margin:4px 0 0;color:var(--ink)}
 footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;color:var(--dim);font-size:13px}
+a.btn{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:7px;font:13px var(--sans);text-decoration:none}
+a.btn:hover{border-color:var(--accent)}
+a.btn.go{color:var(--onaccent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.grid .panel{margin:0}.grid .panel p{margin:0;font-size:14.5px}
+.inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 12px}
+select{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono)}
+select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.diagram text.r{fill:var(--bad)}
+.paper h3{margin-top:16px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -99,25 +110,27 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
   <a class="brand" href="#top">LIGHT<b>·</b></a>
   <nav class="links" aria-label="Sections">
     <a href="#what">What it is</a><a href="#start">Start here</a><a href="#try">Try it</a><a href="#receipts">Receipts</a>
-    <a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#barrier">The barrier</a><a href="#scope">Honest scope</a><a href="#faq">FAQ</a>
+    <a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#barrier">The barrier</a><a href="#scope">Honest scope</a>
+    <a href="#business">For business</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">FAQ</a>
   </nav>
   <button id="theme" class="quiet" type="button">theme</button>
 </div></header>
 
 <main class="wrap" id="top">
 <h1>LIGHT · the estate's inner language</h1>
-<p class="lede">One lossless codec every organ speaks between themselves. Memory, organ-to-organ messages and records are carried in <b>LIGHT</b> — a coder primed with a shared dictionary grown from the estate's own files, so what both sides already know costs almost nothing — and translated to JSON or text only at the <b>edges</b> where the estate meets the outside world.</p>
+<p class="lede">One lossless codec every organ speaks between themselves. Memory, organ-to-organ messages and records are carried in <b>LIGHT</b> — a coder primed with a shared dictionary grown from the estate's own files, so what both sides already know costs almost nothing — and translated to JSON or text only at the <b>edges</b> where the estate meets the outside world. Every message between organs is a signed packet, checked before a byte of it is read.</p>
 <p class="sub">one codec · shared dictionary · signed packets verified before decode · many files as one vault · <span id="kstat" class="pill">starting the kernel…</span></p>
 <div class="ctas">
-  <button class="go" type="button" onclick="document.getElementById('try').scrollIntoView()">Compress something, live</button>
-  <button type="button" onclick="document.getElementById('receipts').scrollIntoView()">Read the receipts</button>
-  <button type="button" onclick="document.getElementById('scope').scrollIntoView()">What it does and doesn't do</button>
+  <a class="btn go" href="#try">Compress something, live</a>
+  <a class="btn" href="#receipts">Read the receipts</a>
+  <a class="btn" href="#business">What it does for a business</a>
+  <a class="btn" href="#scope">What it does and doesn't do</a>
 </div>
 <div class="facts" aria-label="LIGHT in numbers">
-  <div class="fact"><b id="h-ratio">~3.5×</b><span>median smaller than JSON on held-out files</span></div>
-  <div class="fact"><b id="h-lossless">lossless</b><span>every file decodes back exactly</span></div>
-  <div class="fact"><b id="h-small">beats Brotli</b><span>on small messages, with the shared dictionary</span></div>
-  <div class="fact"><b>MIT</b><span>no licence fee; the estate's own codec</span></div>
+  <div class="fact"><b id="h-ratio">3.4×</b><span>median, smaller than the file as committed, over 179 held-out estate files</span></div>
+  <div class="fact"><b id="h-lossless">lossless</b><span>every held-out file and all 356 memory files decode back exactly</span></div>
+  <div class="fact"><b id="h-small">42 of 44</b><span>small messages smaller than both gzip −9 and Brotli 11</span></div>
+  <div class="fact"><b>MIT</b><span>no licence fee; zero dependencies; runs on your machines</span></div>
 </div>
 
 <section id="what" aria-labelledby="what-h">
@@ -125,18 +138,20 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
   <p>Compression is prediction: the better you can guess the next byte, the fewer bits you spend on it. LIGHT is a coder that guesses from what it has seen, <b>primed before the first byte with a dictionary grown from the estate's own files</b> — the headings, the record shapes, the credit lines the estate writes again and again. A message both sides already partly know is cheap; that is what it means for two organs to "speak the same language", measured in bytes.</p>
   <ul>
     <li><b>One codec, everywhere inside.</b> The same <span class="mono">codec.mjs</span> in every organ: the memory on disk, the records a node keeps, the messages organs send each other. Standard forms (JSON, text, what a human reads) appear only at the edges.</li>
-    <li><b>Signed packets, checked before decode.</b> An organ-to-organ message is a LIGHT packet carrying a signature. The door checks size, format, the pinned sender and the signature on the raw bytes, and only then decodes the body. Bytes from someone without the key never reach the decoder.</li>
-    <li><b>Many files as one vault.</b> A whole store — the memory, a folder of records — packs into one solid LIGHT stream, so what the files share is paid for once, and every file's hash is checked on the way out.</li>
-    <li><b>Honest about the number.</b> The spec set 15× denser than JSON. It is not 15×; on held-out files it is about 3.5×. That claim is kept, failed, with the measured number — <a href="#receipts">below</a>.</li>
+    <li><b>Signed packets, checked before decode.</b> An organ-to-organ message is a LIGHT packet carrying an Ed25519 signature. The door checks size, format, the pinned sender, the signature and a replay counter on the raw bytes, and only then decodes the body. Bytes from someone without the key never reach the decoder.</li>
+    <li><b>Many files as one vault.</b> A whole store — the memory, a folder of records — packs into one solid LIGHT stream, so what the files share is paid for once, and every file's SHA-256 is checked on the way out.</li>
+    <li><b>Honest about the number.</b> The spec set 15× denser than JSON. It is not 15×; on 179 held-out files the median is 3.4×. That claim is kept, failed, with the measured number — <a href="#receipts">below</a>. So is the speed claim, which also failed.</li>
   </ul>
 </section>
 
 <section id="start" aria-labelledby="start-h">
-  <h2 id="start-h"><small>Start here</small>Three minutes, no install</h2>
+  <h2 id="start-h"><small>Start here</small>Five steps, no install for the first three</h2>
   <ol>
-    <li><b>Compress something below.</b> Type or paste any text in <a href="#try">Try it</a>. Watch it shrink, with and without the shared dictionary, next to gzip and Brotli. Everything runs in this tab with the real codec.</li>
-    <li><b>Send a signed message.</b> The packet demo signs a message with a key made in your browser, then shows a copy signed by a different key refused at the door — before its body is ever decoded.</li>
+    <li><b>Compress something.</b> Type or paste any text in <a href="#try">Try it</a>. Watch it shrink, with and without a shared dictionary, next to your browser's own gzip and deflate. Everything runs in this tab with the real codec.</li>
+    <li><b>Watch the signed door.</b> The packet demo beside it signs a message with a key made in your browser, then shows a copy signed by a stranger's key, and one with a byte changed, refused at the door — before their bodies are ever decoded.</li>
     <li><b>Read the receipts.</b> Every claim was sealed in git before the code. The <a href="#receipts">receipts</a> show what was measured, what held, and what failed and is kept.</li>
+    <li><b>Check it on your own machine.</b> Clone <a href="https://github.com/sjgant80-hub/konomi-tongue">the repository</a> and run, with Node 20 or later and nothing installed: <span class="mono">node --test light/</span> (the tests), <span class="mono">node light/tools/check.mjs</span> (the seals and the receipt), <span class="mono">node light/tools/barrier.mjs --check</span> (the barrier claims, measured again). The mutation gate is in <a href="#blueprint">the blueprint</a>.</li>
+    <li><b>For a team:</b> put your own volumes and your own prices into <a href="#business">the cost case</a>, then follow <a href="#adoption">Adoption</a> to wire one channel.</li>
   </ol>
 </section>
 
@@ -150,9 +165,9 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
       <div class="stat"><span>as UTF-8 bytes</span><b id="c-in">—</b></div>
       <div class="stat"><span>LIGHT, no dictionary</span><b id="c-plain">—</b></div>
       <div class="stat"><span>LIGHT, shared dictionary</span><b id="c-dict">—</b></div>
-      <div class="stat"><span>gzip −9 · Brotli 11</span><b id="c-std">—</b></div>
+      <div class="stat"><span>this browser's gzip · deflate</span><b id="c-std">—</b></div>
       <div class="stat"><span>round-trip</span><b id="c-rt">—</b></div>
-      <p class="dim" style="font-size:12px;margin-top:8px">The dictionary here is a small sample, so the live gain is smaller than the estate's full 183&nbsp;KB dictionary measured in the receipts.</p>
+      <p class="dim" style="font-size:12px;margin-top:8px">The dictionary here is a small sample made in the page, so the live gain is smaller than the estate's full 183&nbsp;KB dictionary gives in the receipts. The receipts compare against gzip −9 and Brotli 11 in Node; your browser's built-in gzip and deflate run at their default level.</p>
     </div>
     <div class="panel">
       <h4>the signed door</h4>
@@ -168,9 +183,10 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
 
 <section id="receipts" aria-labelledby="r-h">
   <h2 id="r-h"><small>The receipts</small>Sealed first, measured second, failures kept</h2>
-  <p class="intro">Every claim was committed to git before the codec or any measuring code existed (<span class="mono">light/claims.json</span>). Files are split TRAIN / HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only. The measurement reads HELD-OUT for the first time. <span id="r-sum" class="gold"></span></p>
+  <p class="intro">All 19 claims were committed to git before the codec or any measuring code existed (<span class="mono">light/claims.json</span>, commit <span class="mono">ac90c1e</span>). Files are split TRAIN / HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement read HELD-OUT for the first time. The main receipt is <span class="mono">light/data/light-run.json</span>; the barrier claims B1–B3 are measured by <span class="mono">light/tools/barrier.mjs</span> into <span class="mono">light/data/barrier-run.json</span>, which CI measures again on every push. <span id="r-sum" class="gold"></span></p>
   <div class="tablewrap"><table><thead><tr><th>claim</th><th></th><th>measured</th><th class="dim">predicted</th></tr></thead><tbody id="r-rows"><tr><td class="dim" colspan="4">loading the receipt…</td></tr></tbody></table></div>
   <p class="dim" id="r-foot"></p>
+  <p class="dim">C1's census counted vendored copies as well as an organ's own code. It is superseded by the census v2 of <a href="https://sjgant80-hub.github.io/fall-kit/core/phase2/">fall-kit's go-live Phase 2</a>, which counts own code only; C1 stays here as it was measured, failed as predicted.</p>
 </section>
 
 <section id="how" aria-labelledby="how-h">
@@ -197,23 +213,96 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
     <li><b>The dictionary is the shared tongue.</b> Grown from TRAIN files only and versioned. Both sides hold it, so a short familiar message codes to very little. A later version grows from later files; the id in each packet says which dictionary it needs.</li>
     <li><b>Translate only at the edges.</b> Where the estate meets a human, a standard API or a browser, a thin edge codec turns LIGHT into the standard form and back. Inside is all LIGHT; the outside never needs to know it exists.</li>
   </ol>
+
+  <h3>The door, stage by stage — traced from the barrier receipt</h3>
+  <p class="intro">The order below is <span class="mono">open()</span> in <span class="mono">light/packet.mjs</span>, and the counts are the real run in <span class="mono">light/data/barrier-run.json</span>: our own door, the 28 sealed test inputs, keys made by Node's Ed25519, re-measured by CI on every push.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 980 330" role="img" aria-labelledby="dd-t"><title id="dd-t">The LIGHT door checks eight things on the raw bytes before it decodes anything: 27 raw test inputs stopped at size, 1 at magic; 1 forgery at sender and 3 at signature; 28 correctly signed packets admitted and decoded back exactly</title>
+      <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <path d="M20 92 H765" class="ar"/><path d="M20 86 V98 M765 86 V98" class="ar"/>
+      <text x="392" y="78" text-anchor="middle" class="d">on the raw bytes — nothing is decoded until all eight pass</text>
+      <g class="ar"><path d="M105 133 H115" marker-end="url(#a2)"/><path d="M200 133 H210" marker-end="url(#a2)"/><path d="M295 133 H305" marker-end="url(#a2)"/><path d="M390 133 H400" marker-end="url(#a2)"/><path d="M485 133 H495" marker-end="url(#a2)"/><path d="M580 133 H590" marker-end="url(#a2)"/><path d="M675 133 H685" marker-end="url(#a2)"/><path d="M770 133 H780" marker-end="url(#a2)"/><path d="M865 133 H875" marker-end="url(#a2)"/></g>
+      <rect x="20" y="110" width="85" height="46" rx="7" class="b bp"/><text x="62" y="138" text-anchor="middle">size</text>
+      <rect x="115" y="110" width="85" height="46" rx="7" class="b bp"/><text x="157" y="138" text-anchor="middle">magic</text>
+      <rect x="210" y="110" width="85" height="46" rx="7" class="b bp"/><text x="252" y="138" text-anchor="middle">version</text>
+      <rect x="305" y="110" width="85" height="46" rx="7" class="b bp"/><text x="347" y="138" text-anchor="middle">length</text>
+      <rect x="400" y="110" width="85" height="46" rx="7" class="b bp"/><text x="442" y="138" text-anchor="middle">dictionary</text>
+      <rect x="495" y="110" width="85" height="46" rx="7" class="b bp"/><text x="537" y="138" text-anchor="middle">sender</text>
+      <rect x="590" y="110" width="85" height="46" rx="7" class="b bp"/><text x="632" y="138" text-anchor="middle">signature</text>
+      <rect x="685" y="110" width="85" height="46" rx="7" class="b bp"/><text x="727" y="138" text-anchor="middle">counter</text>
+      <rect x="780" y="110" width="85" height="46" rx="7" class="b ba"/><text x="822" y="132" text-anchor="middle" class="a">decode</text><text x="822" y="148" text-anchor="middle" class="d">codec</text>
+      <rect x="875" y="110" width="85" height="46" rx="7" class="b bg"/><text x="917" y="138" text-anchor="middle" class="g">admitted</text>
+      <text x="62" y="182" text-anchor="middle" class="r">27 refused</text><text x="62" y="198" text-anchor="middle" class="d">raw inputs</text>
+      <text x="157" y="182" text-anchor="middle" class="r">1 refused</text><text x="157" y="198" text-anchor="middle" class="d">raw input</text>
+      <text x="537" y="182" text-anchor="middle" class="r">1 refused</text><text x="537" y="198" text-anchor="middle" class="d">forgery</text>
+      <text x="632" y="182" text-anchor="middle" class="r">3 refused</text><text x="632" y="198" text-anchor="middle" class="d">forgeries</text>
+      <text x="870" y="182" text-anchor="middle" class="g">28 of 28</text><text x="870" y="198" text-anchor="middle" class="d">back exactly</text>
+      <text x="20" y="246" class="d">A · B1</text><text x="80" y="246">28 classic test inputs (SQL, script, shell, path, template, JSON, XML, HTTP…) as raw bytes: 0 admitted, 0 decoded</text>
+      <text x="20" y="272" class="d">B · B2</text><text x="80" y="272">4 well-formed packets without the key (sender not pinned, stranger's key, zeroed signature, flipped byte): 0 decoded</text>
+      <text x="20" y="298" class="d">C · B3</text><text x="80" y="298">the same 28 inputs as the data of correctly signed packets: all 28 decode back exactly — so the edge must escape them</text>
+    </svg>
+  </div>
+
+  <h3>One message through the codec</h3>
+  <p class="intro">Drawn from <span class="mono">light/codec.mjs</span>. Every bit of the input is predicted, then coded with the probability the prediction gave; the decoder makes the same prediction from the same tables and so reads the same bit back. Integers only, so Node and your browser agree on every bit.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 980 300" role="img" aria-labelledby="dc-t"><title id="dc-t">Bytes get a header (length and check), then each bit is predicted by seven models, mixed by learned weights into a probability that drives a 32-bit arithmetic coder; the tables are primed first by the shared dictionary</title>
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <rect x="20" y="40" width="140" height="50" rx="8" class="b bg"/><text x="90" y="62" text-anchor="middle">your bytes</text><text x="90" y="78" text-anchor="middle" class="d">any length</text>
+      <rect x="20" y="120" width="140" height="62" rx="8" class="b"/><text x="90" y="142" text-anchor="middle">header</text><text x="90" y="158" text-anchor="middle" class="d">length (varint)</text><text x="90" y="173" text-anchor="middle" class="d">+ 4-byte check</text>
+      <g class="ar"><path d="M90 90 V118" marker-end="url(#a3)"/><path d="M160 150 H186" marker-end="url(#a3)"/></g>
+      <rect x="188" y="20" width="592" height="210" rx="10" class="b ba"/><text x="484" y="40" text-anchor="middle" class="a">for every bit — eight a byte</text>
+      <rect x="200" y="52" width="150" height="20" rx="4" class="b"/><text x="275" y="66" text-anchor="middle">bit's place</text>
+      <rect x="200" y="76" width="150" height="20" rx="4" class="b"/><text x="275" y="90" text-anchor="middle">last byte</text>
+      <rect x="200" y="100" width="150" height="20" rx="4" class="b"/><text x="275" y="114" text-anchor="middle">last 2 bytes</text>
+      <rect x="200" y="124" width="150" height="20" rx="4" class="b"/><text x="275" y="138" text-anchor="middle">last 3 bytes</text>
+      <rect x="200" y="148" width="150" height="20" rx="4" class="b"/><text x="275" y="162" text-anchor="middle">last 4 bytes</text>
+      <rect x="200" y="172" width="150" height="20" rx="4" class="b"/><text x="275" y="186" text-anchor="middle">current word</text>
+      <rect x="200" y="196" width="150" height="20" rx="4" class="b"/><text x="275" y="210" text-anchor="middle">match model</text>
+      <g class="ar"><path d="M350 62 L366 120"/><path d="M350 86 L366 122"/><path d="M350 110 L366 124"/><path d="M350 134 L366 126"/><path d="M350 158 L366 128"/><path d="M350 182 L366 130"/><path d="M350 206 L366 132"/></g>
+      <rect x="368" y="96" width="126" height="60" rx="8" class="b bp"/><text x="431" y="120" text-anchor="middle">mixer</text><text x="431" y="138" text-anchor="middle" class="d">7 learned weights</text>
+      <rect x="505" y="96" width="98" height="60" rx="8" class="b bp"/><text x="554" y="120" text-anchor="middle">p</text><text x="554" y="138" text-anchor="middle" class="d">next bit is 1</text>
+      <rect x="621" y="96" width="148" height="60" rx="8" class="b bp"/><text x="695" y="120" text-anchor="middle">coder</text><text x="695" y="138" text-anchor="middle" class="d">split range at p</text>
+      <g class="ar"><path d="M494 126 H503" marker-end="url(#a3)"/><path d="M603 126 H619" marker-end="url(#a3)"/><path d="M769 126 H808" marker-end="url(#a3)"/></g>
+      <path d="M695 156 V214 H360" class="ar" marker-end="url(#a3)"/><text x="562" y="208" text-anchor="middle" class="d">learn: states and weights move toward the bit that came</text>
+      <rect x="810" y="96" width="150" height="60" rx="8" class="b bg"/><text x="885" y="120" text-anchor="middle" class="g">LIGHT bytes</text><text x="885" y="138" text-anchor="middle" class="d">header + code</text>
+      <rect x="188" y="246" width="592" height="40" rx="8" class="b bg"/><text x="484" y="264" text-anchor="middle">primed first: the shared 183 KB dictionary (light/dict/v1.txt)</text><text x="484" y="279" text-anchor="middle" class="d">lent to each short message, handed back byte-identical by a journal</text>
+    </svg>
+  </div>
+  <p class="dim">Decode refuses a stream whose 4-byte check of the input does not match — the wrong dictionary, or changed bytes — so it returns the exact input or nothing.</p>
 </section>
 
 <section id="blueprint" aria-labelledby="bp-h">
-  <h2 id="bp-h"><small>Blueprint</small>Four kernels, each gated</h2>
-  <p class="intro">Each is a pure kernel with its own tests, under a mutation gate: the gate changes the code one operator at a time and the tests must catch every change. Survivors are allowed only with a written reason. CI runs all of it.</p>
+  <h2 id="bp-h"><small>Blueprint</small>Six kernels, each gated, and everything around them</h2>
+  <p class="intro">Each kernel is pure, with its own tests, under a mutation gate: <a href="https://github.com/sjgant80-hub/witness">witness</a>, pinned at v0.6, changes the code one operator at a time and the tests must catch every change. Survivors are allowed only with a written reason (<span class="mono">light/witness.baseline.json</span>). It runs on GitHub's runner on every push, and the run must re-derive exactly the counts committed in <span class="mono">light/data/witness.json</span>.</p>
   <div class="tablewrap"><table><thead><tr><th>kernel</th><th>file</th><th>what it is</th><th>mutation gate</th></tr></thead><tbody id="bp-rows">
-    <tr><td>codec</td><td class="mono">light/codec.mjs</td><td>bytes ⇄ LIGHT: a context-mixing arithmetic coder, primed with a dictionary</td><td class="mono" data-k="codec">—</td></tr>
-    <tr><td>packet</td><td class="mono">light/packet.mjs</td><td>the signed door: verify size, sender, signature on raw bytes, then decode</td><td class="mono" data-k="packet">—</td></tr>
-    <tr><td>vault</td><td class="mono">light/vault.mjs</td><td>many files as one solid stream, every hash checked, paths kept safe</td><td class="mono" data-k="vault">—</td></tr>
-    <tr><td>sha256</td><td class="mono">light/sha256.mjs</td><td>the one hash used for dictionary ids and vault entries</td><td class="mono" data-k="sha256">—</td></tr>
+    <tr><td>codec</td><td class="mono">light/codec.mjs</td><td>bytes ⇄ LIGHT: a context-mixing arithmetic coder, primed with a dictionary, integers only</td><td class="mono" data-k="codec">96 / 100 · 4 reviewed</td></tr>
+    <tr><td>packet</td><td class="mono">light/packet.mjs</td><td>the signed door: size, magic, version, length, dictionary, sender, signature, counter on raw bytes, then decode</td><td class="mono" data-k="packet">57 / 60 · 3 reviewed</td></tr>
+    <tr><td>vault</td><td class="mono">light/vault.mjs</td><td>many files as one solid stream, every SHA-256 checked, paths kept inside their folder</td><td class="mono" data-k="vault">54 / 61 · 7 reviewed</td></tr>
+    <tr><td>sha256</td><td class="mono">light/sha256.mjs</td><td>the one hash, for dictionary ids and vault entries</td><td class="mono" data-k="sha256">9 / 10 · 1 reviewed</td></tr>
+    <tr><td>judge</td><td class="mono">light/judge.mjs</td><td>each sealed claim held against the measured facts, by rules fixed in code</td><td class="mono" data-k="judge">90 / 90</td></tr>
+    <tr><td>cost</td><td class="mono">light/cost.mjs</td><td>the cost case below: sourced figures, the receipt's figures, your inputs</td><td class="mono" data-k="cost">27 / 27</td></tr>
   </tbody></table></div>
-  <p class="dim" id="bp-foot"></p>
+  <p class="dim" id="bp-foot">CLEAN: 333 of 348 mutants killed; the other 15 reviewed-equivalent, each with a written reason.</p>
+  <h3>Around the kernels</h3>
+  <div class="tablewrap"><table><thead><tr><th>organ</th><th>what it does</th><th>how it is checked</th></tr></thead><tbody>
+    <tr><td class="mono">light/claims.json · light/barrier.json</td><td>the 19 sealed claims, and the 28 sealed test inputs for B1–B4</td><td>committed at ac90c1e before any code; every tool refuses to run if either differs from that commit</td></tr>
+    <tr><td class="mono">light/dict/v1.txt</td><td>the shared dictionary, 182,969 bytes, grown from TRAIN files only</td><td>its SHA-256 and id re-checked against the receipt on every push</td></tr>
+    <tr><td class="mono">light/tools/measure.mjs</td><td>the measurement over the 179 held-out files, the memory vault and break-it's mesh → <span class="mono">light/data/light-run.json</span></td><td>runs on the machine that holds the estate's clones; CI re-checks its receipt (<span class="mono">check.mjs</span>)</td></tr>
+    <tr><td class="mono">light/tools/check.mjs</td><td>seals intact, dictionary hash, the judge re-run on the receipt's own facts, the codec round-trip</td><td>CI, every push</td></tr>
+    <tr><td class="mono">light/tools/barrier.mjs</td><td>B1–B3 against our own door → <span class="mono">light/data/barrier-run.json</span></td><td>CI measures again, every push, and must get the same facts</td></tr>
+    <tr><td class="mono">light/tools/witness-check.mjs</td><td>each kernel's mutation run must equal <span class="mono">light/data/witness.json</span></td><td>CI, every push</td></tr>
+    <tr><td class="mono">light/tools/corpus.mjs · dict.mjs · tune.mjs</td><td>gather the material by the sealed rule; grow the dictionary from TRAIN; tune on a validation split inside TRAIN</td><td>run where the clones are; their outputs are pinned by hash in the receipt</td></tr>
+    <tr><td class="mono">light/tools/memory.mjs · census.mjs</td><td>Kar's memory as one vault (private; only totals published); C1's census of the estate</td><td>run locally; totals in the receipt</td></tr>
+    <tr><td class="mono">light/page.mjs · light/index.html</td><td>this page: runs the kernels in your tab, reads the receipts, computes the cost case</td><td><span class="mono">test/light-page.test.mjs</span>: self-only policy, no inline handlers, every control wired, every number checked against the receipts</td></tr>
+    <tr><td class="mono">light/vendor/…/basis.json</td><td>the sourced external figures the cost case reads</td><td>copied byte for byte with git; its hash is tested against <span class="mono">light/vendor/SOURCE.json</span></td></tr>
+    <tr><td class="mono">.github/workflows/light.yml</td><td>runs all of the above on GitHub's runner</td><td>every run is public: <a href="https://github.com/sjgant80-hub/konomi-tongue/actions/workflows/light.yml">light workflow runs</a></td></tr>
+  </tbody></table></div>
 </section>
 
 <section id="barrier" aria-labelledby="ba-h">
   <h2 id="ba-h"><small>The language barrier, honestly</small>What a private language does and doesn't do</h2>
-  <p class="intro">Bytes meant to break software are written in languages an attacker shares with an ordinary target — SQL, script, shell, a template. A LIGHT door does not speak them: sent as raw bytes they fail at the magic number, before anything parses them. But that is only true at the <b>door</b>. The same bytes carried as <b>data</b> inside a signed packet decode back to exactly themselves — LIGHT does not disarm them; only the edge that renders or runs that data can. This demo shows both, in your browser, on the classic test inputs.</p>
+  <p class="intro">Bytes meant to break software are written in languages an attacker shares with an ordinary target — SQL, script, shell, a template. A LIGHT door does not speak them: sent as raw bytes they fail at the size or the magic number, before anything parses them. But that is only true at the <b>door</b>. The same bytes carried as <b>data</b> inside a signed packet decode back to exactly themselves — LIGHT does not disarm them; only the edge that renders or runs that data can. This demo shows both, in your browser, on the sealed test inputs; the same claims measured in Node are in the receipts above (B1–B3).</p>
   <div class="row two">
     <div class="panel">
       <h4>at the door · raw bytes refused</h4>
@@ -240,26 +329,134 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;colo
     <p><b>The hard floor is the signature.</b> A LIGHT packet is refused unless it is signed by a pinned key, checked on raw bytes before any decode. No cleverness and no volume forges a signature without the key. That is what protects an organ-to-organ channel.</p>
     <p><b>The language is the layer on top.</b> Because LIGHT is custom, compressed and evolving, the shared-language attack surface at a door is absent — standard exploits are bytes in a language it does not speak. Real and useful, but it is surface-elimination, <b>not</b> a substitute for the signature, and it is not security-through-obscurity standing alone.</p>
     <p><b>It does not disarm data.</b> Injection carried as the content of a message is decoded faithfully; the edge that renders or executes it is where it is made safe (escaped, parameterised). LIGHT moves the bytes; it does not sanitise them.</p>
+    <p><b>It is not encryption.</b> LIGHT makes data smaller and proves who sent it; it does not hide it. Anyone holding the dictionary can decode a body. Confidentiality comes from encryption in transit and at rest, alongside LIGHT.</p>
     <p><b>Out of scope, stated plainly.</b> A stolen key (the holder of a key is that sender), host or root compromise, and physical or social attacks are not addressed here. LIGHT removes the shared-language and unsigned-message vectors, not every conceivable one. The edges — where LIGHT meets a standard form — are the one place the shared-language surface briefly exists, so the edge codec is itself verify-first and gated.</p>
   </div>
   <p class="dim">The broader claim that a private verified language "neutralises an AI swarm" is a framing, not something this page measures. What is measured is above: the codec, the door, the vault, on held-out files, with the failures kept.</p>
+</section>
+
+<section id="business" aria-labelledby="bz-h">
+  <h2 id="bz-h"><small>For business</small>What LIGHT does for a company that runs many systems</h2>
+  <p class="lede">LIGHT gives a team one internal format for its records and the messages its systems send each other: every message signed and checked before anything reads it, every store lossless and hash-checked, smaller than raw data — and owned outright: MIT, zero dependencies, running on the team's own machines.</p>
+
+  <h3>What it does for each role</h3>
+  <div class="grid">
+    <div class="panel"><h4>CEO</h4><p>One internal language the company owns, with no vendor in the loop. Every claim about it was written down before it was measured, and the ones that failed are shown — so what the board hears is what was measured.</p></div>
+    <div class="panel"><h4>CFO</h4><p>The money is bytes stored and sent, computed below from your own volumes and your own prices; the licence costs nothing. Straight: if you already compress with Brotli, the saving is small and the CPU can cost more than it saves — the calculator shows both.</p></div>
+    <div class="panel"><h4>COO</h4><p>One format across services and the browser. A whole store packs into one vault with every file's hash checked on the way out, and leaving is one decode pass back to the original bytes.</p></div>
+    <div class="panel"><h4>CTO / CISO</h4><p>Signed packets from pinned senders, a replay counter, every check on the raw bytes before decode. Measured: 28 sealed test inputs sent raw and 4 forgeries, 0 decoded — and CI measures it again on every push. Every kernel is mutation-gated on GitHub's runner.</p></div>
+    <div class="panel"><h4>Engineering teams</h4><p>One zero-dependency ES module per job — codec, door, vault, hash. The same bytes in Node and the browser, because the coder uses integers only. Tests and the mutation gate ship with it.</p></div>
+    <div class="panel"><h4>Security, data and compliance teams</h4><p>Data never leaves your machines; nothing in the kernels does I/O. Decoded data is exactly what was sent, so escaping and validation at the edge stay where your controls already are.</p></div>
+  </div>
+
+  <h3 id="cost-h">The cost case — your volumes, your prices</h3>
+  <p class="intro">Computed in this tab by <span class="mono">light/cost.mjs</span> (mutation-gated, like the codec). External figures come only from the sourced basis listed under the result; LIGHT's figures only from the receipt; everything you type stays in this tab. We do not guess your storage or network price: none is in our sourced basis, and yours is the one that matters — leave it at 0 to see only the gigabytes and the CPU.</p>
+  <div class="panel">
+    <div class="inrow">
+      <div><label for="cc-stored">data you keep (GB)</label><input id="cc-stored" type="number" min="0" step="any" value="100"></div>
+      <div><label for="cc-moved">data your systems send each other (GB a month)</label><input id="cc-moved" type="number" min="0" step="any" value="20"></div>
+      <div><label for="cc-pstore">your price to keep 1 GB for a month (£)</label><input id="cc-pstore" type="number" min="0" step="any" value="0"></div>
+      <div><label for="cc-pmove">your price to send 1 GB (£)</label><input id="cc-pmove" type="number" min="0" step="any" value="0"></div>
+      <div><label for="cc-years">years</label><input id="cc-years" type="number" min="1" max="10" step="1" value="3"></div>
+      <div><label for="cc-comp">already Brotli-compressed today?</label><select id="cc-comp"><option value="no">no — it is raw JSON / text</option><option value="yes">yes — Brotli or similar</option></select></div>
+    </div>
+    <p id="cc-verdict" class="gold" style="margin-top:12px">computing…</p>
+    <div class="tablewrap"><table><thead><tr><th>line</th><th>today</th><th>with LIGHT</th></tr></thead><tbody id="cc-rows"><tr><td class="dim" colspan="3">loading the basis and the receipt…</td></tr></tbody></table></div>
+    <p class="dim" style="font-size:12.5px">How it is worked out: against raw data, LIGHT keeps 1 ÷ the median held-out ratio of today's bytes (the floor — the totals ratio is higher); against Brotli-compressed data, LIGHT's total over Brotli's total on the same held-out files (the smaller win). CPU is the measured one-thread speed, each GB sent encoded once and decoded once, and your store converted once; reads of the store are not counted. Electricity is that CPU time at a laptop processor's base power. Money rises by CPI each year after the first.</p>
+    <h4 style="margin-top:12px">where every figure comes from</h4>
+    <ul id="cc-sources" class="dim" style="font-size:13px"><li>loading…</li></ul>
+  </div>
+
+  <h3>Against what you use now</h3>
+  <p>The standard coders are free, so the honest comparison is bytes, on the same 179 held-out files: <b>LIGHT 318,550 B</b>, Brotli 11 326,952 B, gzip −9 408,024 B, from 1,952,051 B raw. On small messages of up to 2 KB — the size of an organ-to-organ message — the median is <b>LIGHT 430 B</b>, Brotli 475 B, gzip 575.5 B, and LIGHT is smaller than both on 42 of 44. The win over a standard coder is small on big files and real on small messages, which is what systems mostly send each other. What no standard coder gives you is the door: a signature checked on raw bytes before anything is parsed.</p>
+
+  <h3>Security and data protection</h3>
+  <ul>
+    <li><b>Where the data is.</b> On your machines. The kernels do no I/O, read no clock and call no network; this page requests only its own files under a self-only content security policy.</li>
+    <li><b>Who sent it.</b> Ed25519 signatures over a fixed domain, the header and the body; senders pinned by key; a counter that refuses replays and reordering; all checked on the raw bytes, and the decoder is never called for a refused packet.</li>
+    <li><b>Whether it changed.</b> The codec stores a 4-byte check of the input and returns the exact bytes or nothing; the vault stores each file's SHA-256 and refuses the whole vault if one differs; vault paths cannot reach outside their folder.</li>
+    <li><b>Personal data (UK GDPR).</b> LIGHT is neither anonymisation nor encryption: personal data in LIGHT is still personal data, and your controller duties are unchanged. A dictionary grown from your files holds fragments of them — treat it with the same care as the files it was grown from, and share it only with systems allowed to read them.</li>
+    <li><b>Assurance you can re-run.</b> The source is MIT and open; the tests, the receipts and the mutation gate run on GitHub's runner on every push, and on your own machine with the commands in <a href="#start">Start here</a>.</li>
+  </ul>
+
+  <h3>Roll-out</h3>
+  <p>One channel at a time, backwards-compatible at its boundary, measured against your own baseline before it is switched on. The steps are in <a href="#adoption">Adoption</a>.</p>
+
+  <h3>Ownership, support, exit</h3>
+  <ul>
+    <li><b>Supplied by</b> <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; contact is through that site.</li>
+    <li><b>Support, SLA, warranty and liability</b> are agreed per deployment, in each deployment's agreement.</li>
+    <li><b>Licence:</b> MIT — no licence fee. You hold the source; it keeps running without us.</li>
+    <li><b>Exit:</b> decode everything back to the original bytes with the dictionary it was written with. Lossless, so leaving costs one decode pass and nothing is lost.</li>
+  </ul>
+
+  <h3>Risks, answered straight</h3>
+  <ul>
+    <li><b>It is slow.</b> 0.369 MB/s encoding and 0.366 MB/s decoding on one thread of the laptop that measured it — it failed its own 0.5 MB/s bar, and the claim is kept failed. Use it where messages are small or where you can spread the work across cores; the cost case counts the CPU.</li>
+    <li><b>It is not 15×.</b> The median held-out file is 3.4× smaller. Most of a new file is new information, and a dictionary only saves what recurs.</li>
+    <li><b>If you already compress, the bill barely moves.</b> Against Brotli the total saving on the held-out files was 2.6%.</li>
+    <li><b>The dictionary is a dependency.</b> Lose it and you cannot decode what was written with it. Its id is in every packet and vault; keep every version you ever wrote with, beside the data.</li>
+    <li><b>The format is versioned and frozen.</b> A change to the model is a new version (the tests pin the exact output bytes); old versions must stay readable.</li>
+    <li><b>It is young.</b> In the estate one organ's channel speaks it so far (break-it's immune mesh, where a 64-antigen share went from 11,667 B as JSON to 4,669 B as LIGHT). Start with one channel, as it did.</li>
+    <li><b>It does not stop a stolen key, and it is not encryption.</b> See <a href="#scope">honest scope</a>.</li>
+  </ul>
+
+  <h3>The case for the board</h3>
+  <div class="callout"><p>LIGHT is a small, owned piece of infrastructure: one internal format whose messages are signed and checked before anything reads them, and whose stores are lossless and hash-checked. It costs nothing to licence and runs without a supplier. Its saving on storage and transfer is real against raw data (3.4× at the median file) and small against data already compressed, and it uses CPU to get it — so adopt it for the integrity of what your systems tell each other, and count the bytes as a measured bonus on your own numbers. Every claim was sealed before it was measured; three failed and are shown. The risk is contained: one channel, backwards-compatible, measured first, and leaving is one decode pass.</p></div>
+</section>
+
+<section id="adoption" aria-labelledby="ad-h">
+  <h2 id="ad-h"><small>Adoption</small>How a team rolls it out</h2>
+  <p class="intro">LIGHT fits a team that runs many services, agents or devices exchanging structured messages and keeping records — where the same shapes recur, where it matters who sent a message, and where the data has to stay in-house. It is not for bulk data you already compress where CPU is tight, and it does not replace encryption.</p>
+  <ol>
+    <li><b>Try it on your own data, here.</b> Paste one of your real records into <a href="#try">Try it</a>. Nothing leaves the tab.</li>
+    <li><b>Run the gates on your own machine.</b> Clone the repository and run the commands in <a href="#start">Start here</a>, and the mutation gate as <span class="mono">light.yml</span> runs it. You are trusting what you just re-ran, not this page.</li>
+    <li><b>Grow your own dictionary from your own files.</b> Split your files by date into TRAIN and HELD-OUT; grow the dictionary from TRAIN only (<span class="mono">light/tools/dict.mjs</span> is the method). Version it.</li>
+    <li><b>Write down what you expect before you measure.</b> Commit your claims first, as <span class="mono">light/claims.json</span> was, then measure on HELD-OUT with the judge and the check tool. Keep what fails.</li>
+    <li><b>Wire one channel, backwards-compatible.</b> Make the receiver accept LIGHT packets and the old format; switch the sender when both ends speak LIGHT. break-it's mesh did exactly this: a JSON share from an older node still adopts.</li>
+    <li><b>Turn on the door.</b> Pin each sender's key, keep each sender's last counter, refuse anything unsigned. Decode only what the door admits.</li>
+    <li><b>Gate it in your CI.</b> Copy <span class="mono">.github/workflows/light.yml</span>: the tests, the receipt checks and the pinned mutation gate, with the memory cap.</li>
+    <li><b>Keep the dictionaries with the data.</b> Every packet and vault names the dictionary it needs; retire none you ever wrote with.</li>
+  </ol>
+  <p><b>What success looks like:</b> on your own held-out files, the bytes against your baseline, measured; on the channel, nothing decoded before it was verified; in CI, every kernel clean on every push.</p>
+</section>
+
+<section id="paper" aria-labelledby="wp-h">
+  <h2 id="wp-h"><small>White paper</small>LIGHT: prediction as a shared language, behind a verify-first door</h2>
+  <div class="paper">
+    <h3>Abstract</h3>
+    <p>LIGHT is a lossless, integer-only, context-mixing arithmetic coder primed with a dictionary grown from an organisation's own files, wrapped in a signed packet whose door verifies sender, signature and counter on the raw bytes before decoding. Measured on 179 held-out files with 19 claims sealed in git before any code existed, it compressed the median file 3.4×, stayed lossless throughout, beat both gzip −9 and Brotli 11 on 42 of 44 small messages, packed a 356-file memory 4.162× byte-identically, and refused every one of 28 sealed test inputs sent as raw bytes and 4 forgeries without decoding any. It failed its 15× target and its 0.5 MB/s speed target; both failures are kept.</p>
+    <h3>1 · Prediction is compression</h3>
+    <p>An arithmetic coder spends close to −log₂ p bits on a bit it predicted with probability p. LIGHT predicts each bit from seven contexts — the bit's place in its byte, the last one to four bytes, the current word, and a match model that finds where the last six bytes appeared before and predicts what followed them — and mixes the seven guesses with weights that learn as they go. The mixed probability, a 12-bit integer, splits a 32-bit range. No floating point is used anywhere, so an encoder in Node and a decoder in a browser make the same prediction for every bit.</p>
+    <h3>2 · A language both sides hold</h3>
+    <p>Before the first byte, the model reads a shared dictionary — 182,969 bytes of the lines the estate writes again and again, grown from TRAIN files only. That primes both its tables and its match history, so a short message made of familiar pieces codes to very little. Copying the primed tables per message would cost megabytes; instead a short message is lent the tables, the first write to each slot is journaled, and the journal hands the model back byte-identical before encode or decode returns (tested by hashing the whole model before and after).</p>
+    <h3>3 · The door</h3>
+    <p>A LIGHT packet is a 23-byte header, the coded body and a 64-byte Ed25519 signature over a fixed domain, the header and the body. The door checks, in order and on the raw bytes: size, magic, version, length, dictionary, sender, signature, counter — and only then decodes. Bytes in any other language fail at size or magic; bytes in LIGHT's own format from someone without a pinned key fail at sender or signature; the decoder is never called for either. Data carried inside an admitted packet comes back exactly, so the edge that shows or runs it remains responsible for making it safe.</p>
+    <h3>4 · Method</h3>
+    <p>The claims and the barrier corpus were committed (ac90c1e) before the codec, the door or any measuring code. Material is every git-tracked JSON and Markdown file of up to 256 KB in the estate's public clones, split by last-commit date into TRAIN and HELD-OUT; the dictionary and every tuning choice read TRAIN only. A pure judge, itself mutation-gated, holds each claim against the measured facts; CI re-runs the judge on the receipt's own facts, re-checks every seal, measures the barrier claims again and runs the mutation gate over every kernel on GitHub's runner.</p>
+    <h3>5 · Results</h3>
+    <p>Median 3.416× over 179 held-out files (L1, 15×: failed, as predicted). 0 round-trip failures (L2). Small messages: median 430 B against Brotli's 475 B and gzip's 575.5 B (L3). Totals: 318,550 B against Brotli's 326,952 B (L4). Speed: 0.369 MB/s encode, 0.366 MB/s decode on one thread (L5: failed). Memory: 356 files, 3,009,962 B to 723,167 B, 4.162×, byte-identical (M1, M2). Mesh: a 64-antigen share 2.499× smaller than its JSON, forgeries refused before decode (K1–K3). Barrier: B1–B3 held. The mutation gate: 333 of 348 mutants killed, 15 reviewed-equivalent with written reasons.</p>
+    <h3>6 · Limits</h3>
+    <p>A shared dictionary saves only what recurs, so new material will not reach 15×. One thread is slow. Against data already Brotli-compressed the gain is small. The dictionary is a versioned dependency that must be kept with the data. The model-facing claims (T1, T2) were not measured in the receipt. LIGHT is not encryption and does not address a stolen key.</p>
+  </div>
 </section>
 
 <section id="faq" aria-labelledby="faq-h">
   <h2 id="faq-h"><small>FAQ</small>Questions</h2>
   <dl class="faq">
     <dt>What is LIGHT?</dt><dd>One lossless codec the estate's organs use to store and exchange their data. It is a context-mixing arithmetic coder primed with a shared dictionary grown from the estate's own files, so a message both sides partly know costs few bytes. Memory, organ-to-organ messages and records are carried in LIGHT; it translates to JSON or text only at the edges where the estate meets the outside world.</dd>
-    <dt>Did it reach 15× denser than JSON?</dt><dd>No, and that was predicted. On held-out estate files the median was about 3.5× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number.</dd>
+    <dt>Did it reach 15× denser than JSON?</dt><dd>No, and that was predicted. On 179 held-out estate files the median was 3.4× smaller than the committed file, not 15×. A shared-dictionary coder saves what recurs; most of a new file is new. The claim was sealed as the bar and is kept FAILED with the measured number.</dd>
     <dt>Is LIGHT a security system?</dt><dd>The security is the cryptographic part: a LIGHT packet is refused unless it is signed by a pinned key, on the raw bytes, before anything is decoded. That is the hard floor. The custom, compressed, evolving language removes the shared-language attack surface on top of that — real, but defense-in-depth, not a substitute for the signature. It does not make injection carried as data safe; only the edge that renders or runs that data can.</dd>
-    <dt>How is it measured honestly?</dt><dd>Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, gated judge holds each claim against what was measured; failures are kept on the page.</dd>
-    <dt>Whose work is it?</dt><dd>Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. MIT, no licence fee.</dd>
+    <dt>Is LIGHT encryption?</dt><dd>No. LIGHT makes data smaller and proves who sent it; it does not hide it. Anyone holding the dictionary can decode a body. Use encryption in transit and at rest for confidentiality; LIGHT's signature gives authenticity and integrity, not secrecy.</dd>
+    <dt>How is it measured honestly?</dt><dd>Every claim was committed to git before the codec or any measuring code existed. Files are split TRAIN/HELD-OUT by their last commit date; the dictionary and all tuning read TRAIN only, and the measurement reads HELD-OUT for the first time. A pure, mutation-gated judge holds each claim against what was measured; failures are kept on the page, and CI re-checks the receipts on every push.</dd>
+    <dt>Whose work is it?</dt><dd>Powered by the Konomi architecture, created by Thomas Frumkin, used with his permission. LIGHT is the estate's own codec, grown in the Konomi frame; the name follows Thomas's LIGHT language. Supplied by AI Native Solutions. MIT, no licence fee.</dd>
   </dl>
 </section>
 </main>
 
 <footer><div class="wrap">
-  <p>LIGHT · MIT · <a href="https://github.com/sjgant80-hub/konomi-tongue">source and receipts</a> · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a></p>
-  <p>Powered by the Konomi architecture, created by Thomas Frumkin. This page runs the repository's own codec, door and vault in your browser, and requests only its own files; nothing you type here leaves this tab.</p>
+  <p>LIGHT · MIT · <a href="https://github.com/sjgant80-hub/konomi-tongue">source and receipts</a> · part of <a href="../">the Konomi Tongue</a> · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a></p>
+  <p>Powered by the Konomi architecture, created by Thomas Frumkin. This page runs the repository's own codec, door, vault and cost case in your browser, and requests only its own files; nothing you type here leaves this tab.</p>
 </div></footer>
 <script type="module" src="./page.mjs"></script>
 </body>
