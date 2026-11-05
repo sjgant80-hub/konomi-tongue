@@ -125,6 +125,7 @@ test('the brochure a buyer needs is on the page: roles, cost case, security, rol
   for (const h of ['The cost case', 'Against what you use now', 'Security and data protection', 'Roll-out', 'Ownership, support, exit', 'Risks, answered straight', 'The case for the board']) assert.ok(sec.includes(h), h);
   assert.ok(sec.includes('href="https://www.ai-nativesolutions.com"') && /agreed per deployment/.test(sec) && /keeps running without us/.test(sec), 'supplier, terms, and that it runs without us');
   assert.ok(/UK GDPR/.test(sec) && /neither anonymisation nor encryption/.test(sec), 'data protection answered straight');
+  assert.ok(/No data comes to us/.test(sec) && /No independent security review yet/.test(sec), 'procurement and the CISO answered: no data to the supplier, no outside audit yet');
   for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-pcpu', 'cc-years', 'cc-comp', 'cc-rows', 'cc-verdict', 'cc-sources']) assert.ok(sec.includes('id="' + id + '"'), id);
   assert.ok(/from '\.\/cost\.mjs'/.test(PAGE) && /lightCase\(basis, m, input\)/.test(PAGE), 'the calculator runs the gated kernel');
   assert.ok(/getJson\('\.\/vendor\/sovereign-enterprise\/data\/basis\.json'\)/.test(PAGE), 'the basis is the vendored one');

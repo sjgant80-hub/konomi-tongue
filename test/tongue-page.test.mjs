@@ -107,6 +107,8 @@ test('the brochure a buyer needs is on the page: roles, cost case, comparison, s
   for (const s of K.sourcesOf(BASIS)) assert.ok(sec.includes('<b>' + s.key + '</b> = ' + s.value) && sec.includes('href="' + s.source + '"'), s.key + ' cited');
   assert.match(sec, new RegExp('id="tc-price" type="number" min="0" step="any" value="' + K.priceOf(BASIS) + '"'), 'the price starts at the sourced figure');
   assert.ok(/not inflated/.test(sec) && /Not counted: output tokens/.test(sec), 'what the case leaves out is said');
+  for (const k of ['frontier', 'fxGbpPerUsd']) assert.ok(sec.includes('(taken ' + BASIS[k].via.replace(/^estate basis /, '') + ')'), 'when ' + k + ' was taken is shown');
+  assert.ok(/No data comes to us/.test(sec), 'procurement: none of their data reaches the supplier');
 });
 
 test('the visible questions and the FAQPage schema say exactly the same thing; credit and supplier named; no price of ours', () => {

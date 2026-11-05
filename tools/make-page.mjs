@@ -168,7 +168,7 @@ const costRows = (r) => !r || !r.ok ? '<tr><td class="quiet" colspan="3">' + esc
   + '<tr class="best"><td>saved (£)</td><td class="n">' + r.savingPerYear.toFixed(2) + ' a year</td><td class="n">' + r.savingOver.toFixed(2) + ' over ' + r.inputs.years + ' years</td></tr>';
 const costVerdict = (r) => !r || !r.ok ? 'The case cannot be computed: ' + (r ? r.why : 'no inputs') + '.'
   : 'Packed where it wins, the median measured place keeps ' + pct(r.keep) + ' of its input tokens, so ' + r.inputs.millionTokensPerMonth + ' million tokens a month becomes ' + r.tokens.packedPerMonth + ' million — about ' + r.savingPerYear.toFixed(2) + ' pounds a year at ' + r.price + ' pounds per million' + (r.priceSourced ? ' (the sourced list price)' : ' (your price)') + '.';
-const sourcesList = K.sourcesOf(BASIS).map((s) => '<li><b>' + esc(s.key) + '</b> = ' + esc(String(s.value)) + ' — ' + esc(s.what) + ' · <a href="' + esc(s.source) + '">source</a></li>').join('')
+const sourcesList = K.sourcesOf(BASIS).map((s) => '<li><b>' + esc(s.key) + '</b> = ' + esc(String(s.value)) + ' — ' + esc(s.what) + (BASIS[s.key] && BASIS[s.key].via ? ' (taken ' + esc(String(BASIS[s.key].via).replace(/^estate basis /, '')) + ')' : '') + ' · <a href="' + esc(s.source) + '">source</a></li>').join('')
   + '<li><b>shares kept</b> — data/ship-run.json: ' + PLACES.length + ' places measured in Claude tokens (' + esc(shipRun ? shipRun.model : '') + '), legend included; the median place, the shipped switch (a place that is not cheaper packed keeps every token)</li>';
 const regradeData = run ? { reads: run.picture.reads.map((r) => ({ arm: r.arm, kind: r.kind, size: r.size, split: r.split, k: r.k, gen: r.gen, cells: r.cells, reply: r.reply, grade: r.grade })), B: run.picture.B, C1: run.picture.C1, C2: run.picture.C2, cols: CONFIG.picture.cols, dotCols: CONFIG.picture.dots.cols } : null;
 const faq = [
@@ -416,6 +416,7 @@ ${sectionsBody.replace('<h3 class="rh">The picture channel</h3>', '<h3 class="rh
  <li><b>Supplied by</b> <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; contact is through that site.</li>
  <li><b>Support, SLA, warranty and liability</b> are agreed per deployment, in each deployment's agreement.</li>
  <li><b>Licence:</b> MIT — no licence fee (LICENSE and NOTICE in the repository). You hold the source; it keeps running without us.</li>
+ <li><b>No data comes to us.</b> The code runs on your machines and calls no service of ours, so using it puts none of your data in our hands; if a deployment’s support needs access to your systems, that is set out in its agreement.</li>
  <li><b>Exit:</b> stop packing. Every pack unpacks to the exact record, so nothing is lost and nothing downstream has to change back.</li>
 </ul>
 
