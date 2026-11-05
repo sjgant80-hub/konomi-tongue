@@ -280,10 +280,10 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <tr><td>packet</td><td class="mono">light/packet.mjs</td><td>the signed door: size, magic, version, length, dictionary, sender, signature, counter on raw bytes, then decode</td><td class="mono" data-k="packet">57 / 60 · 3 reviewed</td></tr>
     <tr><td>vault</td><td class="mono">light/vault.mjs</td><td>many files as one solid stream, every SHA-256 checked, paths kept inside their folder</td><td class="mono" data-k="vault">54 / 61 · 7 reviewed</td></tr>
     <tr><td>sha256</td><td class="mono">light/sha256.mjs</td><td>the one hash, for dictionary ids and vault entries</td><td class="mono" data-k="sha256">9 / 10 · 1 reviewed</td></tr>
-    <tr><td>judge</td><td class="mono">light/judge.mjs</td><td>each sealed claim held against the measured facts, by rules fixed in code</td><td class="mono" data-k="judge">90 / 90</td></tr>
+    <tr><td>judge</td><td class="mono">light/judge.mjs</td><td>each sealed claim held against the measured facts, by rules fixed in code — a claim is decided by what was measured, never by its prediction</td><td class="mono" data-k="judge">99 / 99</td></tr>
     <tr><td>cost</td><td class="mono">light/cost.mjs</td><td>the cost case below: sourced figures, the receipt's figures, your inputs</td><td class="mono" data-k="cost">30 / 30</td></tr>
   </tbody></table></div>
-  <p class="dim" id="bp-foot">CLEAN: 336 of 351 mutants killed; the other 15 reviewed-equivalent, each with a written reason.</p>
+  <p class="dim" id="bp-foot">CLEAN: 345 of 360 mutants killed; the other 15 reviewed-equivalent, each with a written reason.</p>
   <h3>Around the kernels</h3>
   <div class="tablewrap"><table><thead><tr><th>organ</th><th>what it does</th><th>how it is checked</th></tr></thead><tbody>
     <tr><td class="mono">light/claims.json · light/barrier.json</td><td>the 19 sealed claims, and the 28 sealed test inputs for B1–B4</td><td>committed at ac90c1e before any code; every tool refuses to run if either differs from that commit</td></tr>
@@ -441,9 +441,9 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h3>4 · Method</h3>
     <p>The claims and the barrier corpus were committed (ac90c1e) before the codec, the door or any measuring code. Material is every git-tracked JSON and Markdown file of up to 256 KB in the estate's public clones, split by last-commit date into TRAIN and HELD-OUT; the dictionary and every tuning choice read TRAIN only. A pure judge, itself mutation-gated, holds each claim against the measured facts; CI re-runs the judge on the receipt's own facts, re-checks every seal, measures the barrier claims again and runs the mutation gate over every kernel on GitHub's runner.</p>
     <h3>5 · Results</h3>
-    <p>Median 3.416× over 179 held-out files (L1, 15×: failed, as predicted). 0 round-trip failures (L2). Small messages: median 430 B against Brotli's 475 B and gzip's 575.5 B (L3). Totals: 318,550 B against Brotli's 326,952 B (L4). Speed: 0.369 MB/s encode, 0.366 MB/s decode on one thread (L5: failed). Memory: 356 files, 3,009,962 B to 723,167 B, 4.162×, byte-identical (M1, M2). Mesh: a 64-antigen share 2.499× smaller than its JSON, forgeries refused before decode (K1–K3). Barrier: B1–B3 held. The mutation gate: 336 of 351 mutants killed, 15 reviewed-equivalent with written reasons.</p>
+    <p>Median 3.416× over 179 held-out files (L1, 15×: failed, as predicted). 0 round-trip failures (L2). Small messages: median 430 B against Brotli's 475 B and gzip's 575.5 B (L3). Totals: 318,550 B against Brotli's 326,952 B (L4). Speed: 0.369 MB/s encode, 0.366 MB/s decode on one thread (L5: failed). Memory: 356 files, 3,009,962 B to 723,167 B, 4.162×, byte-identical (M1, M2). Mesh: a 64-antigen share 2.499× smaller than its JSON, forgeries refused before decode (K1–K3). Barrier: B1–B3 held. The mutation gate: 345 of 360 mutants killed, 15 reviewed-equivalent with written reasons.</p>
     <h3>6 · Limits</h3>
-    <p>A shared dictionary saves only what recurs, so new material will not reach 15×. One thread is slow. Against data already Brotli-compressed the gain is small. The dictionary is a versioned dependency that must be kept with the data. The model-facing claims (T1, T2) were not measured in the receipt. LIGHT is not encryption and does not address a stolen key.</p>
+    <p>A shared dictionary saves only what recurs, so new material will not reach 15×. One thread is slow. Against data already Brotli-compressed the gain is small. The dictionary is a versioned dependency that must be kept with the data. The model-facing claims (T1, T2) were not measured in the receipt: the local model timed out on this laptop, and the judge decides them only on the answers the model gives, so they stay unmeasured until it runs. LIGHT is not encryption and does not address a stolen key.</p>
   </div>
 </section>
 

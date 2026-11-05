@@ -11,7 +11,7 @@ const GOOD = Object.freeze({
   codec: { heldFiles: 179, lossless: 0, medianRatioJson: 3.5, smallItems: 120, smallMedianLight: 130, smallMedianBrotli: 300, smallMedianGzip: 400, smallLightBeatsBrotliGzip: 120, totalIn: 5e6, totalLight: 1.4e6, totalBrotli: 1.5e6, totalGzip: 1.8e6, mbpsEncode: 0.8, mbpsDecode: 0.9 },
   memory: { ok: true, files: 354, bytes: 3.7e6, vaultBytes: 1e6, ratio: 3.7, identical: true, mismatched: 0, extra: 0 },
   edges: { pageTest: 'pass' },
-  llm: { ran: true, model: 'qwen2.5:7b', items: 20, medianJsonTokens: 400, medianPackTokens: 300, packWins: 15, medianRatio: 1.3 },
+  llm: { ran: true, model: 'qwen2.5:7b', items: 20, medianJsonTokens: 400, medianPackTokens: 300, packWins: 15, medianRatio: 1.3, t1: { questions: 10, json: 9, light: 0 }, t2: { questions: 10, json: 9, pack: 8 } },
   mesh: { ran: true, k1: { node0: 'signature', node1: 'recognised', node2: 'recognised', sentLight: 1, admittedLight: [1, 1] },
     k2: { unpinned: { status: 403, stage: 'sender' }, tampered: { status: 403, stage: 'signature' }, decodedBefore: 0, decodedAfter: 0 },
     k3: { one: { ratio: 1.5 }, batch: { json: 5000, light: 2000, ratio: 2.5 } } },
@@ -69,9 +69,24 @@ test('K1/K2/K3: held when the mesh ran and passed, null when it did not run', ()
   assert.equal(holds('K3', { mesh: { ...GOOD.mesh, k3: { one: { ratio: 0.9 }, batch: { json: 5000, light: 2000, ratio: 2 } } } }), true, 'the batch, not one antigen, decides');
 });
 
-test('T1/T2: the binary-for-the-model claim fails by design; the dialect holds when the model reads it as well as JSON', () => {
-  assert.equal(holds('T1', {}), false);
+test('T1/T2: judged on the answers the model gave, never on the prediction; the dialect holds when it reads as well as JSON', () => {
+  assert.equal(holds('T1', {}), false, 'no answers from binary LIGHT is a failure, counted');
+  assert.equal(one('T1', GOOD).measured, '0 of 10 questions answered correctly from binary LIGHT (base64), 9 from the same records as JSON (qwen2.5:7b)');
   assert.equal(holds('T1', { llm: { ran: false, why: 'no ollama' } }), null);
+  assert.equal(holds('T1', { llm: { ...GOOD.llm, t1: undefined } }), null, 'a run that asked no questions has not measured T1');
+  assert.equal(one('T1', { llm: { ...GOOD.llm, t1: { questions: 0, json: 0, light: 0 } } }).measured, 'the local model ran, but no questions were asked of records in binary LIGHT');
+  assert.equal(holds('T1', { llm: { ...GOOD.llm, t1: { questions: 10, json: 9, light: 9 } } }), true, 'as many right from LIGHT as from JSON holds');
+  assert.equal(holds('T1', { llm: { ...GOOD.llm, t1: { questions: 10, json: 9, light: 8 } } }), false, 'fewer right than from JSON fails');
+  assert.equal(holds('T1', { llm: { ...GOOD.llm, t1: { questions: 10, json: 0, light: 0 } } }), false, 'none right either way is not answering correctly');
+  assert.equal(holds('T1', { llm: { ...GOOD.llm, t1: { questions: 10, json: 0, light: 1 } } }), true);
+  assert.equal(holds('T2', {}), true);
+  assert.equal(one('T2', GOOD).measured, 'tongue-pack vs minified JSON on 20 record files: 15 cheaper in qwen2.5:7b tokens, median 1.3×; 8 of 10 questions answered correctly from the pack, 9 from JSON');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, t2: { questions: 10, json: 9, pack: 7 } } }), false, 'two fewer right than JSON is not the same answers');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, t2: { questions: 10, json: 8, pack: 9 } } }), true, 'one more right is within one');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, t2: undefined } }), null, 'tokens alone do not measure the claim');
+  assert.match(one('T2', { llm: { ...GOOD.llm, t2: { questions: 0 } } }).measured, /the questions were not asked, so the claim is not yet measured$/);
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, items: 0, packWins: 0 } }), false, 'no record files is not a win');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, t2: undefined, medianRatio: 0.9 } }), false, 'more tokens fails whatever was asked');
   assert.equal(holds('T2', { llm: { ...GOOD.llm, packWins: 9 } }), false, 'fewer than half is not a win');
   assert.equal(holds('T2', { llm: { ...GOOD.llm, medianRatio: 0.9 } }), false);
   assert.equal(holds('T2', { llm: { ran: false } }), null);
@@ -81,6 +96,11 @@ test('C1: full-estate migration is kept FAILED as predicted, with the census cou
   assert.equal(holds('C1', {}), false);
   assert.equal(holds('C1', { census: { ran: false, why: 'x' } }), null);
   assert.match(one('C1', GOOD).measured, /1802 repos.*260 organs are this window/);
+  // compared, not pre-decided: the claim holds only when every organ speaks LIGHT
+  assert.equal(holds('C1', { census: { ...GOOD.census, organsLight: 300 } }), true);
+  assert.equal(one('C1', { census: { ...GOOD.census, organsLight: 300 } }).measured, 'every one of the 300 organs that keep a store or a channel speaks LIGHT (1802 repos, 1160 read here)');
+  assert.equal(holds('C1', { census: { ...GOOD.census, organsLight: 299 } }), false, 'one organ short is not every organ');
+  assert.equal(holds('C1', { census: { ...GOOD.census, organs: 0, organsLight: 0 } }), false, 'no organs counted proves nothing');
 });
 
 test('total: junk claims or facts are failures or unmeasured, never a throw', () => {
@@ -97,7 +117,8 @@ test('total: junk claims or facts are failures or unmeasured, never a throw', ()
 // ── the edges the mutation gate found unguarded (each test below kills one mutant witness reported surviving) ──────
 test('the thresholds hold exactly at the line: 0.5 MB/s each way, ratio 1, half the files, a non-empty set', () => {
   assert.equal(holds('L5', { codec: { ...GOOD.codec, mbpsEncode: 0.5 } }), true, 'encode exactly 0.5 MB/s holds');
-  assert.equal(holds('T2', { llm: { ...GOOD.llm, medianRatio: 1 } }), true, 'a median ratio of exactly 1 holds');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, medianRatio: 1 } }), false, 'a median ratio of exactly 1 is not fewer tokens (the sealed claim says fewer)');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, medianRatio: 1.001 } }), true, 'just over 1 is fewer');
   assert.equal(holds('T2', { llm: { ...GOOD.llm, packWins: 10 } }), true, 'exactly half of 20 files cheaper holds');
   assert.equal(holds('L2', { codec: { ...GOOD.codec, heldFiles: 0 } }), false, 'no held-out files is not lossless');
   assert.equal(holds('L3', { codec: { ...GOOD.codec, smallItems: 0 } }), false, 'no small items is not a win');
