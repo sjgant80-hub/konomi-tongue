@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { judge } from './judge.mjs';
+import { judge, near } from './judge.mjs';
 
 const CLAIMS = JSON.parse(readFileSync(new URL('./claims.json', import.meta.url), 'utf8'));
 const one = (id, facts) => judge({ claims: [CLAIMS.claims.find((c) => c.id === id)] }, facts).verdicts[0];
@@ -92,4 +92,66 @@ test('total: junk claims or facts are failures or unmeasured, never a throw', ()
   assert.equal(j.held, 0);
   assert.ok(j.failed + j.unmeasured === CLAIMS.claims.length);
   assert.doesNotThrow(() => judge(CLAIMS, 'junk'));
+});
+
+// ── the edges the mutation gate found unguarded (each test below kills one mutant witness reported surviving) ──────
+test('the thresholds hold exactly at the line: 0.5 MB/s each way, ratio 1, half the files, a non-empty set', () => {
+  assert.equal(holds('L5', { codec: { ...GOOD.codec, mbpsEncode: 0.5 } }), true, 'encode exactly 0.5 MB/s holds');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, medianRatio: 1 } }), true, 'a median ratio of exactly 1 holds');
+  assert.equal(holds('T2', { llm: { ...GOOD.llm, packWins: 10 } }), true, 'exactly half of 20 files cheaper holds');
+  assert.equal(holds('L2', { codec: { ...GOOD.codec, heldFiles: 0 } }), false, 'no held-out files is not lossless');
+  assert.equal(holds('L3', { codec: { ...GOOD.codec, smallItems: 0 } }), false, 'no small items is not a win');
+  assert.equal(holds('L3', { codec: { ...GOOD.codec, smallMedianGzip: 130 } }), false, 'a tie with gzip is not a win');
+  assert.equal(holds('L4', { codec: { ...GOOD.codec, totalLight: 0 } }), false, 'an empty total is not a win');
+  assert.equal(holds('M1', { memory: { ...GOOD.memory, files: 0 } }), false, 'an empty vault proves nothing');
+});
+
+test('G1: unmeasured until the gate\'s facts are present, then held only when clean', () => {
+  assert.equal(one('G1', GOOD).measured, 'the mutation gate is run by CI (light/*.mjs), not inside this tool');
+  assert.deepEqual([one('G1', { ...GOOD, gate: { clean: true, killed: 9, total: 9 } }).held, one('G1', { ...GOOD, gate: { clean: true, killed: 9, total: 9 } }).measured], [true, '9/9 mutants killed']);
+  assert.equal(one('G1', { ...GOOD, gate: { clean: false, killed: 8, total: 9 } }).held, null);
+});
+
+test('near: within one either way, and never for a value that is not a finite number', () => {
+  assert.equal(near(1, 2), true); assert.equal(near(2, 1), true); assert.equal(near(5, 10), false);
+  assert.equal(near(1, NaN), false); assert.equal(near(NaN, 1), false); assert.equal(near(Infinity, Infinity), false);
+});
+
+// ── B1–B3: the barrier claims, from light/tools/barrier.mjs's facts ─────────────────────────────────────────────────
+const BAR = Object.freeze({ ran: true,
+  b1: { sent: 28, admitted: 0, decoded: 0, named: 28, stages: { size: 25, magic: 3 } },
+  b2: [{ case: 'sender not pinned', admit: false, decoded: false, stage: 'sender' }, { case: "a stranger's key", admit: false, decoded: false, stage: 'signature' },
+    { case: 'signature zeroed', admit: false, decoded: false, stage: 'signature' }, { case: 'one body byte flipped', admit: false, decoded: false, stage: 'signature' }],
+  b3: { sent: 28, exact: 28 } });
+const bar = (over) => ({ ...GOOD, barrier: { ...BAR, ...over } });
+
+test('B1: every raw input refused with a named stage and nothing decoded — and the words say so', () => {
+  assert.equal(one('B1', bar({})).held, true);
+  assert.equal(one('B1', bar({})).measured, '28 test inputs sent to the door as raw bytes: 0 admitted, 0 decoded, 28 refused with a named stage (magic 3, size 25)');
+  assert.equal(one('B1', bar({ b1: { ...BAR.b1, admitted: 1 } })).held, false, 'one admitted fails');
+  assert.equal(one('B1', bar({ b1: { ...BAR.b1, decoded: 1 } })).held, false, 'one decoded fails');
+  assert.equal(one('B1', bar({ b1: { ...BAR.b1, named: 27 } })).held, false, 'an unnamed refusal fails');
+  assert.equal(one('B1', bar({ b1: { ...BAR.b1, sent: 0, named: 0 } })).held, false, 'nothing sent proves nothing');
+  assert.equal(one('B1', { ...GOOD, barrier: { ran: false } }).held, null);
+});
+
+test('B2: knowing the format without the key gets nothing decoded, at the sender or signature stage only', () => {
+  assert.equal(one('B2', bar({})).held, true);
+  assert.equal(one('B2', bar({})).measured, "sender not pinned: refused at sender; a stranger's key: refused at signature; signature zeroed: refused at signature; one body byte flipped: refused at signature; 0 decoded");
+  const with_ = (i, c) => bar({ b2: BAR.b2.map((x, j) => (j === i ? { ...x, ...c } : x)) });
+  assert.equal(one('B2', with_(2, { stage: 'counter' })).held, false, 'refused later than the signature fails');
+  assert.equal(one('B2', with_(1, { decoded: true })).held, false, 'a decoded body fails');
+  assert.match(one('B2', with_(1, { decoded: true })).measured, /a stranger's key: refused at signature, BODY DECODED;.*; 1 decoded$/);
+  assert.equal(one('B2', with_(3, { admit: true })).held, false, 'an admitted forgery fails');
+  assert.equal(one('B2', bar({ b2: BAR.b2.slice(0, 3) })).held, false, 'all four cases or nothing');
+  assert.equal(one('B2', bar({ b2: 'junk' })).held, false);
+  assert.equal(one('B2', GOOD).measured, 'measured by light/tools/barrier.mjs');
+});
+
+test('B3: data carried in a signed packet comes back exactly — the language does not sanitise it', () => {
+  assert.equal(one('B3', bar({})).held, true);
+  assert.match(one('B3', bar({})).measured, /^28 of 28 test inputs carried as data/);
+  assert.equal(one('B3', bar({ b3: { sent: 28, exact: 27 } })).held, false);
+  assert.equal(one('B3', bar({ b3: { sent: 0, exact: 0 } })).held, false, 'nothing sent proves nothing');
+  assert.equal(one('B3', GOOD).held, null);
 });

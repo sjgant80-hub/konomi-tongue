@@ -6,39 +6,55 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }     # full history, so the receipt's seal-at-commit check can reach the sealing commit
+        with: { fetch-depth: 0 }     # full history, so the receipts' seal-at-commit checks can reach the sealing commit
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
 
       - name: the LIGHT kernels' tests, and the page's own gate
-        run: node --test light/codec.test.mjs light/packet.test.mjs light/vault.test.mjs light/sha256.test.mjs light/judge.test.mjs test/light-page.test.mjs
+        run: node --test light/codec.test.mjs light/packet.test.mjs light/vault.test.mjs light/sha256.test.mjs light/judge.test.mjs light/cost.test.mjs test/light-page.test.mjs
 
       - name: the sealed receipt re-checked (seals intact, the judge re-run on its own facts, the codec round-trips)
         run: node light/tools/check.mjs
 
+      - name: the barrier claims B1–B3 measured again here, and the committed receipt must come out the same
+        run: node light/tools/barrier.mjs --check
+
       # pinned — an unpinned gate is a gate somebody else can change
       - name: get the witness gate
         run: git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
-      # The per-mutant test is wrapped in the OS `timeout`, so a mutant that makes a loop hang is killed cleanly by the
-      # OS (counted as killed) and witness never has to run its own process-group kill, which on a Linux runner takes
-      # the whole gate down with it. witness's own --timeout is the higher fallback.
+
+      # Every kernel's mutation gate runs HERE, on GitHub's runner, and must re-derive the counts committed in
+      # light/data/witness.json (light/tools/witness-check.mjs). Each per-mutant test runs under two OS bounds:
+      #   · `timeout -k 5 40` — a mutant that makes a loop hang is killed by the OS (counted killed), so witness never
+      #     has to run its own process-group kill;
+      #   · `ulimit -v 4194304` (4 GiB of address space) — a mutant that grows memory without end fails its allocation
+      #     inside the test (counted killed) instead of eating the runner. Measured 2026-11-05: the codec mutant that
+      #     flips the journal-growth guard (`log.jn === log.J.length` → `!==`) doubles a typed array on every write and
+      #     took the hosted runner from 1 GB to 15.8 GB in 20 s, at which point the runner shut down (exit 143) — that,
+      #     not the CPU, is what killed every earlier attempt to run the codec gate here. Under the cap the same mutant
+      #     dies in its test, and the full codec run takes minutes. witness first runs the unmutated suite under the same
+      #     bounds and refuses to gate if that is not green, so the cap cannot turn an honest run into a false kill.
       - name: witness — sha256 kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/sha256.test.mjs | tee /tmp/w.txt
-          grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in sha256"; exit 1; }
+          node /tmp/witness/witness.mjs mutate light/sha256.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/sha256.test.mjs' > /tmp/w-sha256.json || true
+          node light/tools/witness-check.mjs sha256 /tmp/w-sha256.json
       - name: witness — vault kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/vault.test.mjs | tee /tmp/w.txt
-          grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in vault"; exit 1; }
+          node /tmp/witness/witness.mjs mutate light/vault.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/vault.test.mjs' > /tmp/w-vault.json || true
+          node light/tools/witness-check.mjs vault /tmp/w-vault.json
       - name: witness — packet kernel
         run: |
-          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 60000 --cap 500 --test timeout -k 5 40 node light/packet.test.mjs | tee /tmp/w.txt
-          grep -q '"clean": true' /tmp/w.txt || { echo "::error::mutants survived in packet"; exit 1; }
-      # The codec kernel's mutation gate runs LOCALLY (it is CPU-heavy and reliably SIGTERM-killed on the hosted
-      # runner ~90s in — not a survivor; sha256/vault/packet witness above pass here, and the local codec run is
-      # CLEAN 96/100). Its authoritative result is committed in light/data/witness.json and re-verified here; the
-      # full local run is `node /tmp/witness/witness.mjs mutate light/codec.mjs --test node --test light/codec.test.mjs`.
-      # Same arrangement as break-it's pilot: the heavy run is local, CI re-checks the committed receipt.
-      - name: witness — codec kernel (committed receipt, re-verified; full run is local)
+          node /tmp/witness/witness.mjs mutate light/packet.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/packet.test.mjs' > /tmp/w-packet.json || true
+          node light/tools/witness-check.mjs packet /tmp/w-packet.json
+      - name: witness — judge kernel
         run: |
-          node -e "const w=require('./light/data/witness.json');const c=(w.kernels||[]).find(k=>k.name==='codec');if(!c||!c.clean||c.killed<90){console.error('committed codec witness is not clean',JSON.stringify(c));process.exit(1)}console.log('committed codec witness: '+c.killed+'/'+c.total+', clean; sha256/vault/packet witnessed live above')"
+          node /tmp/witness/witness.mjs mutate light/judge.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/judge.test.mjs' > /tmp/w-judge.json || true
+          node light/tools/witness-check.mjs judge /tmp/w-judge.json
+      - name: witness — cost-case kernel
+        run: |
+          node /tmp/witness/witness.mjs mutate light/cost.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/cost.test.mjs' > /tmp/w-cost.json || true
+          node light/tools/witness-check.mjs cost /tmp/w-cost.json
+      - name: witness — codec kernel (every mutant, on this runner)
+        run: |
+          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/codec.test.mjs' > /tmp/w-codec.json || true
+          node light/tools/witness-check.mjs codec /tmp/w-codec.json

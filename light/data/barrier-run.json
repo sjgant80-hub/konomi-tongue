@@ -1,0 +1,93 @@
+{
+ "kind": "konomi-tongue.light.barrier-receipt",
+ "v": 1,
+ "ran": "2026-11-05T14:11:21.581Z",
+ "node": "v25.7.0",
+ "sealed": [
+  {
+   "path": "light/claims.json",
+   "commit": "ac90c1e34f7847551d99e0d7bac41c934ebff6f4",
+   "sha256": "ce09bbb5944e98612283ce53301d9539c22831101ebd645324c2fac324674898"
+  },
+  {
+   "path": "light/barrier.json",
+   "commit": "ac90c1e34f7847551d99e0d7bac41c934ebff6f4",
+   "sha256": "a706449c07e8ad66d0328d108c9de26a9974b154f077f753e672db3c41d7bf15"
+  }
+ ],
+ "facts": {
+  "barrier": {
+   "ran": true,
+   "corpus": 28,
+   "b1": {
+    "sent": 28,
+    "admitted": 0,
+    "decoded": 0,
+    "named": 28,
+    "stages": {
+     "size": 27,
+     "magic": 1
+    }
+   },
+   "b2": [
+    {
+     "case": "sender not pinned",
+     "admit": false,
+     "decoded": false,
+     "stage": "sender"
+    },
+    {
+     "case": "a stranger's key",
+     "admit": false,
+     "decoded": false,
+     "stage": "signature"
+    },
+    {
+     "case": "signature zeroed",
+     "admit": false,
+     "decoded": false,
+     "stage": "signature"
+    },
+    {
+     "case": "one body byte flipped",
+     "admit": false,
+     "decoded": false,
+     "stage": "signature"
+    }
+   ],
+   "b3": {
+    "sent": 28,
+    "exact": 28
+   }
+  }
+ },
+ "verdicts": [
+  {
+   "id": "B1",
+   "kind": "barrier",
+   "claim": "Bytes in a language the estate shares with the world (the fixed corpus of SQL, script, shell, path, template, JSON, XML and HTTP inputs in light/barrier.json) sent to a LIGHT door are refused before anything decodes or interprets them, each with a named stage and a reason: 0 decoded.",
+   "predicted": "HOLD",
+   "measured": "28 test inputs sent to the door as raw bytes: 0 admitted, 0 decoded, 28 refused with a named stage (magic 1, size 27)",
+   "held": true
+  },
+  {
+   "id": "B2",
+   "kind": "barrier",
+   "claim": "Someone who knows LIGHT's format but not the key gets nothing decoded: a well-formed packet signed by an unpinned key, one with its signature zeroed, and one with a single body byte flipped are each refused at the sender or signature stage.",
+   "predicted": "HOLD",
+   "measured": "sender not pinned: refused at sender; a stranger's key: refused at signature; signature zeroed: refused at signature; one body byte flipped: refused at signature; 0 decoded",
+   "held": true
+  },
+  {
+   "id": "B3",
+   "kind": "barrier",
+   "claim": "LIGHT does not change data: a correctly signed packet carrying each corpus entry as its data decodes to exactly that entry. The language barrier therefore does not remove injection carried as data; only the edge that renders or executes it can.",
+   "predicted": "HOLD (stated so that no page claims the language alone neutralises injection)",
+   "measured": "28 of 28 test inputs carried as data in a correctly signed packet decode back exactly: LIGHT does not change data, so the edge that shows or runs it must make it safe",
+   "held": true
+  }
+ ],
+ "held": 3,
+ "failed": 0,
+ "unmeasured": 0
+}
