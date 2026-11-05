@@ -130,3 +130,18 @@ test('the brochure a buyer needs is on the page: roles, cost case, security, rol
   assert.ok(/getJson\('\.\/vendor\/sovereign-enterprise\/data\/basis\.json'\)/.test(PAGE), 'the basis is the vendored one');
   for (const id of ['cc-pstore', 'cc-pmove', 'cc-pcpu']) assert.match(sec, new RegExp('id="' + id + '" type="number" min="0" step="any" value="0"'), id + ' starts at 0: we never guess the reader\'s price');
 });
+
+test('how far LIGHT has spread is the estate census\'s number, vendored byte for byte, never the stale "one organ"', async () => {
+  const { createHash } = await import('node:crypto');
+  const SOURCE = JSON.parse(read('vendor/SOURCE.json'));
+  for (const f of SOURCE.files) {
+    const bytes = readFileSync(new URL('../' + f.path, import.meta.url));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), f.sha256, f.path + ' is byte for byte what SOURCE.json recorded');
+  }
+  const census = JSON.parse(read('vendor/fall-kit/core/receipts/phase2.json')).facts.local45.census;
+  const risks = HTML.slice(HTML.indexOf('<h3>Risks, answered straight</h3>'), HTML.indexOf('<h3>The case for the board</h3>'));
+  assert.ok(risks.includes(census.publicSpeaking + ' public repositories speak it in their own code and ' + census.throughKitOnly + ' more carry it only through a copy of the kit'), 'the census v2 numbers');
+  assert.ok(risks.includes('light/vendor/fall-kit/core/receipts/phase2.json'), 'and where they come from');
+  assert.ok(!/one organ's channel speaks it so far/.test(HTML), 'the stale count is gone');
+  assert.ok(!/Every message between organs is a signed packet/.test(HTML), 'the lede claims the design, not that every message already is one');
+});

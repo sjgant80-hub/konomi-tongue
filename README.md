@@ -8,7 +8,7 @@ A language the estate's agents grow between themselves, measured in Claude token
 
 ## The result
 
-3 of 11 sealed rules held. Grown to 4723 glyphs, the tongue carried the held-out agent messages in 1.05× fewer Claude tokens and the held-out JSON in 2.72×, against Simon's 15×. Drawn as a picture, the best arm carried 0 bits per token read back at ≥99%, against 6.98 for the best text; the coded messages drawn as pictures came to 2.07× of their English tokens.
+3 of 11 sealed rules held. Grown to 4723 glyphs, the tongue carried the held-out agent messages in 1.05× fewer Claude tokens and the held-out JSON in 2.72×, against Simon's 15×. Drawn as a picture, the best arm carried 0 bits per token read back at ≥99%, against 6.98 for the best text; the coded messages drawn as pictures cost 2.07× fewer tokens than their English.
 
 | Sealed rule | Result | | Predicted |
 |---|---|---|---|
@@ -26,10 +26,15 @@ A language the estate's agents grow between themselves, measured in Claude token
 
 ## What it is
 
+The live page explains it end to end — what it is, start here, a live JSON pack, how it works (diagrams traced from the record), the receipts, the blueprint, the cost case for a team, adoption steps and a white paper: https://sjgant80-hub.github.io/konomi-tongue/
+
 - `tongue.mjs` — the kernel: units, the growing nested dictionary (encode/decode, lossless), JSON mode (shared schema, glyph keys and values), the picture channel's payloads and grading, misread-driven alphabet evolution. Pure; witness-gated.
+- `tongue-pack.mjs` — the shipped JSON mode: a value packed with its own legend, switched on only where it measured cheaper. Pure; witness-gated.
+- `tongue-cost.mjs` — the page's cost case: the sourced model price, the ship record's shares, the reader's inputs. Pure; witness-gated.
 - `tools/price.mjs` — every candidate glyph priced in Claude tokens (data/prices.json).
 - `tools/corpus.mjs`, `tools/json-corpus.mjs` — the agents' messages (private, pinned by sha256) and the estate's JSON (data/json/), split before measuring.
-- `tools/seal.mjs`, `tools/run.mjs`, `tools/make-page.mjs` — the seal, the run and its CI verification, and this README and the page.
+- `tools/seal.mjs`, `tools/run.mjs`, `tools/ship.mjs`, `tools/make-page.mjs` — the seal, the run and its CI verification, the ship measurement, and this README and the page.
+- `tools/witness-check.mjs` — CI fails unless each kernel's mutation run on GitHub's runner is clean and re-derives `data/witness.json` (118 of 118 killed, none baselined).
 
 ## LIGHT
 

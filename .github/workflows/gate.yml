@@ -42,6 +42,8 @@ jobs:
           node tools/make-page.mjs
           git diff --exit-code index.html README.md llms.txt
           if [ -f data/run.json ]; then git diff --exit-code data/verdict.json; fi
+      - name: the root page's own gate — it explains itself, every number is the record's, its script really runs
+        run: node --test test/tongue-page.test.mjs
       - name: no untraced price anywhere
         run: |
           git clone --quiet https://github.com/sjgant80-hub/fallstack /tmp/fallstack && git -C /tmp/fallstack checkout --quiet 4eeb828

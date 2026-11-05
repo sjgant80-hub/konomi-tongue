@@ -1,7 +1,7 @@
 {
  "kind": "konomi-tongue.light.vendor",
  "v": 1,
- "note": "Copied byte for byte with git show (not a working copy). Never edit a vendored file; re-vendor and update the hash.",
+ "note": "Copied byte for byte from the source commit (git show, or the raw blob through the GitHub API, checked against the blob hash), never a working copy. Never edit a vendored file; re-vendor and update the hash.",
  "files": [
   {
    "path": "light/vendor/sovereign-enterprise/data/basis.json",
@@ -10,7 +10,17 @@
    "src": "vendor/ai-first-company/vendor/sovereign-enterprise/data/basis.json",
    "upstream": "sjgant80-hub/sovereign-enterprise data/basis.json, via sjgant80-hub/ai-first-company",
    "sha256": "83e9c2effa2f81596dcfa7110f030940032c1910cdf928d27d628ae59d73bb42",
-   "what": "every external figure the cost case reads, each with its source (light/cost.mjs reads electricity, processor power and CPI)"
+   "what": "every external figure the cost cases read, each with its source (light/cost.mjs reads electricity, processor power and CPI; tongue-cost.mjs at the root reads the frontier model's input price and the GBP/USD rate)"
+  },
+  {
+   "path": "light/vendor/fall-kit/core/receipts/phase2.json",
+   "from": "sjgant80-hub/fall-kit",
+   "commit": "349af540b7b82998a2a6a6b1dbd9ed2e1370b3ca",
+   "src": "core/receipts/phase2.json",
+   "upstream": "sjgant80-hub/fall-kit core/receipts/phase2.json (go-live Phase 2, the census v2 that supersedes C1 here)",
+   "sha256": "1ff26a050a889780afe18c138732b06743f23df48d0786029e018e0413da9fb5",
+   "gitBlob": "2a44a9c95f19633441f230a6da786603e7390dc8",
+   "what": "the estate-wide census v2 (own code only) the LIGHT page quotes for how many organs speak LIGHT; read by test/light-page.test.mjs, never edited"
   }
  ]
 }

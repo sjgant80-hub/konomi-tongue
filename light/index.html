@@ -118,7 +118,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 <main class="wrap" id="top">
 <h1>LIGHT · the estate's inner language</h1>
-<p class="lede">One lossless codec every organ speaks between themselves. Memory, organ-to-organ messages and records are carried in <b>LIGHT</b> — a coder primed with a shared dictionary grown from the estate's own files, so what both sides already know costs almost nothing — and translated to JSON or text only at the <b>edges</b> where the estate meets the outside world. Every message between organs is a signed packet, checked before a byte of it is read.</p>
+<p class="lede">One lossless codec every organ speaks between themselves. Memory, organ-to-organ messages and records are carried in <b>LIGHT</b> — a coder primed with a shared dictionary grown from the estate's own files, so what both sides already know costs almost nothing — and translated to JSON or text only at the <b>edges</b> where the estate meets the outside world. A message between organs travels as a signed packet, checked before a byte of it is read.</p>
 <p class="sub">one codec · shared dictionary · signed packets verified before decode · many files as one vault · <span id="kstat" class="pill">starting the kernel…</span></p>
 <div class="ctas">
   <a class="btn go" href="#try">Compress something, live</a>
@@ -137,7 +137,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <h2 id="what-h"><small>What it is</small>A language the organs already half-know</h2>
   <p>Compression is prediction: the better you can guess the next byte, the fewer bits you spend on it. LIGHT is a coder that guesses from what it has seen, <b>primed before the first byte with a dictionary grown from the estate's own files</b> — the headings, the record shapes, the credit lines the estate writes again and again. A message both sides already partly know is cheap; that is what it means for two organs to "speak the same language", measured in bytes.</p>
   <ul>
-    <li><b>One codec, everywhere inside.</b> The same <span class="mono">codec.mjs</span> in every organ: the memory on disk, the records a node keeps, the messages organs send each other. Standard forms (JSON, text, what a human reads) appear only at the edges.</li>
+    <li><b>One codec, everywhere inside.</b> The same <span class="mono">codec.mjs</span> in every organ that speaks it: the memory on disk, the records a node keeps, the messages organs send each other. Standard forms (JSON, text, what a human reads) appear only at the edges.</li>
     <li><b>Signed packets, checked before decode.</b> An organ-to-organ message is a LIGHT packet carrying an Ed25519 signature. The door checks size, format, the pinned sender, the signature and a replay counter on the raw bytes, and only then decodes the body. Bytes from someone without the key never reach the decoder.</li>
     <li><b>Many files as one vault.</b> A whole store — the memory, a folder of records — packs into one solid LIGHT stream, so what the files share is paid for once, and every file's SHA-256 is checked on the way out.</li>
     <li><b>Honest about the number.</b> The spec set 15× denser than JSON. It is not 15×; on 179 held-out files the median is 3.4×. That claim is kept, failed, with the measured number — <a href="#receipts">below</a>. So is the speed claim, which also failed.</li>
@@ -401,8 +401,9 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <li><b>If you already compress, the bill barely moves.</b> Against Brotli the total saving on the held-out files was 2.6%.</li>
     <li><b>The dictionary is a dependency.</b> Lose it and you cannot decode what was written with it. Its id is in every packet and vault; keep every version you ever wrote with, beside the data.</li>
     <li><b>The format is versioned and frozen.</b> A change to the model is a new version (the tests pin the exact output bytes); old versions must stay readable.</li>
-    <li><b>It is young.</b> In the estate one organ's channel speaks it so far (break-it's immune mesh, where a 64-antigen share went from 11,667 B as JSON to 4,669 B as LIGHT). Start with one channel, as it did.</li>
+    <li><b>It is young.</b> In the estate, 5 public repositories speak it in their own code and 95 more carry it only through a copy of the kit (fall-kit's census v2, which counts own code only: <span class="mono">light/vendor/fall-kit/core/receipts/phase2.json</span>, vendored byte for byte). The first channel was break-it's immune mesh, where a 64-antigen share went from 11,667 B as JSON to 4,669 B as LIGHT. Start with one channel, as it did.</li>
     <li><b>It does not stop a stolen key, and it is not encryption.</b> See <a href="#scope">honest scope</a>.</li>
+    <li><b>No independent security review yet.</b> No outside party has audited the codec or the door. The assurance is what you can re-run yourself — the tests, the receipts, the barrier claims and the mutation gate — so commission your own review before LIGHT carries anything sensitive.</li>
   </ul>
 
   <h3>The case for the board</h3>
