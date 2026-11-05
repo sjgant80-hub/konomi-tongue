@@ -16,8 +16,8 @@ jobs:
         run: (while true; do echo "$(date +%T) $(free -m | awk '/Mem:/{print "used="$3"MB avail="$7"MB"}')"; sleep 5; done) > /tmp/mem.log 2>&1 &
       - name: witness — codec, capped
         run: |
-          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/codec.test.mjs' > /tmp/codec.json
-          code=$?; echo "exit $code"; head -c 3000 /tmp/codec.json; exit $code
+          node /tmp/witness/witness.mjs mutate light/codec.mjs --timeout 60000 --cap 500 --test bash -c 'ulimit -v 4194304; exec timeout -k 5 40 node light/codec.test.mjs' > /tmp/codec.json && code=0 || code=$?
+          echo "exit $code"; head -c 3000 /tmp/codec.json; exit $code
       - if: always()
         run: tail -n 400 /tmp/mem.log | awk 'NR%3==1'
   # B: diagnosis — mutant 29 alone (journal growth guard === flipped to !==), uncapped, memory logged every second
