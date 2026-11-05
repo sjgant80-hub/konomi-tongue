@@ -2,8 +2,8 @@
  "kind": "konomi-tongue.light.witness",
  "v": 2,
  "clean": true,
- "killed": 333,
- "total": 348,
+ "killed": 336,
+ "total": 351,
  "note": "Every kernel's mutation gate (witness v0.6, pinned) runs on GitHub's runner on every push (.github/workflows/light.yml), and light/tools/witness-check.mjs fails the build unless that run is clean AND re-derives exactly these counts. Each per-mutant test runs under an OS timeout and a 4 GiB address-space cap. The codec gate used to run only on this laptop: the hosted runner shut down ~90-150 s into it, and on 2026-11-05 the cause was measured, not guessed: the mutant that flips the journal-growth guard (log.jn === log.J.length to !==) took the runner from 1 GB to 15.8 GB of RAM in 20 s. Under the cap that mutant dies in its own test, and the full codec run passes on the runner with the same 96/100 the local run recorded. The reviewed-equivalent survivors, each with its written reason, are in light/witness.baseline.json.",
  "kernels": [
   { "name": "codec", "killed": 96, "total": 100, "ignored": 4, "clean": true },
@@ -11,6 +11,6 @@
   { "name": "vault", "killed": 54, "total": 61, "ignored": 7, "clean": true },
   { "name": "sha256", "killed": 9, "total": 10, "ignored": 1, "clean": true },
   { "name": "judge", "killed": 90, "total": 90, "ignored": 0, "clean": true },
-  { "name": "cost", "killed": 27, "total": 27, "ignored": 0, "clean": true }
+  { "name": "cost", "killed": 30, "total": 30, "ignored": 0, "clean": true }
  ]
 }

@@ -113,14 +113,20 @@ test('the numbers on the page are the receipts\' numbers, never typed from memor
   assert.ok(/It failed its 15× target and its 0\.5 MB\/s speed target/.test(HTML), 'the white paper names both failed targets');
 });
 
+test('the primary button is legible: the accent fill wins over the plain button style, in both themes', () => {
+  const style = HTML.match(/<style>([\s\S]*?)<\/style>/)[1];
+  assert.match(style, /a\.btn\.go\{background:var\(--accent\);border-color:var\(--accent\);color:var\(--onaccent\)/);
+  for (const block of [style.match(/:root\{([^}]*)\}/)[1], style.match(/:root\[data-theme="light"\]\{([^}]*)\}/)[1]]) assert.ok(block.includes('--onaccent:'), 'the text on the accent is set per theme');
+});
+
 test('the brochure a buyer needs is on the page: roles, cost case, security, roll-out, ownership, risks, board', () => {
   const sec = HTML.slice(HTML.indexOf('<section id="business"'), HTML.indexOf('<section id="adoption"'));
   for (const role of ['CEO', 'CFO', 'COO', 'CTO / CISO', 'Engineering teams', 'Security, data and compliance teams']) assert.ok(sec.includes('<h4>' + role + '</h4>'), role);
   for (const h of ['The cost case', 'Against what you use now', 'Security and data protection', 'Roll-out', 'Ownership, support, exit', 'Risks, answered straight', 'The case for the board']) assert.ok(sec.includes(h), h);
   assert.ok(sec.includes('href="https://www.ai-nativesolutions.com"') && /agreed per deployment/.test(sec) && /keeps running without us/.test(sec), 'supplier, terms, and that it runs without us');
   assert.ok(/UK GDPR/.test(sec) && /neither anonymisation nor encryption/.test(sec), 'data protection answered straight');
-  for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-years', 'cc-comp', 'cc-rows', 'cc-verdict', 'cc-sources']) assert.ok(sec.includes('id="' + id + '"'), id);
+  for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-pcpu', 'cc-years', 'cc-comp', 'cc-rows', 'cc-verdict', 'cc-sources']) assert.ok(sec.includes('id="' + id + '"'), id);
   assert.ok(/from '\.\/cost\.mjs'/.test(PAGE) && /lightCase\(basis, m, input\)/.test(PAGE), 'the calculator runs the gated kernel');
   assert.ok(/getJson\('\.\/vendor\/sovereign-enterprise\/data\/basis\.json'\)/.test(PAGE), 'the basis is the vendored one');
-  for (const id of ['cc-pstore', 'cc-pmove']) assert.match(sec, new RegExp('id="' + id + '" type="number" min="0" step="any" value="0"'), id + ' starts at 0: we never guess the reader\'s price');
+  for (const id of ['cc-pstore', 'cc-pmove', 'cc-pcpu']) assert.match(sec, new RegExp('id="' + id + '" type="number" min="0" step="any" value="0"'), id + ' starts at 0: we never guess the reader\'s price');
 });

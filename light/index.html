@@ -94,7 +94,7 @@ summary{cursor:pointer;font-weight:600}
 footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;color:var(--dim);font-size:13px}
 a.btn{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:7px;font:13px var(--sans);text-decoration:none}
 a.btn:hover{border-color:var(--accent)}
-a.btn.go{color:var(--onaccent)}
+a.btn.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
 .grid .panel{margin:0}.grid .panel p{margin:0;font-size:14.5px}
 .inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 12px}
@@ -281,9 +281,9 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <tr><td>vault</td><td class="mono">light/vault.mjs</td><td>many files as one solid stream, every SHA-256 checked, paths kept inside their folder</td><td class="mono" data-k="vault">54 / 61 · 7 reviewed</td></tr>
     <tr><td>sha256</td><td class="mono">light/sha256.mjs</td><td>the one hash, for dictionary ids and vault entries</td><td class="mono" data-k="sha256">9 / 10 · 1 reviewed</td></tr>
     <tr><td>judge</td><td class="mono">light/judge.mjs</td><td>each sealed claim held against the measured facts, by rules fixed in code</td><td class="mono" data-k="judge">90 / 90</td></tr>
-    <tr><td>cost</td><td class="mono">light/cost.mjs</td><td>the cost case below: sourced figures, the receipt's figures, your inputs</td><td class="mono" data-k="cost">27 / 27</td></tr>
+    <tr><td>cost</td><td class="mono">light/cost.mjs</td><td>the cost case below: sourced figures, the receipt's figures, your inputs</td><td class="mono" data-k="cost">30 / 30</td></tr>
   </tbody></table></div>
-  <p class="dim" id="bp-foot">CLEAN: 333 of 348 mutants killed; the other 15 reviewed-equivalent, each with a written reason.</p>
+  <p class="dim" id="bp-foot">CLEAN: 336 of 351 mutants killed; the other 15 reviewed-equivalent, each with a written reason.</p>
   <h3>Around the kernels</h3>
   <div class="tablewrap"><table><thead><tr><th>organ</th><th>what it does</th><th>how it is checked</th></tr></thead><tbody>
     <tr><td class="mono">light/claims.json · light/barrier.json</td><td>the 19 sealed claims, and the 28 sealed test inputs for B1–B4</td><td>committed at ac90c1e before any code; every tool refuses to run if either differs from that commit</td></tr>
@@ -357,12 +357,13 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
       <div><label for="cc-moved">data your systems send each other (GB a month)</label><input id="cc-moved" type="number" min="0" step="any" value="20"></div>
       <div><label for="cc-pstore">your price to keep 1 GB for a month (£)</label><input id="cc-pstore" type="number" min="0" step="any" value="0"></div>
       <div><label for="cc-pmove">your price to send 1 GB (£)</label><input id="cc-pmove" type="number" min="0" step="any" value="0"></div>
+      <div><label for="cc-pcpu">your price per core-hour, if you rent the CPU (£)</label><input id="cc-pcpu" type="number" min="0" step="any" value="0"></div>
       <div><label for="cc-years">years</label><input id="cc-years" type="number" min="1" max="10" step="1" value="3"></div>
       <div><label for="cc-comp">already Brotli-compressed today?</label><select id="cc-comp"><option value="no">no — it is raw JSON / text</option><option value="yes">yes — Brotli or similar</option></select></div>
     </div>
     <p id="cc-verdict" class="gold" style="margin-top:12px">computing…</p>
     <div class="tablewrap"><table><thead><tr><th>line</th><th>today</th><th>with LIGHT</th></tr></thead><tbody id="cc-rows"><tr><td class="dim" colspan="3">loading the basis and the receipt…</td></tr></tbody></table></div>
-    <p class="dim" style="font-size:12.5px">How it is worked out: against raw data, LIGHT keeps 1 ÷ the median held-out ratio of today's bytes (the floor — the totals ratio is higher); against Brotli-compressed data, LIGHT's total over Brotli's total on the same held-out files (the smaller win). CPU is the measured one-thread speed, each GB sent encoded once and decoded once, and your store converted once; reads of the store are not counted. Electricity is that CPU time at a laptop processor's base power. Money rises by CPI each year after the first.</p>
+    <p class="dim" style="font-size:12.5px">How it is worked out: against raw data, LIGHT keeps 1 ÷ the median held-out ratio of today's bytes (the floor — the totals ratio is higher); against Brotli-compressed data, LIGHT's total over Brotli's total on the same held-out files (the smaller win). CPU is the measured one-thread speed, each GB sent encoded once and decoded once, and your store converted once; reads of the store are not counted. On machines you own the CPU is costed as electricity at a laptop processor's base power; if you rent CPU, type your price per core-hour and it replaces the electricity, which is inside the rent. Money rises by CPI each year after the first. Not counted: your team's time to roll it out (the <a href="#adoption">Adoption</a> steps), which is yours to estimate.</p>
     <h4 style="margin-top:12px">where every figure comes from</h4>
     <ul id="cc-sources" class="dim" style="font-size:13px"><li>loading…</li></ul>
   </div>
@@ -374,6 +375,8 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <ul>
     <li><b>Where the data is.</b> On your machines. The kernels do no I/O, read no clock and call no network; this page requests only its own files under a self-only content security policy.</li>
     <li><b>Who sent it.</b> Ed25519 signatures over a fixed domain, the header and the body; senders pinned by key; a counter that refuses replays and reordering; all checked on the raw bytes, and the decoder is never called for a refused packet.</li>
+    <li><b>Keys.</b> LIGHT neither makes nor stores keys: your door supplies the pinned public key for each sender and the verify function, so private keys stay in the key store you already run.</li>
+    <li><b>Bounded before it is read.</b> A packet is at most 1 MiB and a body may claim at most 4 MiB by default (you can set lower), both checked before decoding; and because the signature is checked first, a sender without a pinned key cannot make you spend any decode time at all.</li>
     <li><b>Whether it changed.</b> The codec stores a 4-byte check of the input and returns the exact bytes or nothing; the vault stores each file's SHA-256 and refuses the whole vault if one differs; vault paths cannot reach outside their folder.</li>
     <li><b>Personal data (UK GDPR).</b> LIGHT is neither anonymisation nor encryption: personal data in LIGHT is still personal data, and your controller duties are unchanged. A dictionary grown from your files holds fragments of them — treat it with the same care as the files it was grown from, and share it only with systems allowed to read them.</li>
     <li><b>Assurance you can re-run.</b> The source is MIT and open; the tests, the receipts and the mutation gate run on GitHub's runner on every push, and on your own machine with the commands in <a href="#start">Start here</a>.</li>
@@ -386,7 +389,8 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <ul>
     <li><b>Supplied by</b> <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; contact is through that site.</li>
     <li><b>Support, SLA, warranty and liability</b> are agreed per deployment, in each deployment's agreement.</li>
-    <li><b>Licence:</b> MIT — no licence fee. You hold the source; it keeps running without us.</li>
+    <li><b>Licence:</b> MIT — no licence fee (LICENSE and NOTICE in the repository). You hold the source; it keeps running without us.</li>
+    <li><b>Your dictionary is yours.</b> The dictionary shipped here is the estate's own, grown from its public files; your team grows its own from your files, and it never leaves your machines.</li>
     <li><b>Exit:</b> decode everything back to the original bytes with the dictionary it was written with. Lossless, so leaving costs one decode pass and nothing is lost.</li>
   </ul>
 
@@ -435,7 +439,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h3>4 · Method</h3>
     <p>The claims and the barrier corpus were committed (ac90c1e) before the codec, the door or any measuring code. Material is every git-tracked JSON and Markdown file of up to 256 KB in the estate's public clones, split by last-commit date into TRAIN and HELD-OUT; the dictionary and every tuning choice read TRAIN only. A pure judge, itself mutation-gated, holds each claim against the measured facts; CI re-runs the judge on the receipt's own facts, re-checks every seal, measures the barrier claims again and runs the mutation gate over every kernel on GitHub's runner.</p>
     <h3>5 · Results</h3>
-    <p>Median 3.416× over 179 held-out files (L1, 15×: failed, as predicted). 0 round-trip failures (L2). Small messages: median 430 B against Brotli's 475 B and gzip's 575.5 B (L3). Totals: 318,550 B against Brotli's 326,952 B (L4). Speed: 0.369 MB/s encode, 0.366 MB/s decode on one thread (L5: failed). Memory: 356 files, 3,009,962 B to 723,167 B, 4.162×, byte-identical (M1, M2). Mesh: a 64-antigen share 2.499× smaller than its JSON, forgeries refused before decode (K1–K3). Barrier: B1–B3 held. The mutation gate: 333 of 348 mutants killed, 15 reviewed-equivalent with written reasons.</p>
+    <p>Median 3.416× over 179 held-out files (L1, 15×: failed, as predicted). 0 round-trip failures (L2). Small messages: median 430 B against Brotli's 475 B and gzip's 575.5 B (L3). Totals: 318,550 B against Brotli's 326,952 B (L4). Speed: 0.369 MB/s encode, 0.366 MB/s decode on one thread (L5: failed). Memory: 356 files, 3,009,962 B to 723,167 B, 4.162×, byte-identical (M1, M2). Mesh: a 64-antigen share 2.499× smaller than its JSON, forgeries refused before decode (K1–K3). Barrier: B1–B3 held. The mutation gate: 336 of 351 mutants killed, 15 reviewed-equivalent with written reasons.</p>
     <h3>6 · Limits</h3>
     <p>A shared dictionary saves only what recurs, so new material will not reach 15×. One thread is slow. Against data already Brotli-compressed the gain is small. The dictionary is a versioned dependency that must be kept with the data. The model-facing claims (T1, T2) were not measured in the receipt. LIGHT is not encryption and does not address a stolen key.</p>
   </div>

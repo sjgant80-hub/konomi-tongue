@@ -147,6 +147,7 @@ async function receipts() {
 // ── the cost case: the gated kernel, the sourced basis, the receipt, the reader's own numbers ────────────────────
 const gbp = (x) => '£' + Number(x).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const gb = (x) => Number(x).toLocaleString('en-GB', { maximumFractionDigits: 2 }) + ' GB';
+const USED = { electricityPencePerKwh: 'the price of each kWh the coding uses', laptopExtraWatts: 'the extra draw while one core codes, on a machine you own', cpi: 'the rise in every price for each year after the first' };
 async function costCase(run) {
   const basis = await getJson('./vendor/sovereign-enterprise/data/basis.json');
   const m = measuredOf(run);
@@ -154,7 +155,7 @@ async function costCase(run) {
   const src = $('cc-sources'); src.textContent = '';
   for (const s of sourcesOf(basis)) {
     const li = document.createElement('li'), a = document.createElement('a');
-    li.textContent = s.key + ' = ' + s.value + ' — ' + (s.what || '') + ' — ';
+    li.textContent = s.key + ' = ' + s.value + ' — ' + (s.what || '') + ' — used here as ' + (USED[s.key] || 'an input') + ' — ';
     a.textContent = 'source'; if (/^https:\/\//.test(String(s.source))) a.href = s.source; a.rel = 'noreferrer';
     li.appendChild(a); src.appendChild(li);
   }
@@ -164,10 +165,10 @@ async function costCase(run) {
   const li2 = document.createElement('li'); li2.textContent = 'Everything else in the calculator is yours: what you keep, what you send, what you pay.'; src.appendChild(li2);
   const num = (id) => { const v = $(id).value.trim(); return v === '' ? NaN : Number(v); };
   const run1 = () => {
-    const input = { storedGb: num('cc-stored'), movedGbPerMonth: num('cc-moved'), pricePerGbMonth: num('cc-pstore'), pricePerGbMoved: num('cc-pmove'), years: num('cc-years'), compressedToday: $('cc-comp').value === 'yes' };
+    const input = { storedGb: num('cc-stored'), movedGbPerMonth: num('cc-moved'), pricePerGbMonth: num('cc-pstore'), pricePerGbMoved: num('cc-pmove'), pricePerCoreHour: num('cc-pcpu'), years: num('cc-years'), compressedToday: $('cc-comp').value === 'yes' };
     const r = lightCase(basis, m, input);
     if (!r.ok) { $('cc-verdict').textContent = 'Check the inputs: ' + r.why + '.'; $('cc-rows').innerHTML = ''; return; }
-    const priced = input.pricePerGbMonth > 0 || input.pricePerGbMoved > 0;
+    const priced = input.pricePerGbMonth > 0 || input.pricePerGbMoved > 0 || input.pricePerCoreHour > 0;
     const yrs = r.inputs.years + ' year' + (r.inputs.years === 1 ? '' : 's');
     $('cc-verdict').textContent = !priced
       ? 'With no prices typed, only the bytes and the CPU change: ' + gb(r.gb.storedSaved) + ' less to keep, ' + gb(r.gb.movedSavedPerMonth) + ' a month less to send, for ' + n0(r.cpu.coreHoursPerYear) + ' core-hours a year of coding. Type what you pay per GB to see money.'
@@ -179,13 +180,13 @@ async function costCase(run) {
       row('data sent a month', gb(r.inputs.movedGbPerMonth), gb(r.gb.movedLightPerMonth)),
       row('keeping it, a year', gbp(r.lines.storage.today), gbp(r.lines.storage.light)),
       row('sending it, a year', gbp(r.lines.transfer.today), gbp(r.lines.transfer.light)),
-      row('CPU to code what is sent, a year', '—', n0(r.cpu.coreHoursPerYear) + ' core-hours · ' + gbp(r.lines.powerPerYear)),
-      row('CPU to convert the store, once', '—', n0(r.cpu.coreHoursOnce) + ' core-hours · ' + gbp(r.lines.powerOnce)),
+      row('CPU to code what is sent, a year', '—', n0(r.cpu.coreHoursPerYear) + ' core-hours · ' + gbp(r.lines.cpuPerYear) + (r.cpu.rented ? ' rented' : ' of electricity')),
+      row('CPU to convert the store, once', '—', n0(r.cpu.coreHoursOnce) + ' core-hours · ' + gbp(r.lines.cpuOnce) + (r.cpu.rented ? ' rented' : ' of electricity')),
       row('a year, all in', gbp(r.perYear.today), gbp(r.perYear.light)),
       row('over ' + yrs + ' (CPI each later year)', gbp(r.over.today), gbp(r.over.light)),
     ].join('');
   };
-  for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-years']) $(id).addEventListener('input', run1);
+  for (const id of ['cc-stored', 'cc-moved', 'cc-pstore', 'cc-pmove', 'cc-pcpu', 'cc-years']) $(id).addEventListener('input', run1);
   $('cc-comp').addEventListener('change', run1);
   run1();
 }

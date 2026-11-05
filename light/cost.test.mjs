@@ -34,8 +34,8 @@ test('the default case: GB saved and core-hours, and no money until the reader g
   assert.deepEqual(r.inputs, DEFAULTS);
   assert.equal(r.keep, 0.2927);
   assert.deepEqual(r.gb, { storedLight: 29.27, storedSaved: 70.73, movedLightPerMonth: 5.85, movedSavedPerMonth: 14.15 });
-  assert.deepEqual(r.cpu, { coreHoursPerYear: 362.8, coreHoursOnce: 75.3 });
-  assert.deepEqual(r.lines, { storage: { today: 0, light: 0 }, transfer: { today: 0, light: 0 }, powerPerYear: 1.33, powerOnce: 0.28 });
+  assert.deepEqual(r.cpu, { coreHoursPerYear: 362.8, coreHoursOnce: 75.3, rented: false });
+  assert.deepEqual(r.lines, { storage: { today: 0, light: 0 }, transfer: { today: 0, light: 0 }, powerPerYear: 1.33, powerOnce: 0.28, rentPerYear: 0, rentOnce: 0, cpuPerYear: 1.33, cpuOnce: 0.28 });
   assert.deepEqual([r.perYear, r.over, r.savingPerYear, r.savingOver], [{ today: 0, light: 1.33 }, { today: 0, light: 4.39 }, -1.33, -4.39]);
 });
 
@@ -52,7 +52,7 @@ test('already Brotli-compressed: the win is the small one, and the CPU it costs 
   const r = lightCase(BASIS, M, { ...PRICED, compressedToday: true });
   assert.equal(r.keep, 0.9743);
   assert.deepEqual(r.gb, { storedLight: 97.43, storedSaved: 2.57, movedLightPerMonth: 19.49, movedSavedPerMonth: 0.51 });
-  assert.deepEqual(r.cpu, { coreHoursPerYear: 2166.2, coreHoursOnce: 449.4 });
+  assert.deepEqual(r.cpu, { coreHoursPerYear: 2166.2, coreHoursOnce: 449.4, rented: false });
   assert.deepEqual([r.lines.powerPerYear, r.lines.powerOnce], [7.96, 1.65]);
   assert.deepEqual([r.perYear, r.savingPerYear, r.savingOver], [{ today: 40.8, light: 47.71 }, -6.91, -23.03]);
 });
@@ -63,9 +63,21 @@ test('the figures move with the basis and the receipt, not with anything typed',
   const watts = lightCase(base({ laptopExtraWatts: { ...BASIS.laptopExtraWatts, value: 30 } }), M, {});
   assert.equal(watts.lines.powerPerYear, Math.round(362.8 * 30 / 1000 * 24.51 / 100 * 100) / 100);
   const fast = lightCase(BASIS, { ...M, mbpsEncode: 1, mbpsDecode: 2 }, {});
-  assert.deepEqual(fast.cpu, { coreHoursPerYear: Math.round((240000 / 1 + 240000 / 2) / 3600 * 10) / 10, coreHoursOnce: Math.round(100000 / 3600 * 10) / 10 });
+  assert.deepEqual(fast.cpu, { coreHoursPerYear: Math.round((240000 / 1 + 240000 / 2) / 3600 * 10) / 10, coreHoursOnce: Math.round(100000 / 3600 * 10) / 10, rented: false });
   assert.equal(lightCase(BASIS, { ...M, ratio: 2 }, {}).gb.storedLight, 50);
   assert.equal(lightCase(base({ cpi: { ...BASIS.cpi, value: 0 } }), M, { ...PRICED, years: 2 }).over.today, 81.6);
+});
+
+test('rented CPU: the reader\'s own price per core-hour replaces the electricity, never added on top of it', () => {
+  const r = lightCase(BASIS, M, { ...PRICED, pricePerCoreHour: 0.05 });
+  assert.equal(r.cpu.rented, true);
+  assert.deepEqual([r.lines.rentPerYear, r.lines.rentOnce, r.lines.cpuPerYear, r.lines.cpuOnce], [18.14, 3.77, 18.14, 3.77]);
+  assert.deepEqual([r.lines.powerPerYear, r.lines.powerOnce], [1.33, 0.28], 'the electricity is still shown, for comparison');
+  assert.deepEqual(r.perYear, { today: 40.8, light: 30.09 });
+  assert.deepEqual(r.over, { today: 126.23, light: 96.87 });
+  assert.deepEqual([r.savingPerYear, r.savingOver], [10.71, 29.36]);
+  const tiny = lightCase(BASIS, M, { pricePerCoreHour: 0.0001 });
+  assert.deepEqual([tiny.cpu.rented, tiny.lines.cpuPerYear], [true, 0.04], 'any price above 0 means the CPU is rented');
 });
 
 test('over: the first year flat, CPI on each later year', () => {
@@ -75,7 +87,7 @@ test('over: the first year flat, CPI on each later year', () => {
 });
 
 test('boundaries hold at both ends of every input', () => {
-  for (const ok of [{ storedGb: 0 }, { storedGb: MAX_GB }, { movedGbPerMonth: 0 }, { movedGbPerMonth: MAX_GB }, { pricePerGbMonth: MAX_PRICE }, { pricePerGbMoved: MAX_PRICE }, { years: 1 }, { years: 10 }, { compressedToday: true }]) {
+  for (const ok of [{ storedGb: 0 }, { storedGb: MAX_GB }, { movedGbPerMonth: 0 }, { movedGbPerMonth: MAX_GB }, { pricePerGbMonth: MAX_PRICE }, { pricePerGbMoved: MAX_PRICE }, { pricePerCoreHour: MAX_PRICE }, { years: 1 }, { years: 10 }, { compressedToday: true }]) {
     assert.equal(lightCase(BASIS, M, ok).ok, true, JSON.stringify(ok));
   }
   assert.equal(lightCase(BASIS, M, { years: 1, ...PRICED }).over.today, 40.8);
@@ -93,6 +105,8 @@ test('each bad input refused with its reason', () => {
   assert.equal(why({ pricePerGbMonth: -0.01 }), 'your price per GB-month: 0 to 1000');
   assert.equal(why({ pricePerGbMoved: MAX_PRICE + 0.01 }), 'your price per GB sent: 0 to 1000');
   assert.equal(why({ pricePerGbMoved: Infinity }), 'your price per GB sent: 0 to 1000');
+  assert.equal(why({ pricePerCoreHour: MAX_PRICE + 0.01 }), 'your price per core-hour: 0 to 1000');
+  assert.equal(why({ pricePerCoreHour: -1 }), 'your price per core-hour: 0 to 1000');
   assert.equal(why({ compressedToday: 'yes' }), 'already compressed today: yes or no');
   assert.equal(why({ years: 0 }), 'years: 1 to 10');
   assert.equal(why({ years: 11 }), 'years: 1 to 10');
