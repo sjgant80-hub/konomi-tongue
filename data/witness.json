@@ -1,0 +1,13 @@
+{
+ "kind": "konomi-tongue.witness",
+ "v": 1,
+ "clean": true,
+ "killed": 118,
+ "total": 118,
+ "note": "The root kernels' mutation gate (witness v0.6, pinned) runs on GitHub's runner on every push (.github/workflows/gate.yml, the proof-of-play workflow), and tools/witness-check.mjs fails the build unless each run is clean AND re-derives exactly these counts. No survivor is baselined: every mutant of every root kernel must die. LIGHT's kernels have their own receipt, light/data/witness.json.",
+ "kernels": [
+  { "name": "tongue", "file": "tongue.mjs", "killed": 77, "total": 77, "ignored": 0, "clean": true },
+  { "name": "pack", "file": "tongue-pack.mjs", "killed": 10, "total": 10, "ignored": 0, "clean": true },
+  { "name": "cost", "file": "tongue-cost.mjs", "killed": 31, "total": 31, "ignored": 0, "clean": true }
+ ]
+}

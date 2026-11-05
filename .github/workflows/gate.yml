@@ -11,16 +11,24 @@ jobs:
       - name: the tongue kernel's tests (made-up text only)
         run: node --test tongue.test.mjs
       # Pinned. An unpinned gate is a gate somebody else can change.
+      - name: get the witness gate
+        run: git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+      # Each root kernel's mutation run happens HERE, on GitHub's runner, and tools/witness-check.mjs fails the build unless
+      # it is clean, not capped, and re-derives exactly the counts committed in data/witness.json (no survivor is baselined).
       - name: witness — every mutant of the tongue kernel must die
         run: |
-          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
-          node /tmp/witness/witness.mjs mutate tongue.mjs --timeout 60000 --cap 400 --test node --test tongue.test.mjs | tee verdict.txt
-          grep -q '"clean": true' verdict.txt || { echo "::error::mutants survived — the gate is not clean"; exit 1; }
+          node /tmp/witness/witness.mjs mutate tongue.mjs --timeout 60000 --cap 400 --test node --test tongue.test.mjs > /tmp/w-tongue.json || true
+          node tools/witness-check.mjs tongue /tmp/w-tongue.json
       - name: the shipped JSON mode — its tests, then every mutant of tongue-pack.mjs must die
         run: |
           node --test tongue-pack.test.mjs
-          node /tmp/witness/witness.mjs mutate tongue-pack.mjs --timeout 60000 --cap 400 --test node --test tongue-pack.test.mjs | tee pack.txt
-          grep -q '"clean": true' pack.txt || { echo '::error::mutants survived in tongue-pack.mjs'; exit 1; }
+          node /tmp/witness/witness.mjs mutate tongue-pack.mjs --timeout 60000 --cap 400 --test node --test tongue-pack.test.mjs > /tmp/w-pack.json || true
+          node tools/witness-check.mjs pack /tmp/w-pack.json
+      - name: the cost-case kernel — its tests, then every mutant of tongue-cost.mjs must die
+        run: |
+          node --test tongue-cost.test.mjs
+          node /tmp/witness/witness.mjs mutate tongue-cost.mjs --timeout 60000 --cap 400 --test node tongue-cost.test.mjs > /tmp/w-cost.json || true
+          node tools/witness-check.mjs cost /tmp/w-cost.json
       - name: the ship seal, and its record re-derived
         run: |
           node tools/ship.mjs --check
