@@ -417,6 +417,7 @@ ${sectionsBody.replace('<h3 class="rh">The picture channel</h3>', '<h3 class="rh
  <li><b>Support, SLA, warranty and liability</b> are agreed per deployment, in each deployment's agreement.</li>
  <li><b>Licence:</b> MIT — no licence fee (LICENSE and NOTICE in the repository). You hold the source; it keeps running without us.</li>
  <li><b>No data comes to us.</b> The code runs on your machines and calls no service of ours, so using it puts none of your data in our hands; if a deployment’s support needs access to your systems, that is set out in its agreement.</li>
+ <li><b>Versions.</b> There are no tagged releases yet: pin the commit you reviewed and gated. A pack carries its own legend, so unpacking needs no shared dictionary, only the tongue-pack.mjs it was packed with.</li>
  <li><b>Exit:</b> stop packing. Every pack unpacks to the exact record, so nothing is lost and nothing downstream has to change back.</li>
 </ul>
 
@@ -475,7 +476,7 @@ ${sectionsBody.replace('<h3 class="rh">The picture channel</h3>', '<h3 class="rh
 <div class="card">${faq.map(([q, a]) => '<h3>' + esc(q) + '</h3><p>' + esc(a) + '</p>').join('')}</div>
 </section>
 <footer>
- <p>Next door: <a href="light/">LIGHT, the estate's inner codec</a> — one lossless, signed, mutation-gated codec the estate's organs speak between themselves, with its own sealed claims, receipts, business case and white paper.</p>
+ <p>Next door: <a href="light/">LIGHT, the estate's inner codec</a> — one lossless, signed, mutation-gated codec for the estate's organs to speak between themselves, with its own sealed claims, receipts, business case and white paper.</p>
  <p>The numbers on this page come from the mutation-gated kernels <code>tongue.mjs</code>, <code>tongue-pack.mjs</code> and <code>tongue-cost.mjs</code>, inlined below, and the committed records. · <a href="${REPO}">source</a> · MIT for the code · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>.</p>
  <p>Built on the seed's memory law and on Thomas Frumkin's Konomi architecture and <a href="${LIGHT}">LIGHT</a> (the estate's fork of teslasolar/light, used with permission). ${CREDIT}. The shopper sessions in the JSON channel: UCI Online Shoppers Purchasing Intention Dataset, C. Sakar and Y. Kastro (2018), CC BY 4.0.</p>
 </footer>
