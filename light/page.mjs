@@ -1,8 +1,11 @@
 // light/page.mjs — the live page's engine. Every byte here runs the repository's own kernels: codec.mjs, packet.mjs and
 // cost.mjs — the same files CI gates. The browser adds only Ed25519 (WebCrypto, keys made in this tab).
 // Nothing leaves the tab: the only fetches are for this site's own files, and the page's policy allows no other.
-import { encode, decode, prime } from './codec.mjs';
-import { open, prepare, finish, KINDS } from './packet.mjs';
+// The page is an edge, so it decodes LIGHT only through the door (claim E1): this file imports no decoder at all, and
+// every body it reads back is a signed packet that open() admitted — size, magic, version, length, dictionary, sender,
+// signature and counter checked on the raw bytes first.
+import { encode, prime } from './codec.mjs';
+import { open, frame, prepare, finish, KINDS } from './packet.mjs';
 import { dictIdOf } from './packet.mjs';
 import { lightCase, measuredOf, sourcesOf } from './cost.mjs';
 
@@ -22,6 +25,34 @@ applyTheme();
 const SAMPLE = te.encode('{"account":1000,"period":63,"amount":0,"ok":true}\nPowered by the Konomi architecture, created by Thomas Frumkin.\nwitness CLEAN · proof-of-play · the estate\'s one codec\n'.repeat(10));
 const primed = prime(SAMPLE), ID = dictIdOf(SAMPLE);
 
+// ── the door, as this tab runs it ─────────────────────────────────────────────────────────────────────────────
+// Two Ed25519 keys made in this tab: A is pinned as sender 1, B is a stranger's. WebCrypto verifies asynchronously and
+// open() wants a synchronous verify, so frame() checks the first stages on the raw bytes, the signature is verified for
+// the pinned key, and open() then runs every stage again in order with that answer — the decoder still runs only inside
+// open(), after the last check. Each door remembers the last counter it admitted from each sender, as a real one must.
+let keysP = null;
+const keys = () => (keysP ||= Promise.all([1, 2].map(() => crypto.subtle.generateKey({ name: 'Ed25519' }, false, ['sign', 'verify']))).then(([A, B]) => ({ A, B })));
+const verifyEd = async (m, sig, key) => { try { return await crypto.subtle.verify('Ed25519', key, sig, m); } catch { return false; } };
+function door(pinned) {
+  const last = new Map();
+  const ctx = { keyFor: (s) => (s === 1 ? pinned : null), dictFor: (id) => (id === ID ? primed : null), lastCounter: (s) => last.get(s) || 0n };
+  return async (bytes) => {
+    const f = frame(bytes, ctx);
+    let ok = false;
+    if (f.ok) { const key = ctx.keyFor(f.sender); if (key) ok = await verifyEd(f.signed, f.sig, key); }
+    const r = open(bytes, { ...ctx, verify: () => ok });
+    if (r.admit) last.set(r.sender, r.counter);
+    return r;
+  };
+}
+/** a signed LIGHT packet from sender 1 ({ counter, kind, bytes | value, dictId }) signed with privateKey; null if it cannot be made */
+async function packet(privateKey, p) {
+  const q = prepare({ sender: 1, dictId: 0, ...p, primed: p.dictId ? primed : undefined });
+  if (!q.ok) return null;
+  return finish(q.unsigned, new Uint8Array(await crypto.subtle.sign('Ed25519', privateKey, q.signed))).bytes;
+}
+const same = (a, b) => a instanceof Uint8Array && a.length === b.length && a.every((x, i) => x === b[i]);
+
 // ── gzip / brotli in the browser, via CompressionStream when present (else left blank, never faked) ────────────────
 async function viaStream(bytes, format) {
   if (typeof CompressionStream !== 'function') return null;
@@ -34,48 +65,46 @@ async function viaStream(bytes, format) {
 }
 
 // ── Try it: live compression ──────────────────────────────────────────────────────────────────────────────────
+// The sizes are the codec's own output for the text; the round-trip is read back the only way this page reads LIGHT:
+// each coded form sent as a signed packet (no dictionary, then the sample dictionary) and admitted by a door.
+let tries = 0;
 async function compress() {
+  const run = ++tries;
   const bytes = te.encode($('in').value);
   const plain = encode(bytes), dict = encode(bytes, primed);
-  const back = decode(plain.bytes), backD = decode(dict.bytes, primed);
-  const ok = back.ok && back.bytes.length === bytes.length && back.bytes.every((x, i) => x === bytes[i]) && backD.ok && backD.bytes.every((x, i) => x === bytes[i]);
+  let rt = null;
+  try {
+    const { A } = await keys(), d = door(A.publicKey);
+    const pa = await packet(A.privateKey, { counter: 1n, kind: KINDS.BYTES, bytes }), pb = await packet(A.privateKey, { counter: 2n, kind: KINDS.BYTES, bytes, dictId: ID });
+    if (!pa || !pb) rt = 'big';   // more than one packet holds (1 MiB): the door would refuse it at size, so it is not sent
+    else { const a = await d(pa), b = await d(pb); rt = a.admit && b.admit && same(a.bytes, bytes) && same(b.bytes, bytes); }
+  } catch { rt = null; }
+  if (run !== tries) return;   // a newer keystroke has already replaced this one
+  const ok = rt === true;
   $('c-in').textContent = n0(bytes.length) + ' B';
   $('c-plain').textContent = n0(plain.bytes.length) + ' B · ' + (bytes.length / plain.bytes.length).toFixed(2) + '×';
   $('c-dict').textContent = n0(dict.bytes.length) + ' B · ' + (bytes.length / dict.bytes.length).toFixed(2) + '×';
   const gz = await viaStream(bytes, 'gzip'), br = await viaStream(bytes, 'deflate-raw');
   $('c-std').textContent = (gz ? n0(gz) + ' B gzip' : 'gzip n/a') + ' · ' + (br ? n0(br) + ' B deflate' : 'deflate n/a');
-  $('c-rt').innerHTML = ok ? '<span class="ok">exact, both ways ✓</span>' : '<span class="no">ROUND-TRIP FAILED</span>';
+  $('c-rt').innerHTML = ok ? '<span class="ok">exact, both ways, through the door ✓</span>' : rt === null ? '<span class="dim">needs WebCrypto Ed25519 to read it back through the door</span>' : rt === 'big' ? '<span class="dim">more than one packet holds (1 MiB), so it is not sent through the door</span>' : '<span class="no">ROUND-TRIP FAILED</span>';
 }
 $('in').addEventListener('input', compress);
 
 // ── the signed door ───────────────────────────────────────────────────────────────────────────────────────────
 async function doorDemo() {
   try {
-    const A = await crypto.subtle.generateKey({ name: 'Ed25519' }, false, ['sign', 'verify']);
-    const B = await crypto.subtle.generateKey({ name: 'Ed25519' }, false, ['sign', 'verify']);
-    const verify = async (m, sig, key) => { try { return await crypto.subtle.verify('Ed25519', key, sig, m); } catch { return false; } };
-    const signWith = (k) => async (m) => new Uint8Array(await crypto.subtle.sign('Ed25519', k, m));
+    const { A, B } = await keys();
     const msg = { kind: 'antibody', family: 'forgery', print: 'abc123' };
-    // seal needs a synchronous signer; WebCrypto is async, so prepare, sign, finish by hand
-    const build = async (signer) => {
-      const p = prepare({ sender: 1, counter: 1n, kind: KINDS.JSON, value: msg, dictId: 0 });
-      return finish(p.unsigned, await signer(p.signed)).bytes;
-    };
-    const ctx = { keyFor: (s) => (s === 1 ? A.publicKey : null), verify, lastCounter: () => 0n };
-    // open() wants a synchronous verify; verify Ed25519 up front and pass the cached result
-    const openAsync = async (bytes) => {
-      const f = (await import('./packet.mjs')).frame(bytes, {});
-      let ok = false;
-      if (f.ok) { const key = ctx.keyFor(f.sender); if (key) ok = await verify(f.signed, f.sig, key); }
-      return open(bytes, { ...ctx, verify: () => ok });
-    };
-    const good = await build(signWith(A.privateKey));
-    const forged = await build(signWith(B.privateKey));
+    // the same message, counter 1, signed by the pinned key and by a stranger's; then the good one with a body byte changed
+    const good = await packet(A.privateKey, { counter: 1n, kind: KINDS.JSON, value: msg });
+    const forged = await packet(B.privateKey, { counter: 1n, kind: KINDS.JSON, value: msg });
     const tampered = good.slice(); tampered[25] ^= 1;
-    const rGood = await openAsync(good), rForge = await openAsync(forged), rTamper = await openAsync(tampered);
+    // each through a fresh door, so a refusal is the stage's verdict and never the replay counter's
+    const rForge = await door(A.publicKey)(forged), rTamper = await door(A.publicKey)(tampered), rGood = await door(A.publicKey)(good);
+    const refused = (r) => (r.admit ? '<span class="no">ADMITTED — the door failed</span>' : '<span class="ok">refused at ' + esc(r.stage) + ' ✓</span>');
     $('d-ok').innerHTML = rGood.admit ? '<span class="ok">admitted ✓ · ' + esc(JSON.stringify(rGood.value).slice(0, 30)) + '…</span>' : '<span class="no">refused: ' + esc(rGood.reason) + '</span>';
-    $('d-forge').innerHTML = '<span class="ok">refused at ' + esc(rForge.stage) + ' ✓</span>';
-    $('d-tamper').innerHTML = '<span class="ok">refused at ' + esc(rTamper.stage) + ' ✓</span>';
+    $('d-forge').innerHTML = refused(rForge);
+    $('d-tamper').innerHTML = refused(rTamper);
     $('d-decoded').innerHTML = (rForge.decoded || rTamper.decoded) ? '<span class="no">yes — a leak</span>' : '<span class="ok">no — body never read ✓</span>';
   } catch (e) {
     for (const id of ['d-ok', 'd-forge', 'd-tamper', 'd-decoded']) $(id).textContent = 'needs WebCrypto Ed25519';
@@ -94,23 +123,27 @@ async function barrier() {
   $('ba-sent').textContent = n0(entries.length);
   $('ba-admit').innerHTML = admitted === 0 ? '<span class="ok">0 ✓</span>' : '<span class="no">' + admitted + '</span>';
   $('ba-dec').innerHTML = decoded === 0 ? '<span class="ok">0 ✓</span>' : '<span class="no">' + decoded + '</span>';
-  // at the edge: carry each as the data of a packet, decode it back, then render as text through the page's sink
+  // at the edge (B3, B4): carry each as the data of a correctly signed packet, counters 1, 2, 3 … to one door that
+  // remembers them, read it back only through the door, then render what came out as text through the page's sink
   const list = $('ba-list');
-  let rt = 0, exec = 0;
+  let rt = 0, exec = 0, viaDoor = true, k = null, d = null, n = 0n;
+  try { k = await keys(); d = door(k.A.publicKey); } catch { viaDoor = false; }
   for (const e of entries) {
-    const bytes = te.encode(e.text), ebytes = encode(bytes).bytes, d = decode(ebytes);
-    const same = d.ok && d.bytes.length === bytes.length && d.bytes.every((x, i) => x === bytes[i]);
-    if (same) rt++;
+    const bytes = te.encode(e.text);
+    let r = null;
+    if (viaDoor) { try { r = await d(await packet(k.A.privateKey, { counter: ++n, kind: KINDS.BYTES, bytes })); } catch { r = null; } }
+    const back = r && r.admit ? r.bytes : null;
+    if (same(back, bytes)) rt++;
     const row = document.createElement('div');
     const label = document.createElement('span'); label.className = 'lang'; label.textContent = e.lang + ': ';
     const shown = document.createElement('span');
-    shown.textContent = new TextDecoder().decode(d.ok ? d.bytes : bytes);   // the SINK: textContent, never innerHTML
+    shown.textContent = new TextDecoder().decode(back || bytes);   // the SINK: textContent, never innerHTML
     row.append(label, shown);
     list.appendChild(row);
     // did showing it create any element or handler? (it must not — textContent cannot)
     if (shown.children.length > 0 || /<[a-z]/i.test(shown.innerHTML) !== /<[a-z]/i.test(esc(e.text))) exec++;
   }
-  $('ba-rt').innerHTML = rt === entries.length ? '<span class="ok">' + rt + '/' + entries.length + ' ✓</span>' : '<span class="no">' + rt + '/' + entries.length + '</span>';
+  $('ba-rt').innerHTML = !viaDoor ? '<span class="dim">needs WebCrypto Ed25519</span>' : rt === entries.length ? '<span class="ok">' + rt + '/' + entries.length + ' ✓</span>' : '<span class="no">' + rt + '/' + entries.length + '</span>';
   $('ba-exec').innerHTML = exec === 0 ? '<span class="ok">0 ✓</span>' : '<span class="no">' + exec + '</span>';
 }
 
@@ -172,7 +205,7 @@ async function costCase(run) {
     const yrs = r.inputs.years + ' year' + (r.inputs.years === 1 ? '' : 's');
     $('cc-verdict').textContent = !priced
       ? 'With no prices typed, only the bytes and the CPU change: ' + gb(r.gb.storedSaved) + ' less to keep, ' + gb(r.gb.movedSavedPerMonth) + ' a month less to send, for ' + n0(r.cpu.coreHoursPerYear) + ' core-hours a year of coding. Type what you pay per GB to see money.'
-      : r.savingPerYear > 0 ? 'On your figures LIGHT saves ' + gbp(r.savingPerYear) + ' a year, ' + gbp(r.savingOver) + ' over ' + yrs + ', after the electricity it uses.'
+      : r.savingPerYear > 0 ? 'On your figures LIGHT saves ' + gbp(r.savingPerYear) + ' a year, ' + gbp(r.savingOver) + ' over ' + yrs + ', after ' + (r.cpu.rented ? 'the CPU it uses at your core-hour price.' : 'the electricity it uses.')
         : 'On your figures LIGHT costs ' + gbp(-r.savingPerYear) + ' a year more than it saves — adopt it for the signed door and the checked stores, not the bill.';
     const row = (k, a, b2) => '<tr><td>' + esc(k) + '</td><td class="n">' + esc(a) + '</td><td class="n">' + esc(b2) + '</td></tr>';
     $('cc-rows').innerHTML = [

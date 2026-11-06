@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // light/tools/witness-check.mjs — CI's last word on a kernel's mutation gate. witness (pinned v0.6) has just run on this
-// runner and written its verdict; this checks that verdict is clean AND that it re-derives exactly the counts committed
+// runner and written its verdict; this checks that verdict is clean, not capped (every mutant run, not a sample), AND
+// that it re-derives exactly the counts committed
 // in light/data/witness.json (the same mutants, the same number killed, the same reviewed-equivalent survivors, each
 // with its written reason in light/witness.baseline.json). A receipt that only says "clean" is not trusted on its own:
 // the runner has to get the same answer.
@@ -18,6 +19,7 @@ for (const s of survived) console.error('  survived: line ' + s.line + ' ' + s.m
 const problems = [];
 if (!want) problems.push(name + ' is not in light/data/witness.json');
 if (got.clean !== true) problems.push('not clean (' + survived.length + ' survived)');
+if (got.capped !== false) problems.push('capped at ' + got.total + ' of ' + got.capped + ' mutants: a sample, not the whole kernel — raise --cap');
 if (want && got.total !== want.total) problems.push('total ' + got.total + ' here, ' + want.total + ' committed');
 if (want && got.killed !== want.killed) problems.push('killed ' + got.killed + ' here, ' + want.killed + ' committed');
 if (want && ignored !== want.ignored) problems.push('reviewed-equivalent ' + ignored + ' here, ' + want.ignored + ' committed');

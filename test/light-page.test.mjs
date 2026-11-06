@@ -146,3 +146,144 @@ test('how far LIGHT has spread is the estate census\'s number, vendored byte for
   assert.ok(!/one organ's channel speaks it so far/.test(HTML), 'the stale count is gone');
   assert.ok(!/Every message between organs is a signed packet/.test(HTML), 'the lede claims the design, not that every message already is one');
 });
+
+// ── the page's own script, run against a small DOM ─────────────────────────────────────────────────────────────────
+// light/page.mjs is imported as the browser would import it: the same kernels, Node's WebCrypto Ed25519 and
+// CompressionStream, a fetch that serves only light/'s own files, and a DOM made from light/index.html. What a buyer
+// sees in the tab — the round-trip, the door, the barrier, the receipts, the blueprint, the cost case — is checked
+// against the kernels and the receipts, so a control that shows a fixed "✓" whatever happened cannot pass.
+const escText = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+function element(tag, id, value) {
+  const e = { tag, id, value, className: '', children: [], listeners: {}, dataset: {}, rel: '', href: '', _t: '', _h: null,
+    addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); },
+    appendChild(c) { this.children.push(c); return c; },
+    append(...cs) { this.children.push(...cs); },
+    fire(type) { for (const fn of this.listeners[type] || []) fn({ target: this }); } };
+  Object.defineProperty(e, 'textContent', {
+    get() { return this._h !== null ? this._h.replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&') : this._t + this.children.map((c) => c.textContent).join(''); },
+    set(v) { this._t = String(v); this._h = null; this.children = []; } });
+  Object.defineProperty(e, 'innerHTML', {
+    get() { return this._h !== null ? this._h : escText(this._t) + this.children.map((c) => '<' + c.tag + '>' + c.innerHTML + '</' + c.tag + '>').join(''); },
+    set(v) { this._h = String(v); this._t = ''; this.children = []; } });
+  return e;
+}
+let booted = null;
+function bootPage() {
+  if (booted) return booted;
+  booted = (async () => {
+    const els = new Map(), byKey = new Map();
+    for (const [, tag, attrs, inner] of HTML.matchAll(/<(textarea|select|b|p|span|tbody|ul|div|button)\b([^>]*\bid="[^"]+"[^>]*)>([\s\S]*?)(?=<\/\1>)/g)) {
+      const id = attrs.match(/\bid="([^"]+)"/)[1];
+      const value = tag === 'textarea' ? inner.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+        : tag === 'select' ? ((inner.match(/<option value="([^"]+)"/) || [])[1] || '') : '';
+      const el = element(tag, id, value); el._t = tag === 'textarea' || tag === 'select' ? '' : text(inner);
+      els.set(id, el);
+    }
+    for (const [, attrs] of HTML.matchAll(/<input\b([^>]*\bid="[^"]+"[^>]*)>/g)) els.set(attrs.match(/\bid="([^"]+)"/)[1], element('input', attrs.match(/\bid="([^"]+)"/)[1], (attrs.match(/\bvalue="([^"]*)"/) || [])[1] || ''));
+    for (const [, k, inner] of HTML.matchAll(/<td class="mono" data-k="([^"]+)">([^<]*)<\/td>/g)) { const el = element('td', '', ''); el._t = inner; byKey.set(k, el); }
+    const root = { dataset: {} };
+    globalThis.document = { documentElement: root, getElementById: (id) => els.get(id) || null,
+      querySelector: (sel) => { const m = sel.match(/^\[data-k="([^"]+)"\]$/); return m ? byKey.get(m[1]) || null : null; },
+      createElement: (tag) => element(tag, '', '') };
+    globalThis.fetch = async (u) => {
+      const f = new URL('../light/' + String(u).replace(/^\.\//, ''), import.meta.url);
+      if (!/^\.\/[a-z0-9/._-]+$/i.test(String(u)) || !existsSync(f)) return { ok: false, json: async () => null };
+      return { ok: true, json: async () => JSON.parse(readFileSync(f, 'utf8')) };
+    };
+    await import('../light/page.mjs');
+    const done = () => !['—', ''].includes(els.get('c-rt').textContent) && !['—', ''].includes(els.get('d-decoded').textContent)
+      && !['—', ''].includes(els.get('ba-exec').textContent) && !/computing/.test(els.get('cc-verdict').textContent) && /GitHub/.test(els.get('bp-foot').textContent);
+    for (let i = 0; i < 1200 && !done(); i++) await new Promise((r) => setTimeout(r, 50));
+    assert.ok(done(), 'the page script finished booting');
+    return { els, byKey, root };
+  })();
+  return booted;
+}
+
+test('the page reads LIGHT only through the door: it imports no decoder, and every read-back is an admitted packet (E1)', () => {
+  const imports = [...PAGE.matchAll(/^import\s*\{([^}]*)\}\s*from\s*'\.\/codec\.mjs'/gm)].map((m) => m[1].split(',').map((x) => x.trim()));
+  assert.equal(imports.length, 1);
+  assert.ok(!imports[0].includes('decode'), 'page.mjs takes no decoder from the codec');
+  assert.ok(!/\bdecode\s*\(/.test(PAGE.replace(/new TextDecoder\(\)\.decode\(/g, '')), 'nothing on the page calls a LIGHT decoder directly');
+  assert.ok(/open\(bytes, \{ \.\.\.ctx, verify: \(\) => ok \}\)/.test(PAGE), 'every read-back goes through open()');
+});
+
+test('the page\'s own script: the round-trip, the door and the barrier show what really happened', async () => {
+  const { els } = await bootPage();
+  const { encode } = await import('../light/codec.mjs');
+  assert.equal(els.get('kstat').textContent, 'kernel live in this tab');
+  const bytes = new TextEncoder().encode(els.get('in').value);
+  assert.equal(els.get('c-in').textContent, bytes.length.toLocaleString('en-GB') + ' B');
+  assert.ok(els.get('c-plain').textContent.startsWith(encode(bytes).bytes.length.toLocaleString('en-GB') + ' B'), 'the plain size is the codec\'s own');
+  assert.equal(els.get('c-rt').textContent, 'exact, both ways, through the door ✓');
+  assert.match(els.get('d-ok').textContent, /^admitted ✓ · \{"kind":"antibody"/);
+  assert.equal(els.get('d-forge').textContent, 'refused at signature ✓');
+  assert.equal(els.get('d-tamper').textContent, 'refused at signature ✓');
+  assert.equal(els.get('d-decoded').textContent, 'no — body never read ✓');
+  const corpus = JSON.parse(read('barrier.json')).entries, n = corpus.length;
+  assert.equal(els.get('ba-sent').textContent, String(n));
+  assert.equal(els.get('ba-admit').textContent, '0 ✓');
+  assert.equal(els.get('ba-dec').textContent, '0 ✓');
+  assert.equal(els.get('ba-rt').textContent, n + '/' + n + ' ✓', 'every entry carried in a signed packet comes back exactly through the door');
+  assert.equal(els.get('ba-exec').textContent, '0 ✓');
+  const rows = els.get('ba-list').children;
+  assert.equal(rows.length, n);
+  rows.forEach((row, i) => {
+    assert.equal(row.children[1].textContent, corpus[i].text, 'entry ' + i + ' is shown as exactly its text');
+    assert.equal(row.children[1].children.length, 0, 'and became no element');
+  });
+  // a typed edit runs the round-trip again, through the door
+  els.get('in').value = 'a different message, typed by the reader';
+  els.get('in').fire('input');
+  for (let i = 0; i < 400 && els.get('c-in').textContent !== '40 B'; i++) await new Promise((r) => setTimeout(r, 25));
+  assert.equal(els.get('c-in').textContent, '40 B');
+  assert.equal(els.get('c-rt').textContent, 'exact, both ways, through the door ✓');
+});
+
+test('the page\'s own script: the receipts and the blueprint are the committed receipts, the theme switch works', async () => {
+  const { els, byKey, root } = await bootPage();
+  const R = JSON.parse(read('data/light-run.json')), B = JSON.parse(read('data/barrier-run.json')), W = JSON.parse(read('data/witness.json'));
+  const fromB = new Map(B.verdicts.map((v) => [v.id, v])), rows = R.verdicts.map((v) => fromB.get(v.id) || v);
+  const held = rows.filter((v) => v.held === true).length, failed = rows.filter((v) => v.held === false).length;
+  assert.ok(els.get('r-sum').textContent.startsWith(held + ' of ' + rows.length + ' claims held, ' + failed + ' failed'), els.get('r-sum').textContent);
+  assert.equal((els.get('r-rows').innerHTML.match(/<tr>/g) || []).length, rows.length);
+  for (const k of W.kernels) assert.equal(byKey.get(k.name).textContent, k.killed + ' / ' + k.total + (k.ignored ? ' · ' + k.ignored + ' reviewed' : ''));
+  assert.match(els.get('bp-foot').textContent, new RegExp('^CLEAN: ' + W.killed + ' of ' + W.total + ' mutants killed'));
+  assert.equal(root.dataset.theme, undefined, 'starts on the system theme');
+  els.get('theme').fire('click');
+  assert.equal(root.dataset.theme, 'dark');
+});
+
+test('the page\'s own script computes the cost case with the gated kernel, and says what the CPU is costed as', async () => {
+  const { els } = await bootPage();
+  const { lightCase, measuredOf } = await import('../light/cost.mjs');
+  const basis = JSON.parse(read('vendor/sovereign-enterprise/data/basis.json')), m = measuredOf(JSON.parse(read('data/light-run.json')));
+  const gbp = (x) => '£' + Number(x).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const cells = () => [...els.get('cc-rows').innerHTML.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map((r) => [...r[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => c[1]));
+  const set = (vals) => { for (const [id, v] of Object.entries(vals)) els.get(id).value = v; els.get('cc-years').fire('input'); };
+  const input = (o) => ({ storedGb: 100, movedGbPerMonth: 20, pricePerGbMonth: 0, pricePerGbMoved: 0, pricePerCoreHour: 0, years: 3, compressedToday: false, ...o });
+  // the default: no prices, so only bytes and CPU
+  const def = lightCase(basis, m, input({}));
+  assert.match(els.get('cc-verdict').textContent, /^With no prices typed, only the bytes and the CPU change/);
+  assert.ok(els.get('cc-verdict').textContent.includes(def.gb.storedSaved.toLocaleString('en-GB', { maximumFractionDigits: 2 }) + ' GB less to keep'));
+  // the reader's prices on machines they own: the CPU is costed as electricity
+  set({ 'cc-pstore': '0.02', 'cc-pmove': '0.05', 'cc-pcpu': '0' });
+  const own = lightCase(basis, m, input({ pricePerGbMonth: 0.02, pricePerGbMoved: 0.05 }));
+  assert.equal(els.get('cc-verdict').textContent, 'On your figures LIGHT saves ' + gbp(own.savingPerYear) + ' a year, ' + gbp(own.savingOver) + ' over 3 years, after the electricity it uses.');
+  assert.deepEqual(cells()[6], ['a year, all in', gbp(own.perYear.today), gbp(own.perYear.light)]);
+  // rented CPU: the reader's core-hour price replaces the electricity, and the verdict says so
+  set({ 'cc-pcpu': '0.04' });
+  const rent = lightCase(basis, m, input({ pricePerGbMonth: 0.02, pricePerGbMoved: 0.05, pricePerCoreHour: 0.04 }));
+  assert.ok(rent.savingPerYear > 0 && rent.cpu.rented);
+  assert.equal(els.get('cc-verdict').textContent, 'On your figures LIGHT saves ' + gbp(rent.savingPerYear) + ' a year, ' + gbp(rent.savingOver) + ' over 3 years, after the CPU it uses at your core-hour price.');
+  assert.match(cells()[4][2], / rented$/);
+  // already compressed: the case turns against the bill, and the page says so plainly
+  els.get('cc-comp').value = 'yes'; els.get('cc-comp').fire('change');
+  const comp = lightCase(basis, m, input({ pricePerGbMonth: 0.02, pricePerGbMoved: 0.05, pricePerCoreHour: 0.04, compressedToday: true }));
+  assert.ok(comp.savingPerYear < 0);
+  assert.equal(els.get('cc-verdict').textContent, 'On your figures LIGHT costs ' + gbp(-comp.savingPerYear) + ' a year more than it saves — adopt it for the signed door and the checked stores, not the bill.');
+  // a bad input gives the kernel's reason, never a broken table
+  set({ 'cc-years': '0' });
+  assert.equal(els.get('cc-verdict').textContent, 'Check the inputs: years: 1 to 10.');
+  assert.equal(els.get('cc-rows').innerHTML, '');
+});
