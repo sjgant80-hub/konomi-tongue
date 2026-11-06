@@ -287,3 +287,14 @@ test('the page\'s own script computes the cost case with the gated kernel, and s
   assert.equal(els.get('cc-verdict').textContent, 'Check the inputs: years: 1 to 10.');
   assert.equal(els.get('cc-rows').innerHTML, '');
 });
+
+test('the commands in Start here run as written: files that exist, and no bare-directory test run (Node 22+ refuses it)', () => {
+  const sec = HTML.slice(HTML.indexOf('<section id="start"'), HTML.indexOf('</section>', HTML.indexOf('<section id="start"')));
+  const cmds = [...sec.matchAll(/<span class="mono">(node [^<]+)<\/span>/g)].map((m) => m[1]);
+  assert.ok(cmds.length >= 3, 'the steps name their commands');
+  for (const c of cmds) {
+    assert.ok(!/node --test \S+\/(\s|$)/.test(c + ' '), 'not a bare directory: ' + c);
+    for (const f of c.split(/\s+/).filter((w) => /\.mjs$/.test(w))) assert.ok(existsSync(new URL('../' + f, import.meta.url)), 'the command names a file that exists: ' + f);
+  }
+  assert.ok(cmds.includes('node --test'), 'the test command is the repository\'s own (package.json: ' + JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).scripts.test + ')');
+});
