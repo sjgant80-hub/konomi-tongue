@@ -1,0 +1,392 @@
+{
+ "model": "qwen2.5:7b (Ollama, raw prompt, prompt_eval_count)",
+ "mergesSha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+ "equal": 48,
+ "of": 48,
+ "texts": [
+  {
+   "file": "data/prereg.json",
+   "offset": 0,
+   "length": 60,
+   "sha256": "b2208944da687ffde3568772ac820ad878f6942d7eb92feb7d463ec3ad7c6826",
+   "ollama": 27,
+   "js": 27
+  },
+  {
+   "file": "data/prereg.json",
+   "offset": 1509,
+   "length": 240,
+   "sha256": "5caab8968c415e1dfdfae98cdb31dccaf13533ad20a47ceafe2e8c3467d90795",
+   "ollama": 178,
+   "js": 178
+  },
+  {
+   "file": "data/prereg.json",
+   "offset": 2895,
+   "length": 700,
+   "sha256": "e0ce7636d1c2cf76aa7d391f861f604e36c5d04dbf53341ef3e9d72c8c4cd148",
+   "ollama": 310,
+   "js": 310
+  },
+  {
+   "file": "data/prereg.json",
+   "offset": 4021,
+   "length": 1500,
+   "sha256": "de7a97d7cdcafbcb6fbc0b5c0cef5c0686fd5def6e5dc7a40f964375234b314b",
+   "ollama": 427,
+   "js": 427
+  },
+  {
+   "file": "data/prereg.json",
+   "offset": 4557,
+   "length": 3000,
+   "sha256": "836cb5a02f267566838beacd98f8043441a71c03829fe2ba45041ef2f604dce4",
+   "ollama": 982,
+   "js": 982
+  },
+  {
+   "file": "data/prereg.json",
+   "offset": 4222,
+   "length": 5200,
+   "sha256": "abee6c3f53639800d1c4d16df524fdffa797e555809f27ca2dfc7c4c6abb5f21",
+   "ollama": 1646,
+   "js": 1646
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 233,
+   "length": 60,
+   "sha256": "794d3aa38e8cd06d362c796e95fbd065033b97ce4ab538bc9df7c6bd6450a2b3",
+   "ollama": 15,
+   "js": 15
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 630,
+   "length": 240,
+   "sha256": "5aec5bbbb669633b4acb0655aa04077d0b8a67f0ffb2976036545a42a018a160",
+   "ollama": 60,
+   "js": 60
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 884,
+   "length": 700,
+   "sha256": "0558738a2667e91638b18213360d3ae5334d63f27495de5253c8bdf39bb0d0d0",
+   "ollama": 184,
+   "js": 184
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 853,
+   "length": 1500,
+   "sha256": "4ae2480e1dfbe063e79f1646a14caca6371d23a11116ffacb87149e12f8c9737",
+   "ollama": 391,
+   "js": 391
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 181,
+   "length": 3000,
+   "sha256": "acdbd0404cf1fc15666f49dacaba073391c9d136944686f0b4359302ec4f621c",
+   "ollama": 754,
+   "js": 754
+  },
+  {
+   "file": "SPEC.md",
+   "offset": 0,
+   "length": 5200,
+   "sha256": "a8ad5649946ddfd7ee73155d99fb9030948e207e9bdb8c3ca49268de3e202263",
+   "ollama": 832,
+   "js": 832
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 700,
+   "length": 60,
+   "sha256": "f4d29df4d24a129ac303cb62d671369dd0e6a346bdd9652a58cbbd81d5ce7840",
+   "ollama": 18,
+   "js": 18
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 1300,
+   "length": 240,
+   "sha256": "276aa63a2fac653feb7fed741b18fcb1a96af084309545a395613690d9e83018",
+   "ollama": 87,
+   "js": 87
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 1736,
+   "length": 700,
+   "sha256": "d20929d624b1647f2285a2c33aa81018898ac1a2b6a73aa94b3e832aa15d6e17",
+   "ollama": 177,
+   "js": 177
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 1863,
+   "length": 1500,
+   "sha256": "02346f7465ef8b37d3e4bef08b95a5b3dd007fd6ee481997cd3e65325825ceff",
+   "ollama": 387,
+   "js": 387
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 1300,
+   "length": 3000,
+   "sha256": "6523dcf0abdeac155387ecce3b031a101a31b25a09271949e31097ed6684c182",
+   "ollama": 858,
+   "js": 858
+  },
+  {
+   "file": "curve/CLAIMS.md",
+   "offset": 0,
+   "length": 5200,
+   "sha256": "8c4aed53ddef9ef723bdbe3cd5c2da07d699b93390adf0ade6a5a9c7d2a1eeb1",
+   "ollama": 1369,
+   "js": 1369
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 3253,
+   "length": 60,
+   "sha256": "db53f1afc4739f8c4e4a9a12b4d6e5db5acff83aa97dad54a487ea6eb3871b06",
+   "ollama": 14,
+   "js": 14
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 5203,
+   "length": 240,
+   "sha256": "c873be5769dcb3a617d18b82a86c6e1042d31eda79bed280b2f0cccc8ffd8ef3",
+   "ollama": 78,
+   "js": 78
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 6970,
+   "length": 700,
+   "sha256": "894de0f157e84631c781a20e9ccc2e9636a9688087dc3991b99c34212e6bcafb",
+   "ollama": 194,
+   "js": 194
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 8403,
+   "length": 1500,
+   "sha256": "cc3445f304412d3b3355a41176e39cf6987f2edc3b46621e3d5220e99bd4dd73",
+   "ollama": 463,
+   "js": 463
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 9095,
+   "length": 3000,
+   "sha256": "a62e2a920b2530afc9e6e03ab825ac33f1aefa702505f6bcf739f25133c96d9c",
+   "ollama": 901,
+   "js": 901
+  },
+  {
+   "file": "tongue.mjs",
+   "offset": 8764,
+   "length": 5200,
+   "sha256": "7c99ce97b0dca6c868372dcd41fb1a2cfb2907e17231f7d7c509d1645c2eebf7",
+   "ollama": 1552,
+   "js": 1552
+  },
+  {
+   "file": "data/run.json",
+   "offset": 34265,
+   "length": 60,
+   "sha256": "e1adaf44c4f5fddf2bc801fe9bddcf79efc57b500fdcb0cd13dee9b583ec2b68",
+   "ollama": 32,
+   "js": 32
+  },
+  {
+   "file": "data/run.json",
+   "offset": 50098,
+   "length": 240,
+   "sha256": "6119ea04c568912fccfe9133832c877b17a55f0f4cc929414aa4336729b643fa",
+   "ollama": 83,
+   "js": 83
+  },
+  {
+   "file": "data/run.json",
+   "offset": 65726,
+   "length": 700,
+   "sha256": "72b2d4402e091c56c6c001192bdf2b504325b0a28e694349f94fbc89fb1c6f8f",
+   "ollama": 686,
+   "js": 686
+  },
+  {
+   "file": "data/run.json",
+   "offset": 80997,
+   "length": 1500,
+   "sha256": "fc0083383c45454174e5ce6b9e8f559cbdc4cd36c37e3c9ac1d875dc1647c1c0",
+   "ollama": 1109,
+   "js": 1109
+  },
+  {
+   "file": "data/run.json",
+   "offset": 95476,
+   "length": 3000,
+   "sha256": "baa3e20ad52cc44f28e113210bf697d8f584444853cb3d442dd969d34bc97d0a",
+   "ollama": 2187,
+   "js": 2187
+  },
+  {
+   "file": "data/run.json",
+   "offset": 108881,
+   "length": 5200,
+   "sha256": "53121ef98c161efaa6ce54785cc3cab66ef814a1796f2727125ef2c6bf960940",
+   "ollama": 2895,
+   "js": 2895
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 4032,
+   "length": 60,
+   "sha256": "33476e57f23cfc960031e8bd92d5939fde565b26830d3667648f803a2fd0a6d9",
+   "ollama": 27,
+   "js": 27
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 5440,
+   "length": 240,
+   "sha256": "e97e6e6af8c2bd66c887db44ee5acc6f2661bcd43e7eb06f9bbb4a090750cda8",
+   "ollama": 108,
+   "js": 108
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 6625,
+   "length": 700,
+   "sha256": "a1603b2f50c7575e1b57d5035537f2afb5b94504279733372b05e108422cf25a",
+   "ollama": 309,
+   "js": 309
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 7426,
+   "length": 1500,
+   "sha256": "e4771e56e6d9ca62e16b78cdd28b3d3273aeed2daeeb674cdbb69862ae8b4b1b",
+   "ollama": 660,
+   "js": 660
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 7386,
+   "length": 3000,
+   "sha256": "94a161158fdad61a21fb7c09f257d3275a84486dd3db40999a8e4a00c014e6fc",
+   "ollama": 1323,
+   "js": 1323
+  },
+  {
+   "file": "data/legend.json",
+   "offset": 186,
+   "length": 5200,
+   "sha256": "58b556945de057db8fe8e83fab6b01a4f1e7b494eda4487b9db02ade300a87ed",
+   "ollama": 2230,
+   "js": 2230
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 76614,
+   "length": 60,
+   "sha256": "8644bc64004e274fe486aabad4e623b6549879510af208d3e7a323f381fe4499",
+   "ollama": 22,
+   "js": 22
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 100226,
+   "length": 240,
+   "sha256": "d33bbf456b8ecc0d94d87bc1bdbff767655d4357e64160e2b54ead3aa96f35b9",
+   "ollama": 65,
+   "js": 65
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 123593,
+   "length": 700,
+   "sha256": "e99bcee6c3fda23e4f86f42bb5d85a7edcf64df9adf5ec0a8f7d126db4996e66",
+   "ollama": 271,
+   "js": 271
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 146554,
+   "length": 1500,
+   "sha256": "0896a63b1ee630982fb6a9ee510793f07059e00b3f8fcd5e43862616b2f4a798",
+   "ollama": 433,
+   "js": 433
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 168621,
+   "length": 3000,
+   "sha256": "a52ab8b291f70bda48eb0d5d655e10f8c6dd335d5237d4166de34836b2a848a9",
+   "ollama": 751,
+   "js": 751
+  },
+  {
+   "file": "light/dict/v1.txt",
+   "offset": 17711,
+   "length": 5200,
+   "sha256": "43f392a6a1d7975f12af4d4b55acd0c06530434474094e6fe00dcacd4e66ba41",
+   "ollama": 1957,
+   "js": 1957
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 4074,
+   "length": 60,
+   "sha256": "1bf407e6ed538e17aa725d460538556b8a621bf028f16787ad95abb9df1cebf7",
+   "ollama": 14,
+   "js": 14
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 5039,
+   "length": 240,
+   "sha256": "8277de3c6f4ffab2d30c9f3a320be46f78ec840ee8b3e45b99998f1623f79b7a",
+   "ollama": 53,
+   "js": 53
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 5740,
+   "length": 700,
+   "sha256": "7c74b989ff41b02e860851eb9fda33c37cd9f32cdcc9c3a4eaea95a9b92659e2",
+   "ollama": 173,
+   "js": 173
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 6010,
+   "length": 1500,
+   "sha256": "fac042b9ee1033f14a5a4806824062146500d8f60170f5eda7d7239e5af97c8b",
+   "ollama": 383,
+   "js": 383
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 211,
+   "length": 3000,
+   "sha256": "91fca58e67dee58355e73abe79c4b43edadccdafea8f47e78218dbd16901624a",
+   "ollama": 835,
+   "js": 835
+  },
+  {
+   "file": "light/claims.json",
+   "offset": 512,
+   "length": 5200,
+   "sha256": "3d2a4563f8579057cef65491a32efc951cf5c560de9b8174f949a52588a0d144",
+   "ollama": 1417,
+   "js": 1417
+  }
+ ]
+}

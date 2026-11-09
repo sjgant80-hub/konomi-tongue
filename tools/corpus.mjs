@@ -51,7 +51,9 @@ async function harvest(file, messages) {
   flush();
 }
 
-export async function gather() {
+// every harvested message with its timestamp, and every memory file with its last-written time (the 15x curve's
+// weekly windows split on these; gather() below is the original fixed-cut split, unchanged)
+export async function collect() {
   const messages = [];
   for (const f of readdirSync(PROJ).filter((x) => x.endsWith('.jsonl')).sort()) {
     await harvest(join(PROJ, f), messages);
@@ -61,6 +63,11 @@ export async function gather() {
   messages.sort((a, b) => (a.at < b.at ? -1 : a.at > b.at ? 1 : 0));
   const memory = readdirSync(MEM).filter((f) => f.endsWith('.md')).sort()
     .map((f) => ({ file: f, at: statSync(join(MEM, f)).mtime.toISOString(), text: readFileSync(join(MEM, f), 'utf8') }));
+  return { messages, memory };
+}
+
+export async function gather() {
+  const { messages, memory } = await collect();
   const train = [...memory.filter((m) => m.at < CUTOFF).map((m) => m.text), ...messages.filter((m) => m.at < CUTOFF).map((m) => m.text)];
   const held = messages.filter((m) => m.at >= CUTOFF).map((m) => ({ from: m.from, text: m.text }));
   return { cutoff: CUTOFF, train, held, counts: {

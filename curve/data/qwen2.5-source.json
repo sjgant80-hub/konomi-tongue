@@ -1,0 +1,15 @@
+{
+ "model": "Qwen2.5 7B Instruct",
+ "license": "apache-2.0",
+ "licenseLink": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/main/LICENSE",
+ "gguf": "v3",
+ "ollamaBlob": "sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730",
+ "tokenizer": {
+  "model": "gpt2",
+  "pre": "qwen2",
+  "vocab": 152064,
+  "merges": 151387,
+  "addBos": false
+ },
+ "mergesSha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+}

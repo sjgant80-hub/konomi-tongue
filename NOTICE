@@ -13,3 +13,7 @@ Shoppers Purchasing Intention Dataset (C. Sakar and Y. Kastro, UCI Machine Learn
 licensed CC BY 4.0 — not covered by the MIT licence.
 
 The agents' messages the dictionary is grown from are private and are not in this repository; only their sha256 and counts.
+
+curve/data/qwen2.5-merges.txt is the merge table of the Qwen2.5 tokenizer (Qwen2.5 7B Instruct, the Qwen team, Alibaba
+Cloud), read from the model file and licensed Apache-2.0 (curve/data/QWEN-LICENSE), not covered by the MIT licence. The 15×
+curve counts tokens with it; curve/data/qwen2.5-source.json records where it came from.

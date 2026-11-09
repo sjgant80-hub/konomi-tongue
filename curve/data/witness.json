@@ -1,0 +1,26 @@
+{
+ "kind": "konomi-tongue.curve.witness",
+ "v": 1,
+ "clean": true,
+ "killed": 54,
+ "total": 54,
+ "note": "The 15x curve kernels' mutation gate (witness v0.6, pinned) re-runs on GitHub's runner (.github/workflows/curve.yml); curve/tools/witness-check.mjs fails the build unless each run is clean and re-derives exactly these counts. Nothing is baselined.",
+ "kernels": [
+  {
+   "name": "qwentok",
+   "file": "curve/src/qwentok.mjs",
+   "killed": 11,
+   "total": 11,
+   "ignored": 0,
+   "clean": true
+  },
+  {
+   "name": "curve",
+   "file": "curve/src/curve.mjs",
+   "killed": 43,
+   "total": 43,
+   "ignored": 0,
+   "clean": true
+  }
+ ]
+}
