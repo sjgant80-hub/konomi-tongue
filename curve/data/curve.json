@@ -1,0 +1,380 @@
+{
+ "claims": "curve/CLAIMS.md",
+ "start": "2026-10-01T12:00:00.000Z",
+ "days": 7,
+ "unit": {
+  "tokens": "qwen2.5:7b tokens (local tokenizer)",
+  "light": "bytes"
+ },
+ "lines": {
+  "A": "tongue dictionary",
+  "B": "held reference",
+  "C": "LIGHT codec",
+  "gzip": "gzip-9 per message"
+ },
+ "tokenizer": {
+  "mergesSha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+  "verify": {
+   "equal": 48,
+   "of": 48
+  }
+ },
+ "anchors": [
+  {
+   "label": "tongue text, sealed run",
+   "ratio": 1.05,
+   "unit": "Claude tokens",
+   "at": "2026-10-01T12:00:00.000Z"
+  },
+  {
+   "label": "tongue JSON, sealed run",
+   "ratio": 2.72,
+   "unit": "Claude tokens",
+   "at": "2026-10-01T12:00:00.000Z"
+  },
+  {
+   "label": "LIGHT templates by name, median",
+   "ratio": 3.75,
+   "unit": "Claude tokens",
+   "at": "2026-10-01T12:00:00.000Z"
+  },
+  {
+   "label": "LIGHT templates by name, best",
+   "ratio": 50.1,
+   "unit": "Claude tokens",
+   "at": "2026-10-01T12:00:00.000Z"
+  }
+ ],
+ "points": [
+  {
+   "window": {
+    "start": "2026-10-01T12:00:00.000Z",
+    "end": "2026-10-08T12:00:00.000Z"
+   },
+   "snapshot": "a7c0f42fee81f91161fd6bd8a3d5e2f9175f9772679285f6a49985a599b7d400",
+   "held": {
+    "messages": 475,
+    "chars": 815409,
+    "tokens": 212675,
+    "bytes": 824695
+   },
+   "train": {
+    "texts": 1310,
+    "chars": 3894933
+   },
+   "split": {
+    "inside": true,
+    "trainCount": 1310,
+    "heldCount": 475,
+    "laterExcluded": 1842
+   },
+   "A": {
+    "ratio": 1.084,
+    "tokens": 196284,
+    "glyphs": 4723,
+    "lossless": 475
+   },
+   "B": {
+    "ratio": 1,
+    "tokens": 212642,
+    "heldLines": 21786,
+    "referenced": 7,
+    "lossless": 475
+   },
+   "C": {
+    "ratio": 2.612,
+    "bytes": 315756,
+    "lossless": 475
+   },
+   "gzip": {
+    "ratio": 1.82,
+    "bytes": 453176
+   }
+  },
+  {
+   "window": {
+    "start": "2026-10-08T12:00:00.000Z",
+    "end": "2026-10-15T12:00:00.000Z"
+   },
+   "snapshot": "a7c0f42fee81f91161fd6bd8a3d5e2f9175f9772679285f6a49985a599b7d400",
+   "held": {
+    "messages": 497,
+    "chars": 1058051,
+    "tokens": 272154,
+    "bytes": 1067939
+   },
+   "train": {
+    "texts": 1813,
+    "chars": 4863435
+   },
+   "split": {
+    "inside": true,
+    "trainCount": 1813,
+    "heldCount": 497,
+    "laterExcluded": 1345
+   },
+   "A": {
+    "ratio": 1.082,
+    "tokens": 251428,
+    "glyphs": 4723,
+    "lossless": 497
+   },
+   "B": {
+    "ratio": 1,
+    "tokens": 272146,
+    "heldLines": 25436,
+    "referenced": 4,
+    "lossless": 497
+   },
+   "C": {
+    "ratio": 2.707,
+    "bytes": 394444,
+    "lossless": 497
+   },
+   "gzip": {
+    "ratio": 1.889,
+    "bytes": 565364
+   }
+  },
+  {
+   "window": {
+    "start": "2026-10-15T12:00:00.000Z",
+    "end": "2026-10-22T12:00:00.000Z"
+   },
+   "snapshot": "a7c0f42fee81f91161fd6bd8a3d5e2f9175f9772679285f6a49985a599b7d400",
+   "held": {
+    "messages": 590,
+    "chars": 894789,
+    "tokens": 329548,
+    "bytes": 897177
+   },
+   "train": {
+    "texts": 2338,
+    "chars": 6091803
+   },
+   "split": {
+    "inside": true,
+    "trainCount": 2338,
+    "heldCount": 590,
+    "laterExcluded": 755
+   },
+   "A": {
+    "ratio": 1.058,
+    "tokens": 311585,
+    "glyphs": 4723,
+    "lossless": 590
+   },
+   "B": {
+    "ratio": 1,
+    "tokens": 329484,
+    "heldLines": 28269,
+    "referenced": 8,
+    "lossless": 590
+   },
+   "C": {
+    "ratio": 2.673,
+    "bytes": 335641,
+    "lossless": 590
+   },
+   "gzip": {
+    "ratio": 1.902,
+    "bytes": 471696
+   }
+  },
+  {
+   "window": {
+    "start": "2026-10-22T12:00:00.000Z",
+    "end": "2026-10-29T12:00:00.000Z"
+   },
+   "snapshot": "a7c0f42fee81f91161fd6bd8a3d5e2f9175f9772679285f6a49985a599b7d400",
+   "held": {
+    "messages": 307,
+    "chars": 356516,
+    "tokens": 97217,
+    "bytes": 357107
+   },
+   "train": {
+    "texts": 2942,
+    "chars": 7154276
+   },
+   "split": {
+    "inside": true,
+    "trainCount": 2942,
+    "heldCount": 307,
+    "laterExcluded": 448
+   },
+   "A": {
+    "ratio": 1.125,
+    "tokens": 86377,
+    "glyphs": 4723,
+    "lossless": 307
+   },
+   "B": {
+    "ratio": 1.02,
+    "tokens": 95345,
+    "heldLines": 31030,
+    "referenced": 72,
+    "lossless": 307
+   },
+   "C": {
+    "ratio": 2.588,
+    "bytes": 137993,
+    "lossless": 307
+   },
+   "gzip": {
+    "ratio": 1.789,
+    "bytes": 199646
+   }
+  },
+  {
+   "window": {
+    "start": "2026-10-29T12:00:00.000Z",
+    "end": "2026-11-05T12:00:00.000Z"
+   },
+   "snapshot": "a7c0f42fee81f91161fd6bd8a3d5e2f9175f9772679285f6a49985a599b7d400",
+   "held": {
+    "messages": 318,
+    "chars": 379633,
+    "tokens": 99960,
+    "bytes": 381981
+   },
+   "train": {
+    "texts": 3277,
+    "chars": 7702235
+   },
+   "split": {
+    "inside": true,
+    "trainCount": 3277,
+    "heldCount": 318,
+    "laterExcluded": 130
+   },
+   "A": {
+    "ratio": 1.08,
+    "tokens": 92523,
+    "glyphs": 4723,
+    "lossless": 318
+   },
+   "B": {
+    "ratio": 1.001,
+    "tokens": 99897,
+    "heldLines": 33414,
+    "referenced": 11,
+    "lossless": 318
+   },
+   "C": {
+    "ratio": 2.604,
+    "bytes": 146684,
+    "lossless": 318
+   },
+   "gzip": {
+    "ratio": 1.772,
+    "bytes": 215554
+   }
+  }
+ ],
+ "verdicts": [
+  {
+   "id": "K1",
+   "what": "every held message decodes byte-identical under A, B and C, at every point",
+   "measured": [
+    "1425/1425",
+    "1491/1491",
+    "1770/1770",
+    "921/921",
+    "954/954"
+   ],
+   "bar": "all",
+   "pass": true
+  },
+  {
+   "id": "K2",
+   "what": "every window: held messages inside it, train only from before it",
+   "measured": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "bar": "all true",
+   "pass": true
+  },
+  {
+   "id": "K4",
+   "what": "line A (the dictionary), qwen tokens",
+   "measured": [
+    1.084,
+    1.082,
+    1.058,
+    1.125,
+    1.08
+   ],
+   "bar": "below 1.5 at every point",
+   "pass": true
+  },
+  {
+   "id": "K5",
+   "what": "line B (held reference), qwen tokens",
+   "measured": [
+    1,
+    1,
+    1,
+    1.02,
+    1.001
+   ],
+   "bar": "between 1.0 and 1.5 at every point",
+   "pass": true
+  },
+  {
+   "id": "K6",
+   "what": "no line reaches 15x at any point, in its own unit",
+   "measured": [
+    2.612,
+    2.707,
+    2.673,
+    2.588,
+    2.604
+   ],
+   "bar": "below 15 everywhere",
+   "pass": true
+  },
+  {
+   "id": "K7",
+   "what": "the chase: the better token line climbs from the first point to the last",
+   "measured": [
+    1.084,
+    1.08
+   ],
+   "bar": "last above first (predicted to fail)",
+   "pass": false
+  },
+  {
+   "id": "K8",
+   "what": "line C (LIGHT, bytes): at least 2.0x and above gzip-9, at every point",
+   "measured": [
+    [
+     2.612,
+     1.82
+    ],
+    [
+     2.707,
+     1.889
+    ],
+    [
+     2.673,
+     1.902
+    ],
+    [
+     2.588,
+     1.789
+    ],
+    [
+     2.604,
+     1.772
+    ]
+   ],
+   "bar": "C at least 2.0 and above gzip at every point",
+   "pass": true
+  }
+ ]
+}
