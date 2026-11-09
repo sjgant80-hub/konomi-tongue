@@ -4,6 +4,8 @@
 
 **LIGHT, the estate's inner codec (in `light/`): https://sjgant80-hub.github.io/konomi-tongue/light/**
 
+**The 15× curve, re-measured every week (in `curve/`): https://sjgant80-hub.github.io/konomi-tongue/curve/**
+
 A language the estate's agents grow between themselves, measured in Claude tokens against Simon's 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.
 
 ## The result

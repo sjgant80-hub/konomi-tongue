@@ -9,6 +9,7 @@
 - [Live page](https://sjgant80-hub.github.io/konomi-tongue/)
 - [Repository](https://github.com/sjgant80-hub/konomi-tongue)
 - [LIGHT, the inner codec](https://sjgant80-hub.github.io/konomi-tongue/light/)
+- [The 15× curve, re-measured weekly](https://sjgant80-hub.github.io/konomi-tongue/curve/)
 - [Pre-registration](https://sjgant80-hub.github.io/konomi-tongue/data/prereg.json)
 - [The record](https://sjgant80-hub.github.io/konomi-tongue/data/run.json)
 

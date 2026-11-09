@@ -82,7 +82,7 @@ if (shipRun) {
     + '<div class="scroll"><table><thead><tr><th>record</th><th>as sent today</th><th>packed</th><th></th></tr></thead><tbody>'
     + recs.map((p) => '<tr' + (p.wins ? ' class="best"' : '') + '><td>' + esc(p.where) + '</td><td class="n">' + p.todayTokens + '</td><td class="n">' + p.packedTokens + '</td><td class="n">' + p.ratio + '×</td></tr>').join('')
     + '</tbody></table></div>'
-    + '<p class="quiet" style="margin-top:.8rem">LIGHT\'s templates (Thomas Frumkin\'s language) called by name — the program never travels, so the call costs a fraction: best <b>' + x2(tmpl[0].ratio) + '</b> (' + esc(tmpl[0].name) + '), median ' + x2(shipJ.median) + ' over ' + tmpl.length + '. The 15× route is repeated work; new talk is not. The chase stays a standing, measured line.</p></div>';
+    + '<p class="quiet" style="margin-top:.8rem">LIGHT\'s templates (Thomas Frumkin\'s language) called by name — the program never travels, so the call costs a fraction: best <b>' + x2(tmpl[0].ratio) + '</b> (' + esc(tmpl[0].name) + '), median ' + x2(shipJ.median) + ' over ' + tmpl.length + '. The 15× route is repeated work; new talk is not. The chase stays a standing, measured line: <a href="curve/">the 15× curve</a>.</p></div>';
 }
 
 const tally = prices ? Object.entries(prices.tally).map(([s, t]) => '<tr><td>' + esc(s) + '</td><td class="n">' + t.n + '</td><td>' + Object.entries(t.byCost).map(([c2, n]) => n + ' at ' + c2).join(', ') + '</td></tr>').join('') : '';
@@ -256,7 +256,7 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 </style></head><body>
 <div class="top"><div class="in">
  <a class="brand" href="#top">KONOMI TONGUE</a>
- <nav class="links" aria-label="Sections"><a href="#what">What it is</a><a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#receipts">Receipts</a><a href="#blueprint">Blueprint</a><a href="#business">For a team</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">Questions</a><a href="light/">LIGHT</a></nav>
+ <nav class="links" aria-label="Sections"><a href="#what">What it is</a><a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#receipts">Receipts</a><a href="#blueprint">Blueprint</a><a href="#business">For a team</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">Questions</a><a href="light/">LIGHT</a><a href="curve/">15× curve</a></nav>
  <button id="theme" class="plain" type="button" aria-label="Switch between light and dark">theme</button>
 </div></div>
 <div class="wrap" id="top">
@@ -280,6 +280,7 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
  <li><b>Re-grade every recorded picture read</b> with the button in <a href="#picture">the picture channel</a>: the same gated kernel, in your browser, against the record.</li>
  <li><b>Check it on your own machine.</b> Clone <a href="${REPO}">the repository</a> and run, with Node 20 or later and nothing installed: <code>node --test</code> (every test), <code>node tools/seal.mjs --check</code> (the seal matches its inputs), <code>node tools/run.mjs --verify</code> (every read re-graded, every number re-derived), <code>node tools/ship.mjs --verify</code> (every public place re-packed).</li>
  <li><b>For a team:</b> put your own token volume and price into <a href="#business">the cost case</a>, then follow <a href="#adoption">Adoption</a> to measure your own records first.</li>
+ <li><b>The standing line:</b> <a href="curve/">the 15× curve</a> re-measures the codings every week, on messages newer than anything they learned from, counted by the local model's own tokenizer.</li>
  <li><b>Next door:</b> <a href="light/">LIGHT</a> is the byte-level codec of the same estate — smaller files, signed packets checked before they are read — with its own receipts and business case.</li>
 </ol>
 </section>
@@ -561,7 +562,7 @@ costIt();
 </script>
 </body></html>
 `;
-const md = ['# The Konomi Tongue', '', '**Live: ' + URL_LIVE + '**', '', '**LIGHT, the estate\'s inner codec (in `light/`): ' + URL_LIVE + 'light/**', '', 'A language the estate\'s agents grow between themselves, measured in Claude tokens against Simon\'s 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.', '', '## The result', '', headline, ''];
+const md = ['# The Konomi Tongue', '', '**Live: ' + URL_LIVE + '**', '', '**LIGHT, the estate\'s inner codec (in `light/`): ' + URL_LIVE + 'light/**', '', '**The 15× curve, re-measured every week (in `curve/`): ' + URL_LIVE + 'curve/**', '', 'A language the estate\'s agents grow between themselves, measured in Claude tokens against Simon\'s 15×: a nested glyph dictionary grown from their real messages, a shared JSON schema, and a picture channel read back blind. Sealed before any held-out message was coded or any picture read.', '', '## The result', '', headline, ''];
 if (run) {
   md.push('| Sealed rule | Result | | Predicted |', '|---|---|---|---|');
   for (const r of j.rules) md.push('| ' + pre.rules.find((x) => x.id === r.id).rule + ' | ' + r.value + ' | ' + (r.pass ? 'PASS' : 'FAIL') + ' | ' + pre.predictions[r.id] + ' |');
@@ -576,7 +577,7 @@ md.push('## What it is', '', 'The live page explains it end to end — what it i
   '- `tools/witness-check.mjs` — CI fails unless each kernel\'s mutation run on GitHub\'s runner is clean and re-derives `data/witness.json`' + (W ? ' (' + W.killed + ' of ' + W.total + ' killed, none baselined)' : '') + '.', '');
 md.push('## LIGHT', '', 'The repository also holds LIGHT (`light/`): one lossless, integer-only, context-mixing codec primed with a shared dictionary, a signed packet door that verifies sender, signature and counter on the raw bytes before anything is decoded, and a vault that packs many files into one hash-checked stream. Its claims were sealed in `light/claims.json` before any code; its receipts are `light/data/light-run.json`, `light/data/barrier-run.json` and `light/data/witness.json`; every kernel is mutation-gated on GitHub\'s runner on every push (`.github/workflows/light.yml`). The live page explains it, with the receipts, a business case, adoption steps and a white paper: ' + URL_LIVE + 'light/', '');
 md.push('## Credits', '', '- The seed\'s memory law (compress, don\'t delete; compress by prime indices).', '- Thomas Frumkin\'s Konomi architecture and LIGHT ([the estate\'s fork](' + LIGHT + ') of teslasolar/light, used with permission). ' + CREDIT + '.', '- Shopper sessions: UCI Online Shoppers Purchasing Intention Dataset, C. Sakar and Y. Kastro (2018), DOI 10.24432/C5F88Q, CC BY 4.0.', '- Code: MIT.', '');
-const llms = ['# The Konomi Tongue', '', '> A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.', '', headline, '', '## Key pages', '', '- [Live page](' + URL_LIVE + ')', '- [Repository](' + REPO + ')', '- [LIGHT, the inner codec](' + URL_LIVE + 'light/)', '- [Pre-registration](' + URL_LIVE + 'data/prereg.json)', ...(run ? ['- [The record](' + URL_LIVE + 'data/run.json)'] : []), '', '## Credits', '', '- ' + CREDIT + '. LIGHT is Thomas Frumkin\'s (used with permission).', ''].join('\n');
+const llms = ['# The Konomi Tongue', '', '> A sealed measurement of a glyph language grown from real agent messages, in Claude tokens, against a 15× target; plus a picture channel read back blind.', '', headline, '', '## Key pages', '', '- [Live page](' + URL_LIVE + ')', '- [Repository](' + REPO + ')', '- [LIGHT, the inner codec](' + URL_LIVE + 'light/)', '- [The 15× curve, re-measured weekly](' + URL_LIVE + 'curve/)', '- [Pre-registration](' + URL_LIVE + 'data/prereg.json)', ...(run ? ['- [The record](' + URL_LIVE + 'data/run.json)'] : []), '', '## Credits', '', '- ' + CREDIT + '. LIGHT is Thomas Frumkin\'s (used with permission).', ''].join('\n');
 
 writeFileSync(at('index.html'), page);
 writeFileSync(at('README.md'), md.join('\n'));

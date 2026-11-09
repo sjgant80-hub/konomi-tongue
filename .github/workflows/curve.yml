@@ -1,0 +1,22 @@
+name: curve
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  curve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: the curve's kernels, its page and its public file (K2, K9, K11, and every verdict at its bar)
+        run: node --test curve/test/curve.test.mjs curve/test/page.test.mjs
+      - name: K3 — the JavaScript tokenizer recounts every committed text and matches the local model's count
+        run: node curve/tools/tokverify.mjs --check
+      # Pinned. An unpinned gate is a gate somebody else can change.
+      - name: witness — every mutant of the curve's kernels must die, and the committed counts must re-derive
+        run: |
+          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+          for k in qwentok curve; do
+            node /tmp/witness/witness.mjs mutate "curve/src/$k.mjs" --timeout 60000 --cap 1000 --test node --test curve/test/curve.test.mjs > "/tmp/w-$k.json" || true
+            node curve/tools/witness-check.mjs "$k" "/tmp/w-$k.json"
+          done

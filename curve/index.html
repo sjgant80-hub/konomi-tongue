@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>The 15× curve: a standing measurement</title>
+<meta name="description" content="Every week, the estate's own codings re-measured on messages newer than anything they learned from, against Simon's 15× line. Counted by the local model's own tokenizer; every failure kept.">
+<link rel="canonical" href="https://sjgant80-hub.github.io/konomi-tongue/curve/">
+<style>
+:root{--bg:#0c0b10;--panel:#14131b;--panel2:#0f0e15;--line:#262433;--ink:#e9e6f2;--dim:#a39fb5;--faint:#6b6780;--accent:#b79cff;--accent2:#6ab0ff;--grn:#7bd88f;--bad:#ff8a8a;--gold:#ffd166;--onaccent:#120a2a;--mono:ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+a{color:var(--accent2)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:48px}
+.brand{font:700 15px var(--mono);letter-spacing:.14em;color:var(--ink);text-decoration:none}
+.brand b{color:var(--accent)}
+nav.links{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+nav.links::-webkit-scrollbar{display:none}
+nav.links a{color:var(--dim);text-decoration:none;font-size:13px;white-space:nowrap}
+nav.links a:hover{color:var(--ink)}
+button{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:7px;font:13px var(--sans);cursor:pointer}
+button:hover{border-color:var(--accent)}
+.quiet{background:transparent}
+h1{font:800 clamp(30px,6vw,48px)/1.08 var(--sans);letter-spacing:-.01em;margin:30px 0 10px;background:linear-gradient(100deg,var(--accent),var(--accent2),var(--grn));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,2.3vw,20px);max-width:70ch;color:var(--ink)}
+.sub{color:var(--dim);font:12px var(--mono);margin:10px 0 14px}
+.pill{display:inline-block;font:11px var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;vertical-align:middle}
+.pill.live{color:var(--grn);border-color:var(--grn)}.pill.bad{color:var(--bad);border-color:var(--bad)}
+.ctas{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.ctas button{padding:10px 14px}
+.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font:800 22px var(--mono);color:var(--grn)}
+.fact span{font-size:12.5px;color:var(--dim)}
+section{padding:30px 0 6px;border-top:1px solid var(--line);margin-top:26px;scroll-margin-top:56px}
+section>h2{font:700 23px var(--sans);margin-bottom:6px}
+section>h2 small{display:block;font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.intro{color:var(--dim);max-width:72ch;margin-bottom:12px}
+h3{font-size:17px;margin:18px 0 6px}
+p{margin:8px 0;max-width:74ch}
+ul,ol{margin:8px 0 8px 22px;max-width:74ch}li{margin:4px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.panel h4{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+label{display:block;font:11px var(--mono);color:var(--dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+textarea,input{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono);resize:vertical}
+textarea{min-height:72px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:720px){.row.two{grid-template-columns:1fr 1fr}}
+.stat{display:flex;justify-content:space-between;gap:10px;font:13px var(--mono);padding:5px 0;border-bottom:1px dashed var(--line)}
+.stat:last-child{border-bottom:0}.stat b{color:var(--grn)}.stat b.red{color:var(--bad)}
+.mono{font-family:var(--mono);font-size:12.5px;word-break:break-all}
+.dim{color:var(--dim)}.ok{color:var(--grn)}.no{color:var(--bad)}.gold{color:var(--gold)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--dim);background:var(--panel2)}
+td.n{text-align:right;font-family:var(--mono)}
+.tag{display:inline-block;font:700 10.5px var(--mono);padding:1px 7px;border-radius:5px}
+.tag.held{background:var(--grn);color:#06210f}.tag.failed{background:var(--bad);color:#2a0000}.tag.na{background:var(--line);color:var(--dim)}
+.callout{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;margin:12px 0}
+.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:8px}
+.diagram svg{display:block;min-width:720px;width:100%;height:auto;color:var(--dim)}
+.diagram .b{fill:var(--panel);stroke:var(--line)}.diagram .ba{stroke:var(--accent)}.diagram .bp{stroke:var(--accent2)}.diagram .bg{stroke:var(--grn)}
+.diagram text{font-family:var(--mono);font-size:12px;fill:var(--ink)}.diagram text.a{fill:var(--accent)}.diagram text.d{fill:var(--dim)}.diagram text.g{fill:var(--grn)}
+.diagram .ar{fill:none;stroke:currentColor;stroke-width:1.4}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+.barrier{font:12px var(--mono);max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel2)}
+.barrier div{padding:3px 0;border-bottom:1px dashed var(--line)}
+.barrier .lang{color:var(--faint)}
+.faq dt{font-weight:700;margin-top:14px}.faq dd{margin:4px 0 0;color:var(--ink)}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;color:var(--dim);font-size:13px}
+a.btn{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:7px;font:13px var(--sans);text-decoration:none}
+a.btn:hover{border-color:var(--accent)}
+a.btn.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.grid .panel{margin:0}.grid .panel p{margin:0;font-size:14.5px}
+.inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 12px}
+select{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono)}
+select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.diagram text.r{fill:var(--bad)}
+.paper h3{margin-top:16px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top">15×<b>·</b></a>
+  <nav class="links" aria-label="Sections">
+    <a href="#what">What it is</a><a href="#start">Start here</a><a href="#curve">The curve</a><a href="#try">Count your text</a><a href="#receipts">Receipts</a>
+    <a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#scope">Honest scope</a><a href="#business">For business</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">FAQ</a>
+  </nav>
+  <button id="theme" class="quiet" type="button">theme</button>
+</div></header>
+
+<main class="wrap" id="top">
+<h1>The 15× curve · a standing measurement</h1>
+<p class="lede">Simon's line is that 15× is out there. This page keeps measuring how far the estate's own codings shrink its agents' real messages, <b>one week at a time, on messages newer than anything each coder learned from</b>. Every number is read from the committed record, and every failure stays on it.</p>
+<p class="sub">three codings · weekly windows · counted by the local model's own tokenizer · <span id="kstat" class="pill">reading the record…</span></p>
+<div class="ctas">
+  <a class="btn go" href="#curve">See the curve</a>
+  <a class="btn" href="#try">Count your own text</a>
+  <a class="btn" href="#receipts">Read the receipts</a>
+  <a class="btn" href="#business">What it means for a token bill</a>
+</div>
+<div class="facts" aria-label="The curve in numbers">
+  <div class="fact"><b id="f-best">…</b><span id="f-best-s">the best token ratio at the newest point</span></div>
+  <div class="fact"><b id="f-gap">…</b><span>how far that is from 15×</span></div>
+  <div class="fact"><b id="f-points">…</b><span>weekly points so far, each on a week of messages no coder had seen</span></div>
+  <div class="fact"><b id="f-lossless">…</b><span>messages decoded back exactly, across every coding and every point</span></div>
+</div>
+
+<section id="what" aria-labelledby="what-h">
+  <h2 id="what-h"><small>What it is</small>A ruler held against the 15× line, every week</h2>
+  <p>The estate has several ways to make what its agents send each other smaller. Each was measured once, on 1 October, and none came near 15× on new messages. A single point can't show whether things are getting better as the estate's shared knowledge grows. So this measures the same codings again on each new week of real messages, with each coder allowed to learn only from what came before that week. If the curve climbs towards 15×, it will show here. If it stays flat, that shows too.</p>
+  <ul>
+    <li><b>A · the tongue's dictionary.</b> Common runs of text are replaced by short glyphs, from a dictionary grown on earlier messages.</li>
+    <li><b>B · held reference.</b> Any line the reader already holds, word for word, is sent as a short reference instead. This is the "material both sides already have" route, the only one that has ever reached high ratios.</li>
+    <li><b>C · LIGHT's codec.</b> A compressor primed with a dictionary of the estate's own files. Its output is bytes, not tokens: it makes storage and transport smaller, but a model cannot read it.</li>
+  </ul>
+</section>
+
+<section id="start" aria-labelledby="start-h">
+  <h2 id="start-h"><small>Start here</small>Three things to look at</h2>
+  <ol>
+    <li>Look at <a href="#curve">the curve</a>: one point a week, each line against the dashed 15× line. The sealed 1 October points are marked separately, in their own unit.</li>
+    <li>Paste some of your own text into <a href="#try">Count your text</a> to see its tokens counted by the same tokenizer, in your tab.</li>
+    <li>Read <a href="#receipts">the receipts</a>: every claim was written down with its bar before any code, and the failed ones are kept.</li>
+  </ol>
+  <p class="dim">Off the page: clone the repository, then run <span class="mono">node --test curve/test/curve.test.mjs curve/test/page.test.mjs</span> and <span class="mono">node curve/tools/tokverify.mjs --check</span>. The measurement itself (<span class="mono">node curve/tools/curve.mjs</span>) needs the private message corpus, so it runs on the estate's own laptop; only its numbers are published.</p>
+</section>
+
+<section id="curve" aria-labelledby="curve-h">
+  <h2 id="curve-h"><small>The curve</small>Every week, every coding, against 15×</h2>
+  <div class="diagram" id="chart" role="img" aria-label="The ratio of each coding at each weekly point, on a scale up to 15 times"></div>
+  <p class="dim" id="chart-note">…</p>
+  <div class="tablewrap"><table id="points"><thead><tr><th>Week starting</th><th>Messages</th><th>A · dictionary</th><th>B · held reference</th><th>C · LIGHT (bytes)</th><th>gzip-9 (bytes)</th></tr></thead><tbody></tbody></table></div>
+  <h3>What the curve says</h3>
+  <p id="lesson">…</p>
+</section>
+
+<section id="try" aria-labelledby="try-h">
+  <h2 id="try-h"><small>Count your text</small>The same tokenizer, in your tab</h2>
+  <p>Paste any text. Your browser counts its tokens with the tokenizer the curve uses: qwen2.5's own merge table, read from the model file and run in plain JavaScript. It also shows how few tokens the text would need to reach 15×. Nothing you type leaves this tab.</p>
+  <textarea id="try-in" rows="6" aria-label="Text to count" placeholder="Paste a message, a file, anything…"></textarea>
+  <div class="row"><button id="try-go" type="button">Count it</button><span id="try-out" class="dim"></span></div>
+</section>
+
+<section id="receipts" aria-labelledby="receipts-h">
+  <h2 id="receipts-h"><small>Receipts</small>Every claim, beside its bar</h2>
+  <p class="dim">Written down before any code (<a href="CLAIMS.md">CLAIMS.md</a>); the instrument frozen by hash before any week was measured (<a href="SEAL2.md">SEAL2.md</a>). A claim that misses its bar is kept and shown as failed.</p>
+  <div class="tablewrap"><table id="claims"><thead><tr><th>Claim</th><th>What it says</th><th>Measured</th><th>Bar</th><th>Verdict</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section id="how" aria-labelledby="how-h">
+  <h2 id="how-h"><small>How it works</small>One week at a time, learning only from the past</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 220" aria-label="Messages before a week train the coders; the week's messages are coded and counted">
+      <rect class="bp" x="10" y="40" width="380" height="70" rx="10"/><rect class="bg" x="410" y="40" width="150" height="70" rx="10"/><rect class="ba" x="580" y="40" width="310" height="70" rx="10"/>
+      <text class="a" x="24" y="70">everything before the week</text><text class="d" x="24" y="94">trains the dictionary and the held lines</text>
+      <text class="g" x="424" y="70">this week</text><text class="d" x="424" y="94">coded A, B, C</text>
+      <text class="a" x="594" y="70">counted and checked</text><text class="d" x="594" y="94">qwen tokens · bytes · lossless</text>
+      <text class="d" x="10" y="150">next week: the window moves on; this week becomes training; recorded points are never rewritten</text>
+      <text class="r" x="10" y="190">the 15× line: the week's messages would have to shrink to one fifteenth</text>
+    </svg>
+  </div>
+  <ol>
+    <li><b>Snapshot.</b> The agents' messages, each with its timestamp, are copied into a private snapshot pinned by its SHA-256.</li>
+    <li><b>Split by time.</b> For each complete week from the sealed cut (1 October, 12:00 UTC), training is everything before the week and the held messages are the week itself. The code checks the split on every point.</li>
+    <li><b>Code and count.</b> Each held message is coded three ways, decoded again (it must come back byte for byte), and counted: tokens by the local tokenizer, bytes for LIGHT and gzip.</li>
+    <li><b>Publish only numbers.</b> The public file holds counts, ratios, dates and hashes. Every string in it must come from a fixed list the code writes, so no message text can reach it.</li>
+  </ol>
+</section>
+
+<section id="blueprint" aria-labelledby="blueprint-h">
+  <h2 id="blueprint-h"><small>Blueprint</small>Every part, and how it is proven</h2>
+  <div class="tablewrap"><table id="parts"><thead><tr><th>Part</th><th>What it does</th><th>Proof</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section id="scope" aria-labelledby="scope-h">
+  <h2 id="scope-h"><small>Honest scope</small>What this does and doesn't measure</h2>
+  <ul>
+    <li><b>These are qwen2.5 tokens, not Claude tokens.</b> The Claude command-line counter reports zero usage, so it can't be used. The local model's tokenizer is exact and free. The 1 October Claude-token points are shown as anchors in their own unit, never joined to the line.</li>
+    <li><b>LIGHT's line is bytes.</b> It shows what storage and transport would carry, not what a model would read.</li>
+    <li><b>The picture channel is not measured.</b> It needs paid vision calls.</li>
+    <li><b>The messages are private.</b> The measurement runs where they live, and only the numbers are published. Anyone can check the tokenizer, the code and the arithmetic; the messages themselves cannot be re-read outside the estate.</li>
+    <li><b>The figure 15× is Simon's.</b> It appears nowhere written as a target, and nothing here claims it is reachable on new information.</li>
+  </ul>
+</section>
+
+<section id="business" aria-labelledby="business-h">
+  <h2 id="business-h"><small>For business</small>What a measured ratio does to a token bill</h2>
+  <p>Teams pay for every input token their systems send a model. The useful question isn't whether 15× is possible; it's what the ratio measured on their own kind of traffic saves. This case takes the newest point's better token coding and your own volume. The model price starts at the published figure, and you can type your own.</p>
+  <div class="row">
+    <label>million input tokens a month <input id="c-m" type="number" min="0" max="1000000" value="10"></label>
+    <label>your price per million (£, blank = published) <input id="c-p" type="number" min="0" max="1000" step="0.01"></label>
+    <label>years <input id="c-y" type="number" min="1" max="10" value="3"></label>
+  </div>
+  <p id="c-head">…</p>
+  <div class="tablewrap"><table id="c-table"><thead><tr><th></th><th>A year</th><th id="c-overh">Over the years</th></tr></thead><tbody></tbody></table></div>
+  <p class="dim" id="c-note"></p>
+  <div class="tablewrap"><table>
+    <tr><th>Who</th><th>What this means for them</th></tr>
+    <tr><td>CEO</td><td>A straight answer, kept current, to "how much can we shrink what we send the model?", measured on real traffic, not promised.</td></tr>
+    <tr><td>Finance</td><td>The saving is computed from a measured ratio and your own volume, with the price's source shown. No price of ours appears.</td></tr>
+    <tr><td>CTO / CISO</td><td>Lossless by test on every message; counted locally; the measured messages never leave the machine they live on.</td></tr>
+  </table></div>
+  <p class="dim" style="margin-top:8px">Sources the case reads:</p>
+  <ul id="c-src" class="dim"></ul>
+</section>
+
+<section id="adoption" aria-labelledby="adoption-h">
+  <h2 id="adoption-h"><small>Adoption</small>Running the same curve on your own traffic</h2>
+  <ol>
+    <li>Pick one stream your systems send a model: tickets, reports, records.</li>
+    <li>Write down the bars before anything is built, and seal them.</li>
+    <li>Snapshot the stream privately; split it into weeks; let each coding learn only from the past.</li>
+    <li>Measure each week once, losslessly, and publish only the numbers.</li>
+    <li>Switch a coding on only where its measured ratio beats sending the text as it is.</li>
+  </ol>
+  <p class="dim">What it runs on: Node.js 20 or a current browser. No GPU, no cloud service, no model download beyond the model you already run.</p>
+</section>
+
+<section id="paper" aria-labelledby="paper-h">
+  <div class="paper">
+  <h2 id="paper-h"><small>White paper</small>Does shared knowledge compound into compression?</h2>
+  <h3>1 · The question</h3>
+  <p>The estate's earlier measurements found that a shared dictionary saves only what the reader already holds. As the estate's shared knowledge grows week by week, does more of each new message become something the reader already holds, so the ratio climbs?</p>
+  <h3>2 · Method</h3>
+  <p>Claims sealed before code; a private snapshot pinned by hash; complete seven-day windows from the 1 October cut; training strictly before each window; three codings, each checked lossless; tokens counted by the local model's own tokenizer, itself checked against the model's own counts on committed public texts; recorded points never rewritten.</p>
+  <h3>3 · Results, from the record</h3>
+  <ul id="results"></ul>
+  <h3>4 · Limits</h3>
+  <p>One estate's agents, a few weeks, a different tokenizer from the one the 15× figure was stated in, and no picture channel. A climb on this traffic would not prove one on anyone else's.</p>
+  </div>
+</section>
+
+<section id="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h"><small>FAQ</small>Questions</h2>
+  <dl class="faq">
+    <dt>Has it reached 15×?</dt><dd id="faq-15">…</dd>
+    <dt>Why not count Claude tokens?</dt><dd>The Claude command-line tool currently reports zero usage when asked to count, and a counter that counts nothing makes every ratio look like exactly 1×. The local model's tokenizer is exact, free and checkable, so the curve uses it and says so.</dd>
+    <dt>Can I re-run it?</dt><dd>The tokenizer, the code, the verdicts and the arithmetic, yes: the tests and the tokenizer check run anywhere. The measurement needs the estate's private messages, so it runs only where they live. Each point names the hash of the snapshot it was measured on.</dd>
+    <dt>Does any data come to the supplier?</dt><dd>No. This page loads only its own files, and its security policy blocks every other connection. What you type in Count your text stays in your tab.</dd>
+    <dt>Whose work is it?</dt><dd>Powered by the Konomi architecture, created by Thomas Frumkin. The tokenizer tables are Qwen2.5's, Apache-2.0, from the Qwen team. Supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; support and terms are agreed per deployment. MIT licence.</dd>
+  </dl>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <p>The 15× curve · MIT · <a href="https://github.com/sjgant80-hub/konomi-tongue">source and receipts</a> · part of <a href="../">the Konomi Tongue</a> · next to <a href="../light/">LIGHT</a> · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a></p>
+  <p>Powered by the Konomi architecture, created by Thomas Frumkin. Tokenizer tables: Qwen2.5 (Apache-2.0, the Qwen team), see <a href="data/QWEN-LICENSE">the licence</a>. This page requests only its own files; nothing you type here leaves this tab.</p>
+</div></footer>
+<script type="module" src="./page.mjs"></script>
+</body>
+</html>
