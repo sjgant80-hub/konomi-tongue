@@ -97,7 +97,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 <header class="top"><div class="wrap">
   <a class="brand" href="#top">15×<b>·</b></a>
   <nav class="links" aria-label="Sections">
-    <a href="#what">What it is</a><a href="#start">Start here</a><a href="#curve">The curve</a><a href="#try">Count your text</a><a href="#receipts">Receipts</a>
+    <a href="#what">What it is</a><a href="#words">Words</a><a href="#start">Start here</a><a href="#curve">The curve</a><a href="#try">Count your text</a><a href="#receipts">Receipts</a>
     <a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#scope">Honest scope</a><a href="#business">For business</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">FAQ</a>
   </nav>
   <button id="theme" class="quiet" type="button">theme</button>
@@ -125,9 +125,22 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <p>The estate has several ways to make what its agents send each other smaller. Each was measured once, on 1 October, and none came near 15× on new messages. A single point can't show whether things are getting better as the estate's shared knowledge grows. So this measures the same codings again on each new week of real messages, with each coder allowed to learn only from what came before that week. If the curve climbs towards 15×, it will show here. If it stays flat, that shows too.</p>
   <ul>
     <li><b>A · the tongue's dictionary.</b> Common runs of text are replaced by short glyphs, from a dictionary grown on earlier messages.</li>
-    <li><b>B · held reference.</b> Any line the reader already holds, word for word, is sent as a short reference instead. This is the "material both sides already have" route, the only one that has ever reached high ratios.</li>
+    <li><b>B · held reference.</b> Any line the reader already holds, word for word, is sent as a short reference instead. This is the "material both sides already have" route: the same idea behind the only high ratio the estate has seen (a program called by its template name). On new messages it can only save the lines that repeat word for word, and the curve shows how few do.</li>
     <li><b>C · LIGHT's codec.</b> A compressor primed with a dictionary of the estate's own files. Its output is bytes, not tokens: it makes storage and transport smaller, but a model cannot read it.</li>
   </ul>
+</section>
+
+<section id="words" aria-labelledby="words-h">
+  <h2 id="words-h"><small>Words on this page</small>What each term means here</h2>
+  <dl class="faq">
+    <dt>15×, a ratio</dt><dd>How many times smaller a coding makes the messages. 15× means the same messages carried in one fifteenth of the tokens; 1× means no saving at all. The figure 15 is Simon's line to measure against.</dd>
+    <dt>Token, tokenizer</dt><dd>A token is the unit a language model reads and bills: a word, part of a word, or a symbol. The tokenizer is what cuts text into tokens. Here it is qwen2.5's, the model that runs on the estate's own laptop.</dd>
+    <dt>A week, a new message</dt><dd>Each point covers seven days, starting from 1 October at 12:00 UTC. A message is new for that week if it was sent during it. The codings learned only from messages sent before the week began.</dd>
+    <dt>Lossless</dt><dd>Every coded message is decoded again and compared byte for byte with the original. A coding that changed even one character would fail claim K1.</dd>
+    <dt>Standing</dt><dd>When a week closes, the same command measures it and adds it as a new point. Points already recorded are never rewritten.</dd>
+    <dt>Seal</dt><dd>The claims (seal 1), then the frozen instrument (seal 2), were committed to the public record before any week was measured, so nothing could be tuned to the result.</dd>
+    <dt>Mutation gate</dt><dd>A tool (witness) that breaks the code in small ways, one at a time, and checks that the tests catch every break. Clean means every one was caught.</dd>
+  </dl>
 </section>
 
 <section id="start" aria-labelledby="start-h">
@@ -158,7 +171,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 <section id="receipts" aria-labelledby="receipts-h">
   <h2 id="receipts-h"><small>Receipts</small>Every claim, beside its bar</h2>
-  <p class="dim">Written down before any code (<a href="CLAIMS.md">CLAIMS.md</a>); the instrument frozen by hash before any week was measured (<a href="SEAL2.md">SEAL2.md</a>). A claim that misses its bar is kept and shown as failed.</p>
+  <p class="dim">Written down before any code (<a href="CLAIMS.md">CLAIMS.md</a>); the instrument frozen by hash before any week was measured (<a href="SEAL2.md">SEAL2.md</a>). A claim that misses its bar is kept and shown as failed. The raw records are public: <a href="data/curve.json">the curve</a>, <a href="data/tokverify.json">the tokenizer check</a> and <a href="data/witness.json">the mutation gate</a>.</p>
   <div class="tablewrap"><table id="claims"><thead><tr><th>Claim</th><th>What it says</th><th>Measured</th><th>Bar</th><th>Verdict</th></tr></thead><tbody></tbody></table></div>
 </section>
 
@@ -179,6 +192,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <li><b>Split by time.</b> For each complete week from the sealed cut (1 October, 12:00 UTC), training is everything before the week and the held messages are the week itself. The code checks the split on every point.</li>
     <li><b>Code and count.</b> Each held message is coded three ways, decoded again (it must come back byte for byte), and counted: tokens by the local tokenizer, bytes for LIGHT and gzip.</li>
     <li><b>Publish only numbers.</b> The public file holds counts, ratios, dates and hashes. Every string in it must come from a fixed list the code writes, so no message text can reach it.</li>
+    <li><b>Stand.</b> When the next week closes, the same command measures it and adds a point. Recorded points are never rewritten, so the curve can only grow.</li>
   </ol>
 </section>
 
@@ -200,7 +214,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 <section id="business" aria-labelledby="business-h">
   <h2 id="business-h"><small>For business</small>What a measured ratio does to a token bill</h2>
-  <p>Teams pay for every input token their systems send a model. The useful question isn't whether 15× is possible; it's what the ratio measured on their own kind of traffic saves. This case takes the newest point's better token coding and your own volume. The model price starts at the published figure, and you can type your own.</p>
+  <p>Teams pay for every input token their systems send a model. The useful question isn't whether 15× is possible; it's what the ratio measured on their own kind of traffic saves. This case takes the newest point's better token coding and your own volume. The model price starts at the published figure, and you can type your own. The tools themselves are MIT, with no licence fee, and run on hardware you already have.</p>
   <div class="row">
     <label>million input tokens a month <input id="c-m" type="number" min="0" max="1000000" value="10"></label>
     <label>your price per million (£, blank = published) <input id="c-p" type="number" min="0" max="1000" step="0.01"></label>
