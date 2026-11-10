@@ -25,6 +25,10 @@ test('the record: its verdicts follow from its numbers, and no measured total is
   assert.deepEqual(REC.types.map((t) => t.key), ['agent', 'memory', 'callbook', 'records', 'prose']);
   for (const s of REC.sealed) assert.match(s.commit, /^[0-9a-f]{40}$/);
   const body = html.replace(/<style>[\s\S]*?<\/style>/, '');
+  // the visible text (tags stripped, so SVG coordinates do not count) holds no total the record measured
+  const visible = body.replace(/<[^>]+>/g, ' ');
+  const items = REC.types.reduce((n, t) => n + t.items, 0);
+  for (const n of [REC.gate.killed, REC.gate.total, items]) assert.equal(new RegExp('(^|[^0-9])' + n + '([^0-9]|$)').test(visible), false, n + ' is typed into the page');
   for (const t of REC.types) for (const n of [t.raw, t.items > 99 ? t.items : null, t.ladder['31'].frame, t.ladder['1'].frame, t.baselines.zstd19].filter((v) => v !== null)) {
     assert.equal(new RegExp('(^|[^0-9])' + n + '([^0-9]|$)').test(body), false, t.key + ': ' + n + ' is typed into the page');
   }

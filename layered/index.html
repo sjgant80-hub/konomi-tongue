@@ -119,14 +119,15 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 <div class="wrap">
 <section id="words" aria-labelledby="words-h">
-  <h2 id="words-h"><small>Words on this page</small>Seven words, in plain English</h2>
+  <h2 id="words-h"><small>Words on this page</small>Eight words, in plain English</h2>
   <dl class="faq">
-    <dt>Ratio (×)</dt><dd>Original size divided by squeezed size. 4× means a quarter of the bytes. Every ratio here counts every header byte, and is <b>pooled</b>: all items' bytes over all their frames' bytes.</dd>
+    <dt>Ratio (×)</dt><dd>Original size divided by squeezed size. 4× means a quarter of the bytes. Every ratio here counts every header byte, and is <b>pooled</b>: add up the original sizes of all the held items of a type, add up the sizes of all their frames, and divide the first by the second.</dd>
     <dt>Layer, dimension, fold</dt><dd>A family of guesses about the next byte. D1 guesses from how often each byte occurs; D2 from the word being written; D3 from the field or line it sits in; D4 from the last few bytes and long repeats; D5 from what both ends already hold. The <b>fold depth</b> is how many layers a frame used.</dd>
     <dt>Seed</dt><dd>What both ends already share, taught to the codec before the first byte. It can grow: every item two ends exchange can be added to it.</dd>
     <dt>Cold frame and whisper</dt><dd>A cold frame (D1 to D4) needs nothing shared and decodes anywhere. A whisper (all five) needs the same seed at both ends; a frame names its seed, and a reader with a different one refuses it.</dd>
     <dt>Lossless</dt><dd>What comes out is exactly what went in, byte for byte, checked by SHA-256.</dd>
     <dt>Sealed, held out</dt><dd>The claims were committed before the code; the instrument was frozen by hash before any held item was read. Held items are dated after the cut, never seen by any tuning.</dd>
+    <dt>Mutation gate</dt><dd>A test of the tests: a tool plants hundreds of small bugs in the code, one at a time, and the test suite must catch every one. Here <span id="w-gate">…</span> planted bugs were caught, with none excused, and CI repeats it on every change.</dd>
     <dt>Pattern, node, settle</dt><dd>A pattern is a verified rule (WHEN word THEN family). Settling it against a case gives its decision or "unknown". A node is a stack of patterns; the first that fires answers.</dd>
   </dl>
 </section>
@@ -136,7 +137,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <ol>
     <li><b>Try it.</b> Paste any text in <a href="#try">Try it</a>. The same codec as the measurement runs in this tab and shows the size at each fold depth, and checks the round trip.</li>
     <li><b>Read the ladder.</b> <a href="#ladder">The ladder</a> shows, for each of the five data types, what each layer added, beside gzip, Brotli, zstd and LIGHT v1.</li>
-    <li><b>Check the two big ideas.</b> <a href="#multiply">Do the folds multiply?</a> and <a href="#seed">The seed grows</a> test the spec's two theses directly.</li>
+    <li><b>Check the two big ideas.</b> The spec claimed (1) that each layer's gain multiplies the others', and (2) that the more two systems share, the smaller their messages get. <a href="#multiply">Do the folds multiply?</a> and <a href="#seed">The seed grows</a> test each one directly.</li>
     <li><b>See data become code.</b> <a href="#stacked">Stacked</a> shows a verified rule as one frame, decoded and settled, and a node answering with no model.</li>
     <li><b>Verify, don't trust.</b> <a href="#receipts">Receipts</a> lists every sealed claim with what was measured, held or failed, and links the raw record.</li>
   </ol>
@@ -164,6 +165,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <div class="diagram" id="grow-chart" role="img" aria-label="Ratio as the seed grows"></div>
     <div class="panel"><h4>The pair · first third → last third of the exchange</h4><div id="pair"></div></div>
   </div>
+  <div class="tablewrap"><table id="grow-table"><thead><tr><th>Type</th><th>No seed</th><th>64 KiB</th><th>256 KiB</th><th>1 MiB</th><th>4 MiB (all)</th></tr></thead><tbody></tbody></table></div>
 </section>
 
 <section id="try" aria-labelledby="try-h">
@@ -173,6 +175,7 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <textarea id="t-in" rows="6">{"name":"seed-garden","url":"https://sjgant80-hub.github.io/seed-garden/","topics":["light","seed"],"held":true}
 {"name":"seed-garden-api","url":"https://sjgant80-hub.github.io/seed-garden-api/","topics":["light","api"],"held":false}</textarea>
   <div class="ctas"><button class="go" id="t-run" type="button">Fold it</button><button id="t-teach" type="button">Teach the public seed (D5)</button><button id="t-drift" type="button">Show drift: a reader with another seed</button></div>
+  <ul class="dim"><li><b>Fold it</b> codes your text at each depth and checks each comes back identical.</li><li><b>Teach the public seed</b> gives the codec what two ends would share (recent public records and prose from the estate), then adds the D5 row.</li><li><b>Show drift</b> gives a second reader a seed one line different, and shows the whisper refused and the fallback decoded.</li></ul>
   <div class="panel"><h4>Sizes</h4><div id="t-out" aria-live="polite"><p class="dim">Press Fold it.</p></div></div>
 </section>
 
@@ -224,8 +227,9 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <h3>Traced from the real run</h3>
   <p id="trace">…</p>
   <ol>
-    <li><b>A frame's header</b> says which layers it used (a mask), its table size, the seed's id if it used one, the length, and a 4-byte check of the original.</li>
-    <li><b>Prediction is compression.</b> For each bit, the probability the layers give it decides how many bits it costs. A 99% guess costs 0.015 bits; a wrong one costs many.</li>
+    <li><b>A frame's header</b> says which layers it used (a mask), its table size, the seed's id if it used one (the first 4 bytes of a SHA-256 chain over everything the seed was taught), the length, and a check: the first 4 bytes of the SHA-256 of the original. The decoder recomputes it and returns nothing if it differs.</li>
+    <li><b>A cold frame</b> is used like gzip: sender and receiver need only this codec. A whisper is for two systems that already share records (a seed) and keep it in step.</li>
+    <li><b>Prediction is compression.</b> For each bit, the probability the layers give it decides how many bits it costs. Example: after <code>"url":"https://sjgant80-hub.github.io/</code> the field layer and the repeat model are almost sure what comes next, so those bytes cost a fraction of a bit each; a new repository name costs nearly full price. A 99% guess costs 0.015 bits; a wrong one costs many.</li>
     <li><b>The seed</b> is the same model taught the shared material first. A frame names it; the reader must hold the same one or it refuses.</li>
     <li><b>Drift</b>: if the reader's seed differs, the sender drops to the cold layers. Always correct; just less squeezed.</li>
   </ol>
@@ -247,9 +251,9 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <h2 id="sc-h"><small>Honest scope</small>What this is, and what it is not</h2>
   <ul>
     <li><b>Bytes, not model tokens.</b> These frames are for storing and sending between machines. A language model cannot read them, so this does not shrink a model bill; the 15× curve (<a href="../curve/">the curve</a>) is the token measurement.</li>
-    <li><b>Speed.</b> Pure JavaScript, about 100 KB a second each way on one laptop core: fine for messages, records and memory; slow for bulk archives next to zstd.</li>
+    <li><b>Speed.</b> Pure JavaScript, one core: <span id="speed">press Teach in Try it and this line reports the speed it ran at in your browser</span>. Fine for messages, records and memory; slow for bulk archives next to zstd, which is many times faster.</li>
     <li><b>Shared seeds must be kept in step.</b> The codec refuses a mismatched seed rather than guess, and falls back to the cold layers.</li>
-    <li><b>The star, not a claim.</b> Compression "approaching infinity as minds share everything" is the direction, not a result: new information always costs bits; a seed can only remove what both ends already hold.</li>
+    <li><b>The spec's vision is not a result.</b> It imagined compression growing without limit as two systems come to share everything. What was measured: sharing more did shrink messages (the pair and the seed curve), but new information always costs bits. A seed can only remove what both ends already hold.</li>
     <li id="scope-small">…</li>
     <li id="scope-fail">…</li>
   </ul>
@@ -270,11 +274,29 @@ select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <div id="c-out" class="mono" aria-live="polite"></div>
     <p class="dim">Computed in this tab: bill × (1 − frame bytes ÷ compared bytes), from the record's pooled totals for that type. Your own data may differ: measure it before relying on it.</p>
   </div>
+  <h3>What it costs</h3>
+  <ul>
+    <li><b>Licence:</b> MIT, no licence fee. The code is yours to run, change and keep.</li>
+    <li><b>Running cost:</b> CPU time on machines you already run (see the speed line in <a href="#scope">Honest scope</a>, measured in your browser), and the storage for any seed you keep.</li>
+    <li><b>Integration:</b> one JavaScript module with four calls (seed, encode, decode, negotiate); a cold frame needs nothing else.</li>
+    <li><b>Support:</b> agreed per deployment, in each deployment's agreement, with <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>.</li>
+  </ul>
+  <h3>Security model, plainly</h3>
+  <ul>
+    <li><b>Protected:</b> accidents and mismatches. A changed byte, a truncated frame or a reader holding the wrong seed is refused (<span id="sec-n">measured in the run</span>). A frame cannot claim more bytes than the reader allows, and junk never makes the decoder throw.</li>
+    <li><b>Not protected: secrecy.</b> A frame is not encryption. Anyone with this open codec can read a cold frame, and anyone holding the seed can read a whisper. Encrypt frames as you would the data.</li>
+    <li><b>Not protected: forgery.</b> The 4-byte check catches accidents, not an attacker, who can build a valid frame. Where frames cross a trust boundary, sign them (LIGHT v1's signed packet door does this) and check the signature before decoding.</li>
+    <li><b>Audit:</b> no third-party audit yet. The code is public, the public numbers are re-derived on GitHub's machines, and the mutation gate re-runs on every change.</li>
+  </ul>
+  <h3>Data protection</h3>
+  <p>The codec runs where the data already is and sends nothing anywhere. It is lossless, so it does not change what the data says or how it may be used; a frame is a smaller copy of the same personal data, and a seed is made of your own records too. Treat both exactly as the data they hold: same encryption at rest, same access, same retention and deletion. Your data protection officer still signs off; this page is not legal advice.</p>
   <h3>Risks, answered straight</h3>
   <ul>
     <li><b>Is my data safe?</b> It never leaves your systems; the codec is a library, not a service. Every frame carries a check of the original.</li>
     <li><b>What if a seed is lost?</b> Keep seeds versioned like any key material; without the seed a whisper cannot be read, by design. Cold frames need no seed.</li>
-    <li><b>Is it faster than zstd?</b> No. It is smaller, not faster. Use it where bytes cost more than CPU.</li>
+    <li><b>Is it faster than zstd?</b> No. It is smaller, not faster, and bulk archives were not measured here. Use it for messages and records where bytes cost more than CPU.</li>
+    <li><b>Has it been tried on my kind of data?</b> Not on telemetry or claims records: on five kinds of the estate's own data only. Run the ladder on a sample of yours.</li>
+    <li><b>Who else runs it?</b> Nobody yet. This is the first measurement, on the estate's own data; run the ladder on a sample of yours before relying on it.</li>
     <li><b>Who supports it?</b> Supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; support and terms are agreed per deployment, in each deployment's agreement. The code keeps running without us.</li>
   </ul>
   <h3>The case for the board</h3>

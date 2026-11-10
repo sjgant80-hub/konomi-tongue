@@ -97,12 +97,15 @@ function grow() {
   for (const r of [1, 2, 4, 8, 15, 32].filter((r) => r < top)) { s.add('line', { x1: L, x2: W - R, y1: y(r), y2: y(r), stroke: r === 15 ? 'var(--bad)' : 'var(--line)', 'stroke-dasharray': r === 15 ? '6 5' : '' }); s.add('text', { x: L - 5, y: y(r) + 4, 'text-anchor': 'end', class: r === 15 ? 'r' : 'd' }, r + '×'); }
   GROW.forEach((g, i) => s.add('text', { x: xs(i), y: H - 12, 'text-anchor': 'middle', class: 'd' }, g === '0' ? 'none' : kb(+g)));
   const col = ['var(--accent)', 'var(--accent2)', 'var(--gold)', 'var(--grn)', 'var(--ink)'];
-  REC.types.forEach((t, j) => {
+  const ends = REC.types.map((t, j) => ({ t, j, r: pooled(t, 'grow', GROW[GROW.length - 1]) })).sort((a, b) => b.r - a.r);
+  let last = -Infinity;
+  for (const e of ends) { e.ly = Math.max(y(e.r) - 4, last + 13); last = e.ly; }
+  for (const { t, j, r, ly } of ends) {
     s.add('polyline', { points: GROW.map((g, i) => xs(i) + ',' + y(pooled(t, 'grow', g))).join(' '), fill: 'none', stroke: col[j], 'stroke-width': 2 });
-    const r = pooled(t, 'grow', GROW[GROW.length - 1]);
-    s.add('text', { x: W - R - 2, y: y(r) - 4 - j * 0, 'text-anchor': 'end', fill: col[j], style: 'font-size:11px' }, t.label + ' ' + x(r));
-  });
+    s.add('text', { x: W - R - 2, y: ly, 'text-anchor': 'end', fill: col[j], style: 'font-size:11px' }, t.label + ' ' + x(r));
+  }
   $('grow-chart').replaceChildren(s);
+  $('grow-table').querySelector('tbody').replaceChildren(...REC.types.map((t) => el('tr', {}, el('td', {}, t.label), ...GROW.map((g) => el('td', { class: 'n' }, x(pooled(t, 'grow', g)) + (g !== '0' && t.grow[g].seedBytes === t.seedBytes && +g > t.seedBytes ? ' (its whole seed: ' + kb(t.seedBytes) + ')' : ''))))));
   $('pair').replaceChildren(...REC.types.filter((t) => t.pair).map((t) => el('div', { class: 'stat' }, el('span', {}, t.label + ' (' + t.pair.items + ' items, shared ' + kb(t.pair.sharedAtEnd) + ' by the end)'),
     el('b', { class: t.pair.last > t.pair.first ? '' : 'red' }, x(t.pair.first) + ' → ' + x(t.pair.middle) + ' → ' + x(t.pair.last)))),
   el('p', { class: 'dim' }, 'Both nodes\' seeds keep the same id after every item: ' + REC.types.filter((t) => t.pair).every((t) => t.pair.sameId) + '. Every item decoded byte-identical: ' + REC.types.filter((t) => t.pair).map((t) => t.pair.identical + '/' + t.pair.items).join(', ') + '.'));
@@ -141,7 +144,9 @@ async function teach() {
     const chunks = await packSeed(), t0 = performance.now();
     SEED = F.seed(chunks, { bits: 20 }).seed;
     fold();
-    $('t-out').prepend(el('p', { class: 'dim' }, 'Seed taught: ' + kb(SEED.bytes) + ' in ' + Math.round(performance.now() - t0) + ' ms, id ' + F.idOf(SEED) + '.'));
+    const ms = performance.now() - t0, rate = Math.round(SEED.bytes / 1024 / (ms / 1000));
+    $('t-out').prepend(el('p', { class: 'dim' }, 'Seed taught: ' + kb(SEED.bytes) + ' in ' + Math.round(ms) + ' ms (' + rate + ' KiB a second in this browser), id ' + F.idOf(SEED) + '.'));
+    $('speed').textContent = 'in this browser it just taught ' + kb(SEED.bytes) + ' at ' + rate + ' KiB a second (decoding runs at the same speed)';
   } catch (e) { $('t-out').replaceChildren(el('p', { class: 'no' }, 'Could not teach the seed: ' + e.message)); }
 }
 function drift() {
@@ -161,7 +166,7 @@ function stacked() {
     el('div', { class: 'mono' }, 'decoded: ' + td.decode(F.decode(frames[i]).bytes)),
     el('div', { class: 'dim' }, r.held ? 'gate: held-out ' + r.held.right + '/' + r.held.cover + ' right, final-A ' + r.finalA.right + '/' + r.finalA.cover + ', receipt ' + r.receipt : "kept by the library's own nightly gate (on its whole final slice), receipt " + r.receipt))),
   ...(measured ? [] : [el('p', { class: 'callout' }, "This run's stricter gate (its final exam on half the slice) kept no rule, so S1 and S4 had nothing to measure and are recorded as failed. Shown instead: the library as it stands, admitted by its own nightly gate. The demo is the same code; the claim is not counted.")]),
-  el('p', { class: 'dim' }, rules.length + ' rules shown' + (st.rulesWithheld ? ' (' + st.rulesWithheld + ' withheld by the private-name filter)' : '') + '; ' + st.counts.cases + ' public repositories, ' + st.counts.families + ' families.'));
+  el('p', { class: 'dim' }, rules.length + (rules.length === 1 ? ' rule' : ' rules') + ' shown' + (st.rulesWithheld ? ' (' + st.rulesWithheld + ' withheld by the private-name filter)' : '') + '; ' + st.counts.cases + ' public repositories, ' + st.counts.families + ' families.'));
   const node = S.stackOf(frames).node;
   $('st-ask').onclick = () => {
     const tokens = S.tokensOf($('st-in').value), real = globalThis.fetch; let calls = 0;
@@ -183,11 +188,14 @@ function fill() {
   $('kstat').textContent = held + ' of ' + v.length + ' sealed claims held'; $('kstat').classList.add('live');
   $('f-best').textContent = x(full(best)); $('f-best-s').textContent = 'best full stack: ' + best.label + ' (D1..D5)';
   $('f-flat').textContent = x(pooled(flat, 'ladder', '1'));
-  $('f-15').textContent = l8.held ? 'yes' : 'no'; $('f-15-s').textContent = '15× on any type? ' + (l8.held ? REC.types.filter((t) => full(t) >= 15).map((t) => t.label).join(', ') : 'best ' + x(full(best)));
+  $('f-15').textContent = l8.held ? 'reached' : 'not reached'; $('f-15-s').textContent = 'the 15× bar: ' + (l8.held ? 'on ' + REC.types.filter((t) => full(t) >= 15).map((t) => t.label).join(', ') : 'best ' + full(best).toFixed(3) + '× on the ' + best.label);
   const items = REC.types.reduce((a, t) => a + t.items, 0), ident = REC.types.reduce((a, t) => a + t.ladder['31'].identical, 0);
-  $('f-ll').textContent = big(ident) + '/' + big(items); $('f-gate').textContent = REC.gate.killed + '/' + REC.gate.total;
+  $('f-ll').textContent = big(ident) + '/' + big(items);
+  $('w-gate').textContent = REC.gate.killed + ' of ' + REC.gate.total;
+  const cr = REC.types.reduce((n, t) => n + t.corrupt.refused, 0), dr = REC.types.reduce((n, t) => n + t.drift.refused, 0);
+  $('sec-n').textContent = 'measured: ' + big(cr) + ' of ' + big(items) + ' frames with a byte changed, and ' + big(dr) + ' of ' + big(items) + ' readers holding a drifted seed, refused'; $('f-gate').textContent = REC.gate.killed + '/' + REC.gate.total;
   const failed = v.filter((y) => !y.held).map((y) => y.id);
-  $('headline').textContent = 'Measured once, on items dated after the cut: the full stack reached ' + REC.types.map((t) => x(full(t)) + ' on ' + t.label).join(', ') + ' (D1..D5, pooled). D1 alone stayed between ' + x(Math.min(...REC.types.map((t) => pooled(t, 'ladder', '1')))) + ' and ' + x(pooled(flat, 'ladder', '1')) + '. ' + (failed.length ? 'Failed, and kept: ' + failed.join(', ') + '.' : 'Every sealed claim held.');
+  $('headline').textContent = 'Measured once, on items dated after the cut: the full stack reached ' + REC.types.map((t) => x(full(t)) + ' on ' + t.label).join(', ') + ' (D1..D5, pooled). D1 alone stayed between ' + x(Math.min(...REC.types.map((t) => pooled(t, 'ladder', '1')))) + ' and ' + x(pooled(flat, 'ladder', '1')) + '. ' + (failed.length ? 'Failed, and kept: ' + failed.map((id) => ({ L7: 'the folds did not simply multiply (L7)', L8: '15× was not reached (L8: best ' + full(best).toFixed(3) + '× on the ' + best.label + ')', S1: 'the measured pattern stack came out empty (S1, S4)', S4: null }[id] || (id === 'S4' ? null : id))).filter(Boolean).join('; ') + '.' : 'Every sealed claim held.');
   $('verdicts').querySelector('tbody').replaceChildren(...v.map((y) => el('tr', {}, el('td', {}, el('b', {}, y.id)), el('td', {}, CLAIMS[y.id][0] + ' Predicted: ' + CLAIMS[y.id][1] + '.'), el('td', {}, tagOf(y.held)), el('td', { class: 'mono' }, y.measured))));
   const same = JSON.stringify(v) === JSON.stringify(REC.verdicts);
   $('rc-meta').textContent = 'Cut ' + REC.cut + ' · held items up to ' + REC.end + ' (SEAL 2) · measured ' + REC.ran + ' on Node ' + REC.node + ' · private snapshot sha256 ' + String(REC.snapshot).slice(0, 16) + '… · verdicts recomputed in this tab from the record: ' + (same ? 'identical ✓' : 'DIFFERENT');
