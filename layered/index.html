@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>LIGHT, layered</title>
+<meta name="description" content="One lossless codec, five dimensions of compression stacked and measured on five kinds of the estate&#39;s real data, every failure kept; and one level up, verified rules kept as frames that settle to decisions with no model in the loop.">
+<link rel="canonical" href="https://sjgant80-hub.github.io/konomi-tongue/layered/">
+<style>
+:root{--bg:#0c0b10;--panel:#14131b;--panel2:#0f0e15;--line:#262433;--ink:#e9e6f2;--dim:#a39fb5;--faint:#6b6780;--accent:#b79cff;--accent2:#6ab0ff;--grn:#7bd88f;--bad:#ff8a8a;--gold:#ffd166;--onaccent:#120a2a;--mono:ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f7f6fb;--panel:#fff;--panel2:#eeecf6;--line:#e0ddee;--ink:#1b1a24;--dim:#55516a;--faint:#9a96ad;--accent:#6a3ff5;--accent2:#1763c9;--grn:#1f7a38;--bad:#c62828;--gold:#8a5a00;--onaccent:#ffffff;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+a{color:var(--accent2)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:48px}
+.brand{font:700 15px var(--mono);letter-spacing:.14em;color:var(--ink);text-decoration:none}
+.brand b{color:var(--accent)}
+nav.links{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+nav.links::-webkit-scrollbar{display:none}
+nav.links a{color:var(--dim);text-decoration:none;font-size:13px;white-space:nowrap}
+nav.links a:hover{color:var(--ink)}
+button{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:7px;font:13px var(--sans);cursor:pointer}
+button:hover{border-color:var(--accent)}
+.quiet{background:transparent}
+h1{font:800 clamp(30px,6vw,48px)/1.08 var(--sans);letter-spacing:-.01em;margin:30px 0 10px;background:linear-gradient(100deg,var(--accent),var(--accent2),var(--grn));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,2.3vw,20px);max-width:70ch;color:var(--ink)}
+.sub{color:var(--dim);font:12px var(--mono);margin:10px 0 14px}
+.pill{display:inline-block;font:11px var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;vertical-align:middle}
+.pill.live{color:var(--grn);border-color:var(--grn)}.pill.bad{color:var(--bad);border-color:var(--bad)}
+.ctas{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.ctas button{padding:10px 14px}
+.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font:800 22px var(--mono);color:var(--grn)}
+.fact span{font-size:12.5px;color:var(--dim)}
+section{padding:30px 0 6px;border-top:1px solid var(--line);margin-top:26px;scroll-margin-top:56px}
+section>h2{font:700 23px var(--sans);margin-bottom:6px}
+section>h2 small{display:block;font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.intro{color:var(--dim);max-width:72ch;margin-bottom:12px}
+h3{font-size:17px;margin:18px 0 6px}
+p{margin:8px 0;max-width:74ch}
+ul,ol{margin:8px 0 8px 22px;max-width:74ch}li{margin:4px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.panel h4{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+label{display:block;font:11px var(--mono);color:var(--dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+textarea,input{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono);resize:vertical}
+textarea{min-height:72px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:720px){.row.two{grid-template-columns:1fr 1fr}}
+.stat{display:flex;justify-content:space-between;gap:10px;font:13px var(--mono);padding:5px 0;border-bottom:1px dashed var(--line)}
+.stat:last-child{border-bottom:0}.stat b{color:var(--grn)}.stat b.red{color:var(--bad)}
+.mono{font-family:var(--mono);font-size:12.5px;word-break:break-all}
+.dim{color:var(--dim)}.ok{color:var(--grn)}.no{color:var(--bad)}.gold{color:var(--gold)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--dim);background:var(--panel2)}
+td.n{text-align:right;font-family:var(--mono)}
+.tag{display:inline-block;font:700 10.5px var(--mono);padding:1px 7px;border-radius:5px}
+.tag.held{background:var(--grn);color:#06210f}.tag.failed{background:var(--bad);color:#2a0000}.tag.na{background:var(--line);color:var(--dim)}
+.callout{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;margin:12px 0}
+.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:8px}
+.diagram svg{display:block;min-width:720px;width:100%;height:auto;color:var(--dim)}
+.diagram .b{fill:var(--panel);stroke:var(--line)}.diagram .ba{stroke:var(--accent)}.diagram .bp{stroke:var(--accent2)}.diagram .bg{stroke:var(--grn)}
+.diagram text{font-family:var(--mono);font-size:12px;fill:var(--ink)}.diagram text.a{fill:var(--accent)}.diagram text.d{fill:var(--dim)}.diagram text.g{fill:var(--grn)}
+.diagram .ar{fill:none;stroke:currentColor;stroke-width:1.4}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+.barrier{font:12px var(--mono);max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel2)}
+.barrier div{padding:3px 0;border-bottom:1px dashed var(--line)}
+.barrier .lang{color:var(--faint)}
+.faq dt{font-weight:700;margin-top:14px}.faq dd{margin:4px 0 0;color:var(--ink)}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 0 48px;color:var(--dim);font-size:13px}
+a.btn{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:7px;font:13px var(--sans);text-decoration:none}
+a.btn:hover{border-color:var(--accent)}
+a.btn.go{background:var(--accent);border-color:var(--accent);color:var(--onaccent);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.grid .panel{margin:0}.grid .panel p{margin:0;font-size:14.5px}
+.inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 12px}
+select{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 10px;font:13px var(--mono)}
+select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.diagram text.r{fill:var(--bad)}
+.paper h3{margin-top:16px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top">LIGHT<b>·</b>LAYERED</a>
+  <nav class="links" aria-label="Sections">
+    <a href="#words">Words</a><a href="#start">Start here</a><a href="#ladder">The ladder</a><a href="#multiply">Do folds multiply?</a><a href="#seed">The seed grows</a><a href="#try">Try it</a><a href="#stacked">Stacked</a><a href="#receipts">Receipts</a><a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#scope">Honest scope</a><a href="#business">For your business</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#faq">FAQ</a>
+  </nav>
+  <button class="quiet" id="theme" type="button" aria-label="Switch light or dark">◐</button>
+</div></header>
+
+<main class="wrap" id="top">
+  <h1>LIGHT, layered: five folds, measured</h1>
+  <p class="lede">One lossless codec that squeezes data along five dimensions at once — the byte, the word, the shape, the prediction, and what both ends already share — tested on five kinds of the estate's real data it had never seen. Then the same substance one level up: a verified rule stored as one of these frames is data when kept, and a decision when settled; a node is a stack of them that answers with no model in its loop.</p>
+  <p class="sub"><span class="pill" id="kstat">reading the record…</span> <span class="pill">claims sealed before code</span> <span class="pill">lossless, checked by SHA-256</span> <span class="pill">MIT</span></p>
+  <div class="ctas"><a class="btn go" href="#try">Try it on your own text</a><a class="btn" href="#ladder">See the ladder</a><a class="btn" href="#receipts">Read every verdict</a></div>
+  <div class="facts" id="facts" aria-live="polite">
+    <div class="fact"><b id="f-best">…</b><span id="f-best-s">best full-stack ratio</span></div>
+    <div class="fact"><b id="f-flat">…</b><span>the flat layer (D1) alone, best type</span></div>
+    <div class="fact"><b id="f-15">…</b><span id="f-15-s">15× on any type?</span></div>
+    <div class="fact"><b id="f-ll">…</b><span>items decoded byte-identical</span></div>
+    <div class="fact"><b id="f-gate">…</b><span>mutants killed by the gate</span></div>
+  </div>
+  <div class="callout" id="headline">…</div>
+</main>
+
+<div class="wrap">
+<section id="words" aria-labelledby="words-h">
+  <h2 id="words-h"><small>Words on this page</small>Seven words, in plain English</h2>
+  <dl class="faq">
+    <dt>Ratio (×)</dt><dd>Original size divided by squeezed size. 4× means a quarter of the bytes. Every ratio here counts every header byte, and is <b>pooled</b>: all items' bytes over all their frames' bytes.</dd>
+    <dt>Layer, dimension, fold</dt><dd>A family of guesses about the next byte. D1 guesses from how often each byte occurs; D2 from the word being written; D3 from the field or line it sits in; D4 from the last few bytes and long repeats; D5 from what both ends already hold. The <b>fold depth</b> is how many layers a frame used.</dd>
+    <dt>Seed</dt><dd>What both ends already share, taught to the codec before the first byte. It can grow: every item two ends exchange can be added to it.</dd>
+    <dt>Cold frame and whisper</dt><dd>A cold frame (D1 to D4) needs nothing shared and decodes anywhere. A whisper (all five) needs the same seed at both ends; a frame names its seed, and a reader with a different one refuses it.</dd>
+    <dt>Lossless</dt><dd>What comes out is exactly what went in, byte for byte, checked by SHA-256.</dd>
+    <dt>Sealed, held out</dt><dd>The claims were committed before the code; the instrument was frozen by hash before any held item was read. Held items are dated after the cut, never seen by any tuning.</dd>
+    <dt>Pattern, node, settle</dt><dd>A pattern is a verified rule (WHEN word THEN family). Settling it against a case gives its decision or "unknown". A node is a stack of patterns; the first that fires answers.</dd>
+  </dl>
+</section>
+
+<section id="start" aria-labelledby="start-h">
+  <h2 id="start-h"><small>Start here</small>How to use this page</h2>
+  <ol>
+    <li><b>Try it.</b> Paste any text in <a href="#try">Try it</a>. The same codec as the measurement runs in this tab and shows the size at each fold depth, and checks the round trip.</li>
+    <li><b>Read the ladder.</b> <a href="#ladder">The ladder</a> shows, for each of the five data types, what each layer added, beside gzip, Brotli, zstd and LIGHT v1.</li>
+    <li><b>Check the two big ideas.</b> <a href="#multiply">Do the folds multiply?</a> and <a href="#seed">The seed grows</a> test the spec's two theses directly.</li>
+    <li><b>See data become code.</b> <a href="#stacked">Stacked</a> shows a verified rule as one frame, decoded and settled, and a node answering with no model.</li>
+    <li><b>Verify, don't trust.</b> <a href="#receipts">Receipts</a> lists every sealed claim with what was measured, held or failed, and links the raw record.</li>
+  </ol>
+</section>
+
+<section id="ladder" aria-labelledby="ladder-h">
+  <h2 id="ladder-h"><small>The ladder · L3, L9, L10, L12</small>What each layer adds, per data type</h2>
+  <p class="intro">Each held item coded on its own, at each fold depth. The bar is the pooled ratio; the number on each step is that layer's fold (this depth ÷ the one below). Lines: the standard coders on the same items.</p>
+  <div class="diagram" id="ladder-chart" role="img" aria-label="Ratio by fold depth for each data type"></div>
+  <div class="tablewrap"><table id="ladder-table"><thead><tr><th>Type</th><th>Items</th><th>D1</th><th>+D2</th><th>+D3</th><th>+D4</th><th>+D5 (full)</th><th>gzip-9</th><th>Brotli-11</th><th>zstd-19</th><th>zstd + same seed</th><th>LIGHT v1</th></tr></thead><tbody></tbody></table></div>
+  <p class="dim" id="ladder-note"></p>
+</section>
+
+<section id="multiply" aria-labelledby="mult-h">
+  <h2 id="mult-h"><small>Thesis 1 · L7</small>Do the folds multiply?</h2>
+  <p class="intro">The spec said folds multiply across dimensions. If they did, adding all five layers would give at least D1 × each upper layer's gain measured on its own. This compares that product with what the full stack actually gave.</p>
+  <div class="tablewrap"><table id="mult-table"><thead><tr><th>Type</th><th>D1</th><th>D2 alone</th><th>D3 alone</th><th>D4 alone</th><th>D5 alone</th><th>Product if they multiplied</th><th>Full stack, measured</th><th>Verdict</th></tr></thead><tbody></tbody></table></div>
+  <div class="callout" id="mult-say"></div>
+</section>
+
+<section id="seed" aria-labelledby="seed-h">
+  <h2 id="seed-h"><small>Thesis 2 · L11, S6</small>The seed grows: does sharing more make messages smaller?</h2>
+  <p class="intro">Left: the full stack on the same held items, with a seed of the most recent 0, 64 KiB, 256 KiB, 1 MiB and 4 MiB of what came before. Right: two nodes that start sharing nothing, exchange the held items in time order, and both add each one to their seed.</p>
+  <div class="row two">
+    <div class="diagram" id="grow-chart" role="img" aria-label="Ratio as the seed grows"></div>
+    <div class="panel"><h4>The pair · first third → last third of the exchange</h4><div id="pair"></div></div>
+  </div>
+</section>
+
+<section id="try" aria-labelledby="try-h">
+  <h2 id="try-h"><small>Try it</small>Your text, through the layers, in this tab</h2>
+  <p class="intro">The same <code>fold.mjs</code> as the measurement. Nothing you type leaves this tab. The seed here is the most recent public prose and records the measurement taught (it takes a few seconds to teach).</p>
+  <label for="t-in">Your text</label>
+  <textarea id="t-in" rows="6">{"name":"seed-garden","url":"https://sjgant80-hub.github.io/seed-garden/","topics":["light","seed"],"held":true}
+{"name":"seed-garden-api","url":"https://sjgant80-hub.github.io/seed-garden-api/","topics":["light","api"],"held":false}</textarea>
+  <div class="ctas"><button class="go" id="t-run" type="button">Fold it</button><button id="t-teach" type="button">Teach the public seed (D5)</button><button id="t-drift" type="button">Show drift: a reader with another seed</button></div>
+  <div class="panel"><h4>Sizes</h4><div id="t-out" aria-live="polite"><p class="dim">Press Fold it.</p></div></div>
+</section>
+
+<section id="stacked" aria-labelledby="st-h">
+  <h2 id="st-h"><small>Stacked LIGHT · S1, S3, S4, S5</small>Stored it is data, settled it is a decision</h2>
+  <p class="intro">The estate's own pattern library, over Kar's repo-to-family decisions for its public repositories. Every rule had to pass the library's gate; the model only proposed. Each kept rule is one cold frame: decode it and you read the rule; settle it against a repository's words and it decides, or says unknown.</p>
+  <div class="row two">
+    <div class="panel"><h4>The stack · every rule, as a frame</h4><div id="st-rules"></div></div>
+    <div class="panel"><h4>Ask the node · no model in its loop</h4>
+      <label for="st-in">A repository's name, description and topics</label>
+      <input id="st-in" value="law firms vertical ai tools for solicitors">
+      <div class="ctas"><button class="go" id="st-ask" type="button">Settle</button></div>
+      <div id="st-out" aria-live="polite" class="mono"></div>
+    </div>
+  </div>
+  <div class="row two">
+    <div class="panel"><h4>Capability by stack depth (S4), on the slice the gate never saw</h4><div id="st-depth"></div></div>
+    <div class="panel"><h4>Who proposed, what the gate kept (S5)</h4><div id="st-gate"></div></div>
+  </div>
+</section>
+
+<section id="receipts" aria-labelledby="rc-h">
+  <h2 id="rc-h"><small>Receipts</small>Every sealed claim, held or failed</h2>
+  <div class="tablewrap"><table id="verdicts"><thead><tr><th>Claim</th><th>Said before measuring</th><th>Verdict</th><th>Measured</th></tr></thead><tbody></tbody></table></div>
+  <p>Raw: <a href="data/record.json">the record</a> · <a href="data/public/records.json.gz">public records pack</a> · <a href="data/public/prose.json.gz">public prose pack</a> · <a href="data/witness.json">the mutation gate</a> · <a href="CLAIMS.md">claims L1–L12</a> · <a href="STACKED-CLAIMS.md">claims S1–S6</a> · <a href="SEAL2.md">SEAL 2</a>. Private types publish counts and a snapshot hash, never text.</p>
+  <p class="dim" id="rc-meta"></p>
+</section>
+
+<section id="how" aria-labelledby="how-h">
+  <h2 id="how-h"><small>How it works</small>One stream, five families of guesses, one coder</h2>
+  <div class="diagram" role="img" aria-label="The five layers feed one mixer, a refinement and an arithmetic coder">
+  <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+    <rect class="b ba" x="10" y="14" width="250" height="42" rx="7"/><text x="22" y="32">D1 symbol: byte frequency</text><text class="d" x="22" y="48">1 guess · the flat layer</text>
+    <rect class="b ba" x="10" y="64" width="250" height="42" rx="7"/><text x="22" y="82">D2 token: word, word before</text><text class="d" x="22" y="98">2 guesses</text>
+    <rect class="b ba" x="10" y="114" width="250" height="42" rx="7"/><text x="22" y="132">D3 structure: field, line above</text><text class="d" x="22" y="148">3 guesses (incl. the field's last value)</text>
+    <rect class="b ba" x="10" y="164" width="250" height="42" rx="7"/><text x="22" y="182">D4 prediction: 1-6 bytes, repeats</text><text class="d" x="22" y="198">6 guesses + a refinement</text>
+    <rect class="b bg" x="10" y="214" width="250" height="42" rx="7"/><text x="22" y="232">D5 context: the shared seed</text><text class="d" x="22" y="248">teaches every guess first</text>
+    <path class="ar" d="M262,35 C330,35 330,130 380,130" marker-end="url(#ah)"/><path class="ar" d="M262,85 C330,85 330,134 380,134" marker-end="url(#ah)"/>
+    <path class="ar" d="M262,135 L380,138" marker-end="url(#ah)"/><path class="ar" d="M262,185 C330,185 330,142 380,142" marker-end="url(#ah)"/>
+    <path class="ar" d="M262,235 C330,235 330,146 380,146" marker-end="url(#ah)"/>
+    <rect class="b bp" x="382" y="104" width="160" height="70" rx="8"/><text x="396" y="130">mixer</text><text class="d" x="396" y="148">weights that learn</text><text class="d" x="396" y="164">as they go</text>
+    <path class="ar" d="M544,139 L590,139" marker-end="url(#ah)"/>
+    <rect class="b bp" x="592" y="104" width="130" height="70" rx="8"/><text x="604" y="130">refine (APM)</text><text class="d" x="604" y="148">D4 only</text>
+    <path class="ar" d="M724,139 L760,139" marker-end="url(#ah)"/>
+    <rect class="b bg" x="762" y="94" width="128" height="90" rx="8"/><text x="774" y="120">arithmetic</text><text x="774" y="136">coder</text><text class="g" x="774" y="158">bits</text>
+    <text class="d" x="10" y="286">Each bit: every active layer guesses; the mixer blends; the coder spends few bits on a good guess, many on a surprise. Integers only, so Node and a browser agree on every bit.</text>
+  </svg></div>
+  <h3>Traced from the real run</h3>
+  <p id="trace">…</p>
+  <ol>
+    <li><b>A frame's header</b> says which layers it used (a mask), its table size, the seed's id if it used one, the length, and a 4-byte check of the original.</li>
+    <li><b>Prediction is compression.</b> For each bit, the probability the layers give it decides how many bits it costs. A 99% guess costs 0.015 bits; a wrong one costs many.</li>
+    <li><b>The seed</b> is the same model taught the shared material first. A frame names it; the reader must hold the same one or it refuses.</li>
+    <li><b>Drift</b>: if the reader's seed differs, the sender drops to the cold layers. Always correct; just less squeezed.</li>
+  </ol>
+</section>
+
+<section id="blueprint" aria-labelledby="bp-h">
+  <h2 id="bp-h"><small>Blueprint</small>Built organ by organ</h2>
+  <div class="grid">
+    <div class="panel"><h4>layered/src/fold.mjs</h4><p>The codec: five layers, one mixer, one coder, seeds that grow, frames that name their layers and seed. Pure, integer-only, mutation-gated.</p></div>
+    <div class="panel"><h4>layered/src/settle.mjs</h4><p>Levels 2-3: a rule as one frame, settled to a decision; a node as a stack. Imports the codec and nothing else.</p></div>
+    <div class="panel"><h4>layered/src/verdict.mjs</h4><p>Every verdict computed from the record's numbers alone, so CI can recompute them.</p></div>
+    <div class="panel"><h4>tools/gather, lab, measure, stack</h4><p>The sealed material rule, one type's measurement (shared by the run and CI's re-derivation), the one run, and the pattern-library run.</p></div>
+    <div class="panel"><h4>.github/workflows/layered.yml</h4><p>Tests, the mutation gate on all three kernels, and a full re-derivation of the public types from the committed packs.</p></div>
+    <div class="panel"><h4>This page</h4><p>Reads the record; runs fold.mjs and settle.mjs in the tab. No number on it is typed in.</p></div>
+  </div>
+</section>
+
+<section id="scope" aria-labelledby="sc-h">
+  <h2 id="sc-h"><small>Honest scope</small>What this is, and what it is not</h2>
+  <ul>
+    <li><b>Bytes, not model tokens.</b> These frames are for storing and sending between machines. A language model cannot read them, so this does not shrink a model bill; the 15× curve (<a href="../curve/">the curve</a>) is the token measurement.</li>
+    <li><b>Speed.</b> Pure JavaScript, about 100 KB a second each way on one laptop core: fine for messages, records and memory; slow for bulk archives next to zstd.</li>
+    <li><b>Shared seeds must be kept in step.</b> The codec refuses a mismatched seed rather than guess, and falls back to the cold layers.</li>
+    <li><b>The star, not a claim.</b> Compression "approaching infinity as minds share everything" is the direction, not a result: new information always costs bits; a seed can only remove what both ends already hold.</li>
+    <li id="scope-small">…</li>
+    <li id="scope-fail">…</li>
+  </ul>
+</section>
+
+<section id="business" aria-labelledby="bz-h">
+  <h2 id="bz-h"><small>For your business</small>What it does for a team that stores and sends records</h2>
+  <div class="grid">
+    <div class="panel"><h4>CEO</h4><p>Your own data format, measured against the standard tools on your own traffic, owned outright (MIT, no licence fee).</p></div>
+    <div class="panel"><h4>CFO</h4><p>Storage and transfer bills scale with bytes. Type your monthly bill below; the saving is computed from the measured ratio for the data type you pick.</p></div>
+    <div class="panel"><h4>COO</h4><p>One file to deploy, runs anywhere JavaScript runs (servers, browsers, edge). No service to operate.</p></div>
+    <div class="panel"><h4>CTO / CISO</h4><p>Lossless with a check on every frame; a frame for the wrong seed is refused, never misread; runs where the data is, nothing sent out; mutation-gated code you can audit.</p></div>
+  </div>
+  <div class="panel"><h4>Your saving, from the measured ratio</h4>
+    <div class="inrow"><div><label for="c-bill">Monthly storage + transfer bill for this data (your currency)</label><input id="c-bill" type="number" min="0" step="1" value="1000"></div>
+    <div><label for="c-type">Data type</label><select id="c-type"></select></div>
+    <div><label for="c-vs">Compared with</label><select id="c-vs"><option value="raw">nothing (raw)</option><option value="zstd19">zstd -19</option><option value="gzip9">gzip -9</option></select></div></div>
+    <div id="c-out" class="mono" aria-live="polite"></div>
+    <p class="dim">Computed in this tab: bill × (1 − frame bytes ÷ compared bytes), from the record's pooled totals for that type. Your own data may differ: measure it before relying on it.</p>
+  </div>
+  <h3>Risks, answered straight</h3>
+  <ul>
+    <li><b>Is my data safe?</b> It never leaves your systems; the codec is a library, not a service. Every frame carries a check of the original.</li>
+    <li><b>What if a seed is lost?</b> Keep seeds versioned like any key material; without the seed a whisper cannot be read, by design. Cold frames need no seed.</li>
+    <li><b>Is it faster than zstd?</b> No. It is smaller, not faster. Use it where bytes cost more than CPU.</li>
+    <li><b>Who supports it?</b> Supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; support and terms are agreed per deployment, in each deployment's agreement. The code keeps running without us.</li>
+  </ul>
+  <h3>The case for the board</h3>
+  <p id="board">…</p>
+</section>
+
+<section id="adoption" aria-labelledby="ad-h">
+  <h2 id="ad-h"><small>Adoption</small>Rolling it out</h2>
+  <ol>
+    <li><b>Measure first.</b> Run the same ladder on a sample of your own records; keep it if it beats what you use now.</li>
+    <li><b>Start cold.</b> Cold frames (D1 to D4) need nothing shared: drop them in where you gzip today.</li>
+    <li><b>Grow a seed.</b> For two systems that exchange the same kinds of records, version a seed from the records both already hold; frames name it.</li>
+    <li><b>Let it grow.</b> Both ends add what they exchange; ids stay equal; a mismatch falls back, never corrupts.</li>
+    <li><b>Stack rules.</b> Decisions you make repeatedly can live as verified rules in the same format, answering before any model is asked.</li>
+  </ol>
+</section>
+
+<section id="paper" aria-labelledby="pp-h">
+  <h2 id="pp-h"><small>White paper</small>Five folds and a stack, measured once</h2>
+  <div class="paper">
+  <h3>1 · The question</h3>
+  <p>LIGHT v1 measured <span id="v1ratio">…</span> on its own held JSON (median, <a href="../light/data/light-run.json">its record</a>). The spec argued that number is a flat ceiling and that five dimensions of compression, stacked, multiply towards 15× and beyond. Two theses follow: the folds multiply, and the ratio grows as two ends share more.</p>
+  <h3>2 · Method</h3>
+  <p>Claims sealed before code. Five data types (agent messages, memory, the call book, public JSON records, public prose); everything dated before 5 November 12:00 UTC is the seed side, everything after is held, read first by the measurement. Each held item coded on its own at each fold depth, every header byte counted, every frame decoded and SHA-checked, against gzip, Brotli, zstd (alone and given the same seed) and LIGHT v1. A one-to-one correspondence between layers and families of guesses in a single context-mixing coder. One level up: the estate's pattern library, its gate unchanged, measured on a slice nothing had seen.</p>
+  <h3>3 · Results, from the record</h3>
+  <ul id="results"></ul>
+  <h3>4 · What it means</h3>
+  <p id="meaning">…</p>
+  <h3>5 · Limits</h3>
+  <p>One estate's data over a few days of held items; one machine; JavaScript speed; the public types are re-derivable by anyone, the private ones only where they live (their snapshot is named by hash).</p>
+  </div>
+</section>
+
+<section id="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h"><small>FAQ</small>Questions</h2>
+  <dl class="faq">
+    <dt>Did it reach 15×?</dt><dd id="faq-15">…</dd>
+    <dt>Was the 75× in the spec real?</dt><dd>It was an assumed product of guessed per-layer gains, not a measurement. The measured answer, per type and depth, is <a href="#ladder">the ladder</a>, and the multiply test is <a href="#multiply">here</a>.</dd>
+    <dt>Can I re-run it?</dt><dd>The public types, completely: CI re-derives every public number from the committed packs on GitHub's machines. The private types (the estate's own messages, memory and call book) only where they live; the record names their snapshot by hash.</dd>
+    <dt>Does the node call a model?</dt><dd>Not when it answers. The model (the local qwen2.5:7b) only proposed rules, offline; the library's gate decided which to keep. The node's code imports the codec and nothing else, and a test counts zero calls out of it.</dd>
+    <dt>Does anything I type leave this tab?</dt><dd>No. The page's security policy blocks every connection except its own files.</dd>
+    <dt>Whose work is it?</dt><dd>Powered by the Konomi architecture, created by Thomas Frumkin. Built on LIGHT v1 in this repository. Supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; support and terms agreed per deployment. MIT licence.</dd>
+  </dl>
+</section>
+</div>
+
+<footer><div class="wrap">
+  <p>LIGHT, layered · MIT · <a href="https://github.com/sjgant80-hub/konomi-tongue">source and receipts</a> · part of <a href="../">the Konomi Tongue</a> · next to <a href="../light/">LIGHT v1</a> and <a href="../curve/">the 15× curve</a> · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a></p>
+  <p>Powered by the Konomi architecture, created by Thomas Frumkin. This page requests only its own files; nothing you type here leaves this tab.</p>
+</div></footer>
+<script type="module" src="./page.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+name: layered
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "25.7.0" }
+      - name: the codec, the settle kernel, the verdicts, the page and its public record (L1-L6, S1, S3, G3, G4)
+        run: node --test layered/test/fold.test.mjs layered/test/settle.test.mjs layered/test/verdict.test.mjs layered/test/page.test.mjs
+      # Pinned. An unpinned gate is a gate somebody else can change.
+      - name: witness — every mutant of the three kernels must die, and the committed counts must re-derive (G1)
+        run: |
+          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git /tmp/witness
+          for k in settle verdict fold; do
+            node /tmp/witness/witness.mjs mutate "layered/src/$k.mjs" --timeout 120000 --cap 2000 --test node --test "layered/test/$k.test.mjs" > "/tmp/w-$k.json" || true
+            node layered/tools/witness-check.mjs "$k" "/tmp/w-$k.json"
+          done
+  rederive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix: { type: [records, prose] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "25.7.0" }
+      - name: G2 — every public number re-derived from the committed pack, on GitHub's machine
+        run: node layered/tools/measure.mjs --check --type ${{ matrix.type }}
