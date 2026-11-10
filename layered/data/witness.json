@@ -1,0 +1,13 @@
+{
+ "kind": "konomi-tongue.layered.witness",
+ "v": 1,
+ "clean": true,
+ "killed": 349,
+ "total": 349,
+ "note": "The three kernels' mutation gate (witness v0.6, pinned), run locally on copies and re-run on GitHub's runner (.github/workflows/layered.yml); layered/tools/witness-check.mjs fails the build unless each run is clean and re-derives exactly these counts. Nothing is baselined. The codec took two rounds: the first left 17 survivors, all at clamps, loop bounds past a fixed array's end, a bucket boundary that gave the same value either side, the exact size limit and an exact split point; each was rewritten or tested so a mutant must change behaviour.",
+ "kernels": [
+  { "name": "fold", "file": "layered/src/fold.mjs", "killed": 179, "total": 179, "ignored": 0, "clean": true },
+  { "name": "settle", "file": "layered/src/settle.mjs", "killed": 43, "total": 43, "ignored": 0, "clean": true },
+  { "name": "verdict", "file": "layered/src/verdict.mjs", "killed": 127, "total": 127, "ignored": 0, "clean": true }
+ ]
+}
